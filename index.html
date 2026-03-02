@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE REBUILDER v3 — Keith's Campaign</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body onload="checkPersistedSession()">
+
+<!-- ══ AUTH SCREEN ══ -->
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="auth-title">REBUILDER</div>
+    <div class="auth-sub">◈ CAMPAIGN MARCH 2026 – SEPTEMBER 2026 ◈</div>
+    <div style="font-family:var(--font-mono);font-size:.58rem;color:rgba(255,215,0,.4);text-align:center;font-style:italic;margin-bottom:20px;letter-spacing:1px;">"I can do all things through Christ who strengthens me." — Phil 4:13</div>
+    <div class="auth-btns">
+      <button class="auth-btn keith" onclick="showPWPrompt()">⚡ ENTER AS KEITH</button>
+      <div class="auth-pw-wrap" id="pwWrap">
+        <input class="auth-pw-input" id="pwInput" type="password" placeholder="Enter password…" onkeydown="if(event.key==='Enter')checkPW()">
+        <button class="auth-btn keith" style="font-size:.85rem;padding:10px;" onclick="checkPW()">CONFIRM</button>
+        <div class="auth-error" id="pwError">Incorrect password.</div>
+      </div>
+      <button class="auth-btn guest" onclick="loginGuest()">👁 VIEW AS GUEST</button>
+    </div>
+    <div class="auth-badge">◈ CAMPAIGN: 9 MAR 2026 → 1 SEP 2026 ◈ 176 DAYS ◈</div>
+  </div>
+</div>
+
+<div class="focus-toggle" id="focusToggle" onclick="toggleFocusMode()">🎯 FOCUS</div>
+
+<div class="container">
+  <header>
+    <div class="header-left">
+      <h1>THE REBUILDER</h1>
+      <div class="subtitle">◈ KEITH'S CAMPAIGN ◈ 9 MARCH → 1 SEPTEMBER 2026 ◈ 176 DAYS</div>
+      <div style="font-family:var(--font-mono);font-size:.55rem;color:rgba(255,215,0,.3);letter-spacing:1px;font-style:italic;margin-top:5px;" id="dailyVerse">Loading verse…</div>
+    </div>
+    <div class="header-right">
+      <div class="campaign-dates">
+        <span id="currentDate">—</span>
+        <div id="campaignDay">DAY — OF 176</div>
+        <div id="campaignProgress" style="margin-top:4px;"></div>
+      </div>
+      <div id="userBadge" class="user-badge">⚡ KEITH</div>
+    </div>
+  </header>
+
+  <!-- TWO DAY RULE ALERT -->
+  <div class="tdr-alert" id="tdrAlert">⚠ TWO-DAY RULE VIOLATION — You've missed 2+ consecutive days in a key pillar. Get back on track TODAY.</div>
+  <!-- MVP STACK -->
+  <div class="mvs-bar" id="mvsBar" style="display:none;">
+    <span style="letter-spacing:2px;font-size:.6rem;">TODAY'S MVP STACK:</span>
+    <span class="mvs-item" id="mvs-train">🏋️ TRAIN</span>
+    <span class="mvs-item" id="mvs-ml">🧠 ML 90MIN</span>
+    <span class="mvs-item" id="mvs-german">🇩🇪 GERMAN</span>
+    <span class="mvs-item" id="mvs-protein">🥩 PROTEIN</span>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('dashboard',this)">⚔ DASHBOARD</div>
+    <div class="tab" onclick="switchTab('daily',this)">📊 DAILY XP</div>
+    <div class="tab" onclick="switchTab('body',this)">💪 BODY</div>
+    <div class="tab" onclick="switchTab('strength',this)">🏋️ STRENGTH</div>
+    <div class="tab" onclick="switchTab('engine',this)">🏃 ENGINE</div>
+    <div class="tab" onclick="switchTab('ml',this)">🧠 ML</div>
+    <div class="tab" onclick="switchTab('german',this)">🇩🇪 GERMAN</div>
+    <div class="tab" onclick="switchTab('charts',this)">📈 CHARTS</div>
+    <div class="tab" onclick="switchTab('rewards',this)">🏆 REWARDS</div>
+  </div>
+
+  <!-- ═══════════════ DASHBOARD ═══════════════ -->
+  <div id="tab-dashboard" class="tab-content active">
+    <div class="grid-level">
+      <div class="panel clip-tl">
+        <div class="level-badge">
+          <div class="level-number" id="dashLevel">1</div>
+          <div class="level-info"><h2 id="dashLevelName">THE REBUILDER</h2><p id="dashLevelPeriod">WEEK 1–2</p></div>
+        </div>
+        <div class="xp-label"><span>WEEKLY XP</span><strong><span id="weeklyXPdash">0</span> / 500</strong></div>
+        <div class="bar" style="margin-bottom:12px;"><div class="bar-fill" id="weeklyBar" style="width:0%"></div></div>
+        <div class="xp-label"><span>CAMPAIGN TOTAL</span><strong><span id="totalXPdash">0</span> XP</strong></div>
+        <div class="bar" style="margin-bottom:12px;"><div class="bar-fill" id="campaignBar" style="width:0%"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+          <div><div class="stat-label">SHIELD USES LEFT</div><div style="font-family:var(--font-display);font-size:1.4rem;color:var(--gold);" id="shieldCount">1</div></div>
+          <div><div class="stat-label">WEEK GRADE</div><div class="grade-badge" style="font-size:2rem;padding:0;" id="weekGrade">—</div></div>
+        </div>
+      </div>
+      <div class="panel clip-tr">
+        <div class="panel-title">LEVEL TIMELINE</div>
+        <div class="level-timeline" id="levelTimeline"></div>
+        <div style="margin-top:12px;">
+          <div class="panel-title">STREAK STATUS</div>
+          <div class="streak-grid">
+            <div class="streak-card"><div class="streak-num" id="trainStreak">0</div><div class="streak-label">🔥 TRAINING</div><div class="streak-dots" id="trainDots"></div></div>
+            <div class="streak-card"><div class="streak-num" id="mlStreak">0</div><div class="streak-label">🧠 ML</div><div class="streak-dots" id="mlDots"></div></div>
+            <div class="streak-card"><div class="streak-num" id="germanStreak">0</div><div class="streak-label">🇩🇪 GERMAN</div><div class="streak-dots" id="germanDots"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Summary Card -->
+    <div class="summary-card" id="weeklySummaryCard">
+      <div class="panel-title">📋 WEEKLY SUMMARY</div>
+      <div style="display:grid;grid-template-columns:80px 1fr;gap:16px;align-items:start;">
+        <div>
+          <div class="grade-badge" id="summaryGrade">—</div>
+          <div class="stat-label" style="text-align:center;">OVERALL</div>
+        </div>
+        <div id="summaryRows"></div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:var(--gap);">
+      <div class="panel accent-cyan">
+        <div class="panel-title">💪 BODY STATUS</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;"><div class="med-num" id="dashWeight">—</div><div class="stat-label">KG BODYWEIGHT</div></div>
+        <div class="xp-label"><span>GOAL: 67–70 KG</span><strong id="dashWeightPct">—</strong></div>
+        <div class="bar" style="margin-bottom:10px;"><div class="bar-fill" id="bodyBarDash" style="width:0%"></div></div>
+        <div style="font-size:.78rem;color:var(--muted);">Pull-up max: <strong id="dashPullup" style="color:var(--text)">— reps</strong></div>
+      </div>
+      <div class="panel accent-orange">
+        <div class="panel-title">💥 STRENGTH PBs</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div><div class="stat-label">SQUAT</div><div class="med-num" style="color:var(--accent2);" id="dashSquat">—</div></div>
+          <div><div class="stat-label">DEADLIFT</div><div class="med-num" style="color:var(--accent2);" id="dashDeadlift">—</div></div>
+          <div><div class="stat-label">W. PULL-UP</div><div class="med-num" style="color:var(--accent2);" id="dashWPullup">—</div></div>
+          <div><div class="stat-label">PUSH-UP MAX</div><div class="med-num" style="color:var(--accent2);" id="dashPushup">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="panel accent-purple">
+        <div class="panel-title">🧠 ML PROGRESS</div>
+        <div style="margin-bottom:8px;"><span class="tag tag-cyan">CS229</span><span class="tag tag-purple">Deep Learning</span><span class="tag tag-orange">NLP/LLMs</span></div>
+        <div class="xp-label"><span>Curriculum</span><strong id="dashCurrPct">0%</strong></div>
+        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="currBar" style="width:0%"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+          <div><div class="stat-label">CS229</div><div class="med-num" style="color:var(--purple);" id="dashCS229">0%</div></div>
+          <div><div class="stat-label">PROJECTS</div><div class="med-num" style="color:var(--purple);" id="dashProjects">0</div></div>
+          <div><div class="stat-label">COMMITS/WK</div><div class="med-num" style="color:var(--purple);" id="dashCommits">0</div></div>
+        </div>
+      </div>
+      <div class="panel accent-gold">
+        <div class="panel-title">🇩🇪 GERMAN STATUS</div>
+        <div class="stat-label" style="margin-bottom:6px;">LEVEL: <span style="color:var(--gold)">A2</span> → TARGET: <span style="color:var(--accent)">B2</span> by Sep 2026</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div><div class="stat-label">TOTAL HRS</div><div class="big-num" style="color:var(--gold);" id="dashGermanHours">0.0</div></div>
+          <div><div class="stat-label">THIS WEEK</div><div class="big-num" style="color:var(--gold);" id="dashGermanWeek">0.0</div></div>
+        </div>
+        <div class="xp-label"><span>WEEKLY (20HR target)</span><strong id="dashGermanPct">0%</strong></div>
+        <div class="bar gold"><div class="bar-fill" id="germanBarDash" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ DAILY XP ═══════════════ -->
+  <div id="tab-daily" class="tab-content">
+    <!-- Day Type -->
+    <div class="panel" style="margin-bottom:var(--gap);">
+      <div class="panel-title">⚡ DAY TYPE</div>
+      <div class="dt-label">Select today's mode — affects XP weighting and expectations</div>
+      <div class="day-type-row">
+        <div class="dt-btn" id="dt-prime" onclick="selectDayType('prime',this)">🔥 PRIME<br><span style="font-size:.55rem;color:var(--muted);">Full output: train+ML+German+nutrition</span></div>
+        <div class="dt-btn" id="dt-core" onclick="selectDayType('core',this)">⚡ CORE<br><span style="font-size:.55rem;color:var(--muted);">Train+ML+German minimum</span></div>
+        <div class="dt-btn" id="dt-social" onclick="selectDayType('social',this)">🤝 SOCIAL<br><span style="font-size:.55rem;color:var(--muted);">Events/family — reduced targets</span></div>
+        <div class="dt-btn" id="dt-recovery" onclick="selectDayType('recovery',this)">🛌 RECOVERY<br><span style="font-size:.55rem;color:var(--muted);">Active rest — mobility + light review</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div class="mono" style="font-size:.7rem;color:var(--muted);">DATE: <span id="todayDateLabel" style="color:var(--accent)">—</span></div>
+      <div class="mono" style="font-size:.7rem;color:var(--muted);">WEEKLY: <span id="weeklyXPlabel" style="color:var(--green);font-size:.82rem;">0 XP</span> / 500</div>
+    </div>
+    <div class="xp-grid">
+      <div class="xp-cat">
+        <div class="xp-cat-title">🏋️ TRAINING</div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-gym" onchange="updateXP()"><span>Gym Session</span></label><span class="xp-val">+30</span></div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-run" onchange="updateXP()"><span>Run / Sprints</span></label><span class="xp-val">+30</span></div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-mobility" onchange="updateXP()"><span>Mobility</span></label><span class="xp-val">+5</span></div>
+      </div>
+      <div class="xp-cat">
+        <div class="xp-cat-title">🧠 ML</div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-deepwork" onchange="updateXP()"><span>90 Min Deep Work</span></label><span class="xp-val">+30</span></div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-impl" onchange="updateXP()"><span>Implementation</span></label><span class="xp-val">+10</span></div>
+      </div>
+      <div class="xp-cat">
+        <div class="xp-cat-title">🇩🇪 GERMAN</div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-german" onchange="updateXP()"><span>20 Hrs/Week Goal</span></label><span class="xp-val">+50</span></div>
+        <div style="margin-top:8px;"><div class="stat-label" style="margin-bottom:4px;">TODAY'S HOURS:</div>
+          <div class="german-hrs-row"><input type="number" id="germanHoursToday" min="0" max="16" step="0.5" value="0" onchange="updateXP()"><span class="mono muted" style="font-size:.72rem;">hrs</span></div>
+        </div>
+      </div>
+      <div class="xp-cat">
+        <div class="xp-cat-title">🥗 NUTRITION</div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-protein" onchange="updateXP()"><span>Protein Hit</span></label><span class="xp-val">+10</span></div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-water" onchange="updateXP()"><span>3L Water</span></label><span class="xp-val">+5</span></div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-calories" onchange="updateXP()"><span>Calorie Target</span></label><span class="xp-val">+5</span></div>
+      </div>
+    </div>
+    <div class="today-total">
+      <div class="t-label">TODAY'S XP</div>
+      <div style="text-align:center;"><div class="t-value"><span id="todayXP">0</span> / 100</div><div class="stat-label" style="margin-top:4px;" id="xpStatusMsg">Log your activities above</div></div>
+      <div style="text-align:right;"><div class="stat-label">DAY TYPE</div><div style="font-family:var(--font-display);font-size:1.1rem;color:var(--accent2);" id="dayTypeDisplay">—</div></div>
+    </div>
+    <div style="margin-top:8px;"><div class="bar lg"><div class="bar-fill" id="todayBar" style="width:0%"></div></div></div>
+    <div class="save-bar">
+      <small id="saveMsg">☁ Saves to Supabase</small>
+      <button class="btn btn-orange" onclick="useStreakShield()" id="shieldBtn" style="border-color:var(--gold);color:var(--gold);">🛡 USE SHIELD</button>
+      <button class="btn btn-orange" onclick="saveDay()">LOG TODAY ⚡</button>
+    </div>
+    <div class="panel" style="margin-top:14px;">
+      <div class="panel-title">RECENT HISTORY</div>
+      <div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Type</th><th>XP</th><th>Training</th><th>ML</th><th>German</th><th>HC</th></tr></thead><tbody id="xpHistoryBody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:18px;">Loading...</td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ BODY ═══════════════ -->
+  <div id="tab-body" class="tab-content">
+    <div class="panel" style="margin-bottom:var(--gap);">
+      <div class="panel-title">🥗 NUTRITION LOG — LEAN BULK</div>
+      <div class="verse-inline">"Whether you eat or drink, do it all for the glory of God." — 1 Cor 10:31</div>
+      <div class="macro-grid" style="margin-top:12px;">
+        <div class="macro-card"><div class="macro-num" style="color:var(--accent2);" id="cal-today">—</div><div class="macro-label">CALORIES</div><div class="macro-target">TARGET: 2800–3000</div></div>
+        <div class="macro-card"><div class="macro-num" style="color:var(--green);" id="prot-today">—</div><div class="macro-label">PROTEIN (g)</div><div class="macro-target">TARGET: 80g+</div></div>
+        <div class="macro-card"><div class="macro-num" style="color:var(--purple);" id="carb-today">—</div><div class="macro-label">CARBS (g)</div><div class="macro-target">TARGET: 300–350g</div></div>
+        <div class="macro-card"><div class="macro-num" style="color:var(--gold);" id="fat-today">—</div><div class="macro-label">FAT (g)</div><div class="macro-target">TARGET: 70–90g</div></div>
+      </div>
+      <div style="margin-top:10px;">
+        <div class="xp-label"><span>PROTEIN PROGRESS</span><strong><span id="prot-progress-val">0</span>g / 80g</strong></div>
+        <div class="bar green" style="margin-bottom:10px;"><div class="bar-fill" id="protBar" style="width:0%"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;" id="mealPanels">
+        <div style="background:var(--panel2);border:1px solid var(--border);padding:12px;">
+          <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--accent);letter-spacing:2px;margin-bottom:8px;">🌅 BREAKFAST</div>
+          <div class="f" style="margin-bottom:6px;"><label>Description</label><input type="text" id="meal-b-desc" placeholder="e.g. Oats, eggs, banana"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div class="f"><label>Cals</label><input type="number" id="meal-b-cal" placeholder="500" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Protein (g)</label><input type="number" id="meal-b-prot" placeholder="30" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Carbs (g)</label><input type="number" id="meal-b-carb" placeholder="70" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Fat (g)</label><input type="number" id="meal-b-fat" placeholder="15" onchange="updateMealTotals()"></div>
+          </div>
+        </div>
+        <div style="background:var(--panel2);border:1px solid var(--border);padding:12px;">
+          <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--gold);letter-spacing:2px;margin-bottom:8px;">☀️ LUNCH</div>
+          <div class="f" style="margin-bottom:6px;"><label>Description</label><input type="text" id="meal-l-desc" placeholder="e.g. Rice, chicken, veg"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div class="f"><label>Cals</label><input type="number" id="meal-l-cal" placeholder="800" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Protein (g)</label><input type="number" id="meal-l-prot" placeholder="40" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Carbs (g)</label><input type="number" id="meal-l-carb" placeholder="100" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Fat (g)</label><input type="number" id="meal-l-fat" placeholder="25" onchange="updateMealTotals()"></div>
+          </div>
+        </div>
+        <div style="background:var(--panel2);border:1px solid var(--border);padding:12px;">
+          <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--purple);letter-spacing:2px;margin-bottom:8px;">🌙 DINNER</div>
+          <div class="f" style="margin-bottom:6px;"><label>Description</label><input type="text" id="meal-d-desc" placeholder="e.g. Dal, roti, salad"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div class="f"><label>Cals</label><input type="number" id="meal-d-cal" placeholder="700" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Protein (g)</label><input type="number" id="meal-d-prot" placeholder="35" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Carbs (g)</label><input type="number" id="meal-d-carb" placeholder="90" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Fat (g)</label><input type="number" id="meal-d-fat" placeholder="20" onchange="updateMealTotals()"></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px;background:var(--panel2);border:1px solid var(--border);padding:12px;">
+        <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--muted);letter-spacing:2px;margin-bottom:8px;">🍎 SNACKS / EXTRAS</div>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:8px;align-items:end;">
+          <div class="f"><label>Description</label><input type="text" id="meal-s-desc" placeholder="e.g. Protein shake, nuts"></div>
+          <div class="f"><label>Cals</label><input type="number" id="meal-s-cal" placeholder="200" onchange="updateMealTotals()"></div>
+          <div class="f"><label>Protein</label><input type="number" id="meal-s-prot" placeholder="25" onchange="updateMealTotals()"></div>
+          <div class="f"><label>Carbs</label><input type="number" id="meal-s-carb" placeholder="20" onchange="updateMealTotals()"></div>
+          <div class="f"><label>Fat</label><input type="number" id="meal-s-fat" placeholder="8" onchange="updateMealTotals()"></div>
+        </div>
+      </div>
+      <div class="save-bar">
+        <small>Logs all 4 meals as today's nutrition entry</small>
+        <button class="btn btn-sm" onclick="saveNutrition()">LOG ALL MEALS ⚡</button>
+      </div>
+      <div style="margin-top:8px;font-family:var(--font-mono);font-size:.63rem;color:var(--muted);">
+        ⚠ Weight gain threshold: <strong style="color:var(--accent2);">+0.3–0.5 kg/week max</strong> · If rising faster, drop 200 cals · Protein minimum 80g/day
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:var(--gap);">
+      <div class="panel accent-cyan">
+        <div class="panel-title">📏 LOG MEASUREMENTS</div>
+        <div class="input-grid">
+          <div class="f"><label>Bodyweight (kg)</label><input type="number" id="inp-weight" step="0.1" placeholder="e.g. 63.5"></div>
+          <div class="f"><label>Waist (cm)</label><input type="number" id="inp-waist" step="0.5" placeholder="e.g. 78"></div>
+          <div class="f"><label>Shoulders (cm)</label><input type="number" id="inp-shoulders" step="0.5" placeholder="e.g. 112"></div>
+          <div class="f"><label>Pull-up Max (reps)</label><input type="number" id="inp-pullupmax" step="1" placeholder="e.g. 10"></div>
+        </div>
+        <div class="save-bar"><button class="btn" onclick="saveBodyMetrics()">LOG BODY METRICS</button></div>
+      </div>
+      <div class="panel accent-cyan">
+        <div class="panel-title">🎯 GOAL TRACKER</div>
+        <div class="xp-label" style="margin-top:8px;"><span>Bodyweight: <strong id="bw-current" style="color:var(--text)">— kg</strong></span><strong>Goal: 67–70 kg</strong></div>
+        <div class="bar" style="margin:6px 0 10px;"><div class="bar-fill" id="bwBar" style="width:0%"></div></div>
+        <div class="stat-label">START: ~60 kg → TARGET: 67 kg · Lean bulk</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:.65rem;color:var(--muted);">
+          <div>Weekly gain target: <strong style="color:var(--accent)">+0.3–0.5 kg</strong></div>
+          <div style="margin-top:4px;">Track weekly, not daily. Weigh same time each day.</div>
+        </div>
+      </div>
+    </div>
+    <div class="panel"><div class="panel-title">MEASUREMENT HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Shoulders</th><th>Pull-up Max</th><th>Cals</th><th>Protein</th></tr></thead><tbody id="bodyHistoryBody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:18px;">Loading...</td></tr></tbody></table></div></div>
+  </div>
+
+  <!-- ═══════════════ STRENGTH ═══════════════ -->
+  <div id="tab-strength" class="tab-content">
+    <div class="grid-2" style="margin-bottom:var(--gap);">
+      <div class="panel accent-orange">
+        <div class="panel-title">🏋️ LOG SESSION</div>
+        <div class="input-grid">
+          <div class="f"><label>Squat (kg)</label><input type="number" id="inp-squat" step="2.5" placeholder="e.g. 80"></div>
+          <div class="f"><label>Deadlift (kg)</label><input type="number" id="inp-deadlift" step="2.5" placeholder="e.g. 100"></div>
+          <div class="f"><label>Weighted Pull-up (+kg)</label><input type="number" id="inp-wpullup" step="2.5" placeholder="e.g. 15"></div>
+          <div class="f"><label>Push-ups Max</label><input type="number" id="inp-pushup" step="1" placeholder="e.g. 35"></div>
+          <div class="f"><label>Bench Press (kg)</label><input type="number" id="inp-bench" step="2.5" placeholder="e.g. 60"></div>
+          <div class="f"><label>Barbell Row (kg)</label><input type="number" id="inp-row" step="2.5" placeholder="e.g. 70"></div>
+        </div>
+        <div class="save-bar"><button class="btn btn-orange" onclick="saveStrength()">LOG STRENGTH</button></div>
+      </div>
+      <div class="panel accent-orange">
+        <div class="panel-title">📈 PERSONAL BESTS</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;">
+          <div><div class="stat-label">SQUAT PB</div><div class="big-num" style="color:var(--accent2);" id="pb-squat">—</div></div>
+          <div><div class="stat-label">DEADLIFT PB</div><div class="big-num" style="color:var(--accent2);" id="pb-deadlift">—</div></div>
+          <div><div class="stat-label">W. PULL-UP PB</div><div class="big-num" style="color:var(--accent2);" id="pb-wpullup">—</div></div>
+          <div><div class="stat-label">PUSH-UP PB</div><div class="big-num" style="color:var(--accent2);" id="pb-pushup">—</div></div>
+          <div><div class="stat-label">BENCH PB</div><div class="big-num" style="color:var(--accent2);" id="pb-bench">—</div></div>
+          <div><div class="stat-label">ROW PB</div><div class="big-num" style="color:var(--accent2);" id="pb-row">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel"><div class="panel-title">STRENGTH HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Squat</th><th>Deadlift</th><th>W.Pull-up</th><th>Push-ups</th><th>Bench</th><th>Row</th></tr></thead><tbody id="strengthHistoryBody"></tbody></table></div></div>
+  </div>
+
+  <!-- ═══════════════ ENGINE ═══════════════ -->
+  <div id="tab-engine" class="tab-content">
+    <div class="verse-strip">"Do you not know that your body is a temple of the Holy Spirit?" — 1 Cor 6:19</div>
+    <div class="grid-2" style="margin-bottom:var(--gap);">
+      <div class="panel accent-purple">
+        <div class="panel-title">🏃 LOG CARDIO SESSION</div>
+        <div class="sess-btns" style="margin-bottom:10px;">
+          <div class="sess-btn selected" onclick="selectCardioType(this,'run5k')">🏃 5K Run</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'run10k')">🏃 10K Run</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'sprint')">⚡ Sprints</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'cycling')">🚴 Cycling</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'stairs')">🪜 Stairs</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'jump')">🦘 Jump Rope</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'walk')">🚶 Walk</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'swim')">🏊 Swim</div>
+        </div>
+        <div class="input-grid">
+          <div class="f engine-field" id="ef-5k"><label>5K Time (mm:ss)</label><input type="text" id="inp-5k" placeholder="e.g. 23:00"></div>
+          <div class="f engine-field" id="ef-10k"><label>10K Time (mm:ss)</label><input type="text" id="inp-10k" placeholder="e.g. 50:00"></div>
+          <div class="f engine-field" id="ef-sprint"><label>Sprint Distance</label><select id="inp-sprint-dist" style="background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px;font-family:var(--font-mono);font-size:.78rem;outline:none;"><option>100m</option><option>200m</option><option>400m</option><option>Other</option></select></div>
+          <div class="f engine-field" id="ef-sprint-time"><label>Sprint Time (sec)</label><input type="number" id="inp-sprint" step="0.1" placeholder="e.g. 12.5"></div>
+          <div class="f engine-field" id="ef-duration"><label>Duration (min)</label><input type="number" id="inp-duration" step="1" placeholder="e.g. 30"></div>
+          <div class="f engine-field" id="ef-distance"><label>Distance (km)</label><input type="number" id="inp-distance" step="0.1" placeholder="e.g. 5.2"></div>
+          <div class="f engine-field" id="ef-calories"><label>Calories Burned</label><input type="number" id="inp-cardio-cal" step="10" placeholder="e.g. 300"></div>
+          <div class="f"><label>Resting HR (bpm)</label><input type="number" id="inp-rhr" step="1" placeholder="e.g. 58"></div>
+          <div class="f"><label>Avg HR during (bpm)</label><input type="number" id="inp-avghr" step="1" placeholder="e.g. 155"></div>
+          <div class="f"><label>RPE (1–10)</label><input type="number" id="inp-rpe" min="1" max="10" step="1" placeholder="e.g. 7"></div>
+          <div class="f span2"><label>Notes</label><input type="text" id="inp-cardio-notes" placeholder="e.g. Felt strong, hilly route…"></div>
+        </div>
+        <div class="save-bar"><button class="btn btn-purple" onclick="saveEngine()">LOG ENGINE</button></div>
+      </div>
+      <div class="panel accent-purple">
+        <div class="panel-title">⚡ PERSONAL BESTS</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
+          <div><div class="stat-label">5K PB</div><div class="big-num" style="color:var(--purple);" id="pb-5k">—:—</div></div>
+          <div><div class="stat-label">10K PB</div><div class="big-num" style="color:var(--purple);" id="pb-10k">—:—</div></div>
+          <div><div class="stat-label">SPRINT PB</div><div class="med-num" style="color:var(--purple);" id="pb-sprint">—</div></div>
+          <div><div class="stat-label">RESTING HR</div><div class="med-num" style="color:var(--purple);" id="cur-rhr">— bpm</div></div>
+          <div><div class="stat-label">BEST DURATION</div><div class="med-num" style="color:var(--purple);" id="pb-duration">— min</div></div>
+          <div><div class="stat-label">LAST AVG HR</div><div class="med-num" style="color:var(--purple);" id="last-avghr">— bpm</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--muted);margin-top:4px;">
+          <div style="margin-bottom:4px;">🎯 Cardio targets (by Sep 2026):</div>
+          <div>· 5K under <strong style="color:var(--accent)">22:00</strong></div>
+          <div>· Resting HR below <strong style="color:var(--accent)">55 bpm</strong></div>
+          <div>· 10K under <strong style="color:var(--accent)">48:00</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel"><div class="panel-title">ENGINE HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Type</th><th>Time/Dist</th><th>Duration</th><th>Avg HR</th><th>RPE</th><th>Rest HR</th><th>Notes</th></tr></thead><tbody id="engineHistoryBody"></tbody></table></div></div>
+  </div>
+
+  <!-- ═══════════════ ML ═══════════════ -->
+  <div id="tab-ml" class="tab-content">
+    <div class="verse-strip">"Commit your work to the Lord, and your plans will be established." — Prov 16:3</div>
+    <div class="grid-2" style="margin-bottom:var(--gap);">
+      <div class="panel accent-purple">
+        <div class="panel-title">🧠 SESSION LOG</div>
+        <div style="margin-bottom:10px;"><span class="tag tag-cyan">CS229+Python</span><span class="tag tag-purple">Deep Learning</span><span class="tag tag-orange">NLP/LLMs</span></div>
+        <div class="input-grid">
+          <div class="f"><label>CS229 Lectures Done (total)</label><input type="number" id="inp-lectures" step="1" placeholder="0" min="0"></div>
+          <div class="f"><label>CS229 Total (21 lectures)</label><input type="number" id="inp-lectures-planned" step="1" value="21"></div>
+          <div class="f"><label>CS231N Lectures Done (total)</label><input type="number" id="inp-231n" step="1" placeholder="0" min="0"></div>
+          <div class="f"><label>CS231N Total (18 lectures)</label><input type="number" id="inp-231n-planned" step="1" value="18"></div>
+          <div class="f"><label>Python Modules Done</label><input type="number" id="inp-modules" step="1" placeholder="0"></div>
+          <div class="f"><label>Projects Built</label><input type="number" id="inp-projects" step="1" placeholder="0"></div>
+          <div class="f"><label>GitHub Commits This Week</label><input type="number" id="inp-commits" step="1" placeholder="0"></div>
+          <div class="f"><label>DL / NLP Resources Done</label><input type="number" id="inp-dlnlp" step="1" placeholder="0"></div>
+        </div>
+        <div class="save-bar"><button class="btn btn-purple" onclick="saveML()">UPDATE ML ⚡</button></div>
+      </div>
+      <div class="panel accent-purple">
+        <div class="panel-title">📊 LIVE PROGRESS</div>
+        <div class="xp-label"><span>CS229 Lectures</span><strong><span id="ml-lec-done">0</span>/<span id="ml-lec-plan">21</span></strong></div>
+        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="lecturesBar" style="width:0%"></div></div>
+        <div class="xp-label"><span>CS231N Lectures</span><strong><span id="ml-231n-done">0</span>/<span id="ml-231n-plan">18</span></strong></div>
+        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="lectures231nBar" style="width:0%"></div></div>
+        <div class="xp-label"><span>Python Modules</span><strong><span id="ml-mod-show">0</span> done</strong></div>
+        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="modulesBar" style="width:0%"></div></div>
+        <div class="xp-label"><span>DL + NLP Resources</span><strong><span id="ml-dlnlp-show">0</span> done</strong></div>
+        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="dlnlpBar" style="width:0%"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div><div class="stat-label">PROJECTS</div><div class="big-num" style="color:var(--purple);" id="ml-proj-show">0</div></div>
+          <div><div class="stat-label">COMMITS/WK</div><div class="big-num" style="color:var(--purple);" id="ml-com-show">0</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" style="margin-bottom:var(--gap);">
+      <div class="panel-title">📚 CURRICULUM TRACKER</div>
+      <div class="curr-track">
+        <div class="curr-hdr" onclick="toggleTrack('track-cs229')">
+          <div style="width:8px;height:8px;background:var(--accent);flex-shrink:0;"></div>
+          <div class="track-label" style="color:var(--accent);">CS229 — MACHINE LEARNING</div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="bar-track-cs229" style="width:0%"></div></div>
+          <div class="track-count" id="count-track-cs229">0/21</div>
+          <div class="curr-tog" id="tog-track-cs229">▼</div>
+        </div>
+        <div class="curr-body" id="track-cs229">
+          <div class="curr-item"><input type="checkbox" id="cs-1" onchange="saveCurriculum()"><label for="cs-1">Lec 1: Introduction & Linear Regression</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-2" onchange="saveCurriculum()"><label for="cs-2">Lec 2: Linear Regression & Gradient Descent</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-3" onchange="saveCurriculum()"><label for="cs-3">Lec 3: Locally Weighted & Logistic Regression</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-4" onchange="saveCurriculum()"><label for="cs-4">Lec 4: Perceptron & Generalized Linear Models</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-5" onchange="saveCurriculum()"><label for="cs-5">Lec 5: Gaussian Discriminant Analysis (GDA)</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-6" onchange="saveCurriculum()"><label for="cs-6">Lec 6: Naive Bayes & Support Vector Machines</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-7" onchange="saveCurriculum()"><label for="cs-7">Lec 7: Kernels</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-8" onchange="saveCurriculum()"><label for="cs-8">Lec 8: Data Splits, Models & Cross-Validation</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-9" onchange="saveCurriculum()"><label for="cs-9">Lec 9: Approx/Estimation Error & ERM</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-10" onchange="saveCurriculum()"><label for="cs-10">Lec 10: Decision Trees & Ensemble Methods</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-11" onchange="saveCurriculum()"><label for="cs-11">Lec 11: Introduction to Neural Networks</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-12" onchange="saveCurriculum()"><label for="cs-12">Lec 12: Backprop & Improving Neural Networks</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-13" onchange="saveCurriculum()"><label for="cs-13">Lec 13: Debugging ML Models / Error Analysis</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-14" onchange="saveCurriculum()"><label for="cs-14">Lec 14: Expectation-Maximization (EM)</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-15" onchange="saveCurriculum()"><label for="cs-15">Lec 15: EM & Factor Analysis</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-16" onchange="saveCurriculum()"><label for="cs-16">Lec 16: Independent Component Analysis (ICA)</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-17" onchange="saveCurriculum()"><label for="cs-17">Lec 17: MDPs & Value / Policy Iteration</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-18" onchange="saveCurriculum()"><label for="cs-18">Lec 18: Continuous State MDPs</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-19" onchange="saveCurriculum()"><label for="cs-19">Lec 19: Reward Model & Monte Carlo Tree Search</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-20" onchange="saveCurriculum()"><label for="cs-20">Lec 20: RL Debugging + Safety</label></div>
+          <div class="curr-item"><input type="checkbox" id="cs-21" onchange="saveCurriculum()"><label for="cs-21">Lec 21: Calibration + Practical Tips</label></div>
+        </div>
+      </div>
+      <div class="curr-track">
+        <div class="curr-hdr" onclick="toggleTrack('track-cs231n')">
+          <div style="width:8px;height:8px;background:var(--blue);flex-shrink:0;"></div>
+          <div class="track-label" style="color:var(--blue);">CS231N — DEEP LEARNING FOR VISION</div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="bar-track-cs231n" style="width:0%;background:var(--blue)"></div></div>
+          <div class="track-count" id="count-track-cs231n">0/18</div>
+          <div class="curr-tog" id="tog-track-cs231n">▼</div>
+        </div>
+        <div class="curr-body" id="track-cs231n">
+          <div class="curr-item"><input type="checkbox" id="n231-1" onchange="saveCurriculum()"><label for="n231-1">Lec 1: Introduction to CNNs for Visual Recognition</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-2" onchange="saveCurriculum()"><label for="n231-2">Lec 2: Image Classification Pipelines</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-3" onchange="saveCurriculum()"><label for="n231-3">Lec 3: Loss Functions & Optimization</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-4" onchange="saveCurriculum()"><label for="n231-4">Lec 4: Introduction to Neural Networks</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-5" onchange="saveCurriculum()"><label for="n231-5">Lec 5: Convolutional Neural Networks</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-6" onchange="saveCurriculum()"><label for="n231-6">Lec 6: Training Neural Networks I</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-7" onchange="saveCurriculum()"><label for="n231-7">Lec 7: Training Neural Networks II</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-8" onchange="saveCurriculum()"><label for="n231-8">Lec 8: Deep Learning Software & Frameworks</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-9" onchange="saveCurriculum()"><label for="n231-9">Lec 9: CNN Architectures (AlexNet, VGG, ResNet)</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-10" onchange="saveCurriculum()"><label for="n231-10">Lec 10: Recurrent Neural Networks</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-11" onchange="saveCurriculum()"><label for="n231-11">Lec 11: Detection and Segmentation</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-12" onchange="saveCurriculum()"><label for="n231-12">Lec 12: Visualizing and Understanding CNNs</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-13" onchange="saveCurriculum()"><label for="n231-13">Lec 13: Generative Models (VAE, GAN)</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-14" onchange="saveCurriculum()"><label for="n231-14">Lec 14: Deep Reinforcement Learning</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-15" onchange="saveCurriculum()"><label for="n231-15">Lec 15: Efficient Methods & Hardware</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-16" onchange="saveCurriculum()"><label for="n231-16">Lec 16: Adversarial Examples & Robustness</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-17" onchange="saveCurriculum()"><label for="n231-17">Lec 17: Human-Centered AI Considerations</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-18" onchange="saveCurriculum()"><label for="n231-18">Lec 18: Vision + Language (CLIP, DALL-E, etc.)</label></div>
+        </div>
+      </div>
+      <div class="curr-track">
+        <div class="curr-hdr" onclick="toggleTrack('track-dl')">
+          <div style="width:8px;height:8px;background:var(--purple);flex-shrink:0;"></div>
+          <div class="track-label" style="color:var(--purple);">DEEP LEARNING</div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="bar-track-dl" style="width:0%;background:var(--purple)"></div></div>
+          <div class="track-count" id="count-track-dl">0/10</div>
+          <div class="curr-tog" id="tog-track-dl">▼</div>
+        </div>
+        <div class="curr-body" id="track-dl">
+          <div class="curr-item"><input type="checkbox" id="dl-1" onchange="saveCurriculum()"><label for="dl-1">Backpropagation: math from scratch</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-2" onchange="saveCurriculum()"><label for="dl-2">PyTorch fundamentals: tensors, autograd, nn.Module</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-3" onchange="saveCurriculum()"><label for="dl-3">CNNs: architecture, pooling, conv layers</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-4" onchange="saveCurriculum()"><label for="dl-4">RNNs / LSTMs: sequence modelling</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-5" onchange="saveCurriculum()"><label for="dl-5">Attention mechanism: math + implementation</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-6" onchange="saveCurriculum()"><label for="dl-6">Batch norm, dropout, regularisation</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-7" onchange="saveCurriculum()"><label for="dl-7">Training loops, optimisers, schedulers</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-8" onchange="saveCurriculum()"><label for="dl-8">fast.ai Part 1</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-9" onchange="saveCurriculum()"><label for="dl-9">PROJECT: Image classifier (PyTorch) deployed</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-10" onchange="saveCurriculum()"><label for="dl-10">PROJECT: Train small NN on custom dataset</label></div>
+        </div>
+      </div>
+      <div class="curr-track">
+        <div class="curr-hdr" onclick="toggleTrack('track-nlp')">
+          <div style="width:8px;height:8px;background:var(--accent2);flex-shrink:0;"></div>
+          <div class="track-label" style="color:var(--accent2);">NLP / LLMs</div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="bar-track-nlp" style="width:0%;background:var(--accent2)"></div></div>
+          <div class="track-count" id="count-track-nlp">0/10</div>
+          <div class="curr-tog" id="tog-track-nlp">▼</div>
+        </div>
+        <div class="curr-body" id="track-nlp">
+          <div class="curr-item"><input type="checkbox" id="nlp-1" onchange="saveCurriculum()"><label for="nlp-1">Word embeddings: Word2Vec, GloVe</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-2" onchange="saveCurriculum()"><label for="nlp-2">Transformer: "Attention Is All You Need"</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-3" onchange="saveCurriculum()"><label for="nlp-3">HuggingFace: fine-tuning BERT/RoBERTa</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-4" onchange="saveCurriculum()"><label for="nlp-4">Tokenisation: BPE, WordPiece</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-5" onchange="saveCurriculum()"><label for="nlp-5">GPT architecture: autoregressive LM</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-6" onchange="saveCurriculum()"><label for="nlp-6">Prompt engineering + in-context learning</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-7" onchange="saveCurriculum()"><label for="nlp-7">RAG implementation</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-8" onchange="saveCurriculum()"><label for="nlp-8">LangChain / LlamaIndex</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-9" onchange="saveCurriculum()"><label for="nlp-9">PROJECT: Fine-tune small LLM on custom data</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-10" onchange="saveCurriculum()"><label for="nlp-10">PROJECT: Build + deploy NLP app</label></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel"><div class="panel-title">ML LOG HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Modules</th><th>CS229</th><th>CS231N</th><th>DL/NLP</th><th>Projects</th><th>Commits</th></tr></thead><tbody id="mlHistoryBody"></tbody></table></div></div>
+  </div>
+
+  <!-- ═══════════════ GERMAN ═══════════════ -->
+  <div id="tab-german" class="tab-content">
+    <div class="verse-strip">"Go therefore and make disciples of all nations… teaching them all that I have commanded you." — Matt 28:19</div>
+    <div class="grid-2" style="margin-bottom:var(--gap);">
+      <div class="panel accent-gold">
+        <div class="panel-title">🇩🇪 LOG SESSION</div>
+        <div class="stat-label" style="margin-bottom:8px;">A2 → B1 → B2 · Target: 20hr/week</div>
+        <div class="sess-btns">
+          <div class="sess-btn selected" onclick="selectST(this,'textbook')">📖 Textbook</div>
+          <div class="sess-btn" onclick="selectST(this,'anki')">🃏 Anki</div>
+          <div class="sess-btn" onclick="selectST(this,'youtube')">▶️ YouTube</div>
+          <div class="sess-btn" onclick="selectST(this,'podcast')">🎧 Podcast</div>
+          <div class="sess-btn" onclick="selectST(this,'speaking')">🗣️ Speaking</div>
+          <div class="sess-btn" onclick="selectST(this,'writing')">✍️ Writing</div>
+        </div>
+        <div class="input-grid">
+          <div class="f"><label>Hours Today</label><div class="german-hrs-row"><input type="number" id="germanAddHours" min="0" max="16" step="0.5" value="0"></div></div>
+          <div class="f"><label>Minutes Spoken/Listened</label><input type="number" id="germanMinutes" min="0" step="5" placeholder="0"></div>
+          <div class="f span2"><label>Topic / Unit Covered</label><input type="text" id="germanTopic" placeholder="e.g. Konjunktiv II, ch.7 vocab…"></div>
+          <div class="f"><label>New Words Learned</label><input type="number" id="germanNewWords" min="0" step="1" placeholder="0"></div>
+          <div class="f"><label>Writing Words (if written)</label><input type="number" id="germanWritingWords" min="0" step="10" placeholder="0"></div>
+        </div>
+        <div class="save-bar"><button class="btn btn-gold" onclick="addGermanSession()">LOG SESSION</button></div>
+      </div>
+      <div class="panel accent-gold">
+        <div class="panel-title">⏱️ HOURS OVERVIEW</div>
+        <div style="text-align:center;padding:8px 0 12px;">
+          <div class="big-num" style="color:var(--gold);font-size:clamp(2.5rem,7vw,4rem);" id="german-total-hours">0.0</div>
+          <div class="stat-label">TOTAL HOURS</div>
+        </div>
+        <div class="xp-label"><span>WEEKLY (20HR target)</span><strong><span id="german-weekly-show">0.0</span> / 20.0</strong></div>
+        <div class="bar gold" style="margin-bottom:12px;"><div class="bar-fill" id="germanWeeklyBar" style="width:0%"></div></div>
+        <div class="stat-label" style="margin-bottom:8px;">HOURS BY METHOD</div>
+        <div class="method-grid">
+          <div class="method-row">📖 Textbook: <span id="hrs-textbook">0.0</span></div>
+          <div class="method-row">🃏 Anki: <span id="hrs-anki">0.0</span></div>
+          <div class="method-row">▶️ YouTube: <span id="hrs-youtube">0.0</span></div>
+          <div class="method-row">🎧 Podcast: <span id="hrs-podcast">0.0</span></div>
+          <div class="method-row">🗣️ Speaking: <span id="hrs-speaking">0.0</span></div>
+          <div class="method-row">✍️ Writing: <span id="hrs-writing">0.0</span></div>
+          <div class="method-row">📝 Vocab: <span id="total-words">0</span></div>
+          <div class="method-row">🗣️ Speak min: <span id="total-speaking-min">0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grammar milestones -->
+    <div class="panel" style="margin-bottom:var(--gap);">
+      <div class="panel-title">📐 GRAMMAR MILESTONES — A2 → B1 → B2</div>
+      <div style="margin-bottom:4px;font-family:var(--font-display);font-size:.82rem;letter-spacing:2px;color:var(--accent);">◈ A2 GRAMMAR MASTERY</div>
+      <div style="font-family:var(--font-mono);font-size:.63rem;color:var(--muted);margin-bottom:10px;">Milestone: Write 150 words · Speak 3 min without switching to English</div>
+      <div class="grid-2" style="margin-bottom:14px;">
+        <div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-1"> Präsens — all conjugations fluent</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-2"> Perfekt — past tense confident</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-3"> Präteritum — sein, haben, modal verbs</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-4"> Modal verbs — können, müssen, dürfen, wollen</label></div></div>
+        </div>
+        <div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-5"> Nebensätze — weil, dass, wenn</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-6"> Akkusativ & Dativ — no guessing</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-7" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-7"> Wechselpräpositionen — in/an/auf correct</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-8" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-8"> Reflexive verbs — sich waschen etc.</label></div></div>
+        </div>
+      </div>
+      <div class="ms-item" style="background:rgba(0,212,255,.04);padding:10px;border:1px solid rgba(0,212,255,.15);margin-bottom:16px;">
+        <input type="checkbox" class="ms-check" id="gm-a2-test" onchange="saveGermanMilestones()" style="border-color:var(--accent);">
+        <div><span class="ms-badge ms-a2">TEST</span><label class="ms-text" for="gm-a2-test"> ✔ Write 150-word diary entry with minimal mistakes</label></div>
+      </div>
+      <div class="divider"></div>
+      <div style="margin-bottom:4px;font-family:var(--font-display);font-size:.82rem;letter-spacing:2px;color:var(--gold);">◈ B1 FOUNDATION</div>
+      <div style="font-family:var(--font-mono);font-size:.63rem;color:var(--muted);margin-bottom:10px;">Milestone: 250–300 word essay · Speak 5–7 min · Understand slow news</div>
+      <div class="grid-2" style="margin-bottom:14px;">
+        <div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-1"> Konjunktiv II — würde, hätte, wäre</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-2"> Plusquamperfekt — narrative past perfect</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-3"> Passiv — Präsens & Präteritum</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-4"> Relativsätze</label></div></div>
+        </div>
+        <div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-5"> Temporal connectors — während, bevor, nachdem</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-6"> Connectors — trotzdem, deshalb, obwohl</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-7" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-7"> Complex sentences — longer constructions</label></div></div>
+        </div>
+      </div>
+      <div class="ms-item" style="background:rgba(255,215,0,.04);padding:10px;border:1px solid rgba(255,215,0,.15);margin-bottom:16px;">
+        <input type="checkbox" class="ms-check" id="gm-b1-test" onchange="saveGermanMilestones()" style="border-color:var(--gold);">
+        <div><span class="ms-badge ms-b1">TEST</span><label class="ms-text" for="gm-b1-test"> ✔ Speak 5–7 min on abstract topic without notes</label></div>
+      </div>
+      <div class="divider"></div>
+      <div style="margin-bottom:4px;font-family:var(--font-display);font-size:.82rem;letter-spacing:2px;color:var(--purple);">◈ B2 LOWER — ACADEMIC + PROFESSIONAL</div>
+      <div style="font-family:var(--font-mono);font-size:.63rem;color:var(--muted);margin-bottom:10px;">Milestone: 350-word essay · Participate in debate · Understand podcasts at normal speed</div>
+      <div class="grid-2" style="margin-bottom:14px;">
+        <div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-1"> Konjunktiv I — reported speech</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-2"> Advanced connectors — indem, sofern</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-3"> Nominalisierung — noun formations</label></div></div>
+        </div>
+        <div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-4"> Nuanced opinions — complex views</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-5"> Advanced adjective endings</label></div></div>
+          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-6"> Flexible sentence structure</label></div></div>
+        </div>
+      </div>
+      <div class="ms-item" style="background:rgba(168,85,247,.04);padding:10px;border:1px solid rgba(168,85,247,.15);">
+        <input type="checkbox" class="ms-check" id="gm-b2-test" onchange="saveGermanMilestones()" style="border-color:var(--purple);">
+        <div><span class="ms-badge ms-b2">TEST</span><label class="ms-text" for="gm-b2-test"> ✔ Write 350-word argument essay without panic</label></div>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:var(--gap);">
+      <div class="panel accent-gold">
+        <div class="panel-title">📝 VOCAB MILESTONES</div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="vocab-1"> 500 Anki words retained</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="vocab-2"> 1,000–1,500 active words</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="vocab-3"> 2,000–2,500 active words</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="vocab-4"> 3,500–4,000 active words</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="vocab-5"> Describe work, studies, politics</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="vocab-6"> Explain ML topics in German</label></div></div>
+        <div style="margin-top:12px;" class="stat-label">TOTAL WORDS LOGGED:</div>
+        <div style="font-family:var(--font-display);font-size:2rem;color:var(--gold);" id="german-vocab-total">0</div>
+      </div>
+      <div class="panel accent-gold">
+        <div class="panel-title">🎤 SPEAKING MILESTONES</div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="speak-1"> Simple conversation on familiar topics</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="speak-2"> Speak 3 min without switching to English</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="speak-3"> Express opinions + justify (5–7 min)</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="speak-4"> Argue, compare, defend a position</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="speak-5"> Speak fluently for 10+ minutes</label></div></div>
+        <div class="divider"></div>
+        <div class="panel-title" style="margin-bottom:8px;">🎧 LISTENING</div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="listen-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="listen-1"> Slow YouTube learner videos</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="listen-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="listen-2"> News with subtitles</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="listen-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="listen-3"> Podcasts without subtitles</label></div></div>
+        <div style="margin-top:12px;" class="stat-label">SPEAKING/LISTENING MINUTES:</div>
+        <div style="font-family:var(--font-display);font-size:2rem;color:var(--gold);" id="german-speak-total">0</div>
+      </div>
+      <div class="panel accent-gold">
+        <div class="panel-title">✍️ WRITING MILESTONES</div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="write-1"> 150-word simple narrative</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="write-2"> Formal email written correctly</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="write-3"> Opinion text with arguments</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="write-4"> 350-word argumentative essay</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="write-5"> Write within time limit (exam condition)</label></div></div>
+        <div style="margin-top:12px;" class="stat-label">WRITING WORDS LOGGED:</div>
+        <div style="font-family:var(--font-display);font-size:2rem;color:var(--gold);" id="german-writing-total">0</div>
+        <div class="divider"></div>
+        <div class="panel-title" style="margin-bottom:8px;">🧪 EXAM READINESS</div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="exam-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="exam-1"> 70%+ in mock B2 test</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="exam-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="exam-2"> Finish reading section on time</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="exam-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="exam-3"> Speak 10 min in exam setting</label></div></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:var(--gap);">
+      <div class="panel-title">📊 MONTHLY SKILL MATRIX</div>
+      <div class="stat-label" style="margin-bottom:12px;">Update once a month — rate confidence 1–5.</div>
+      <div class="table-wrap"><table class="skill-matrix"><thead><tr><th>Skill</th><th>A2?</th><th>B1?</th><th>B2?</th><th>Confidence (1–5)</th></tr></thead><tbody id="skillMatrixBody"></tbody></table></div>
+      <div class="save-bar"><button class="btn btn-gold" onclick="saveSkillMatrix()">SAVE MATRIX</button></div>
+    </div>
+    <div class="panel"><div class="panel-title">GERMAN SESSION HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Method</th><th>Hours</th><th>Topic</th><th>Words</th><th>Speak/Listen min</th><th>Weekly Total</th></tr></thead><tbody id="germanHistoryBody"></tbody></table></div></div>
+  </div>
+
+  <!-- ═══════════════ CHARTS ═══════════════ -->
+  <div id="tab-charts" class="tab-content">
+    <div class="grid-2" style="margin-bottom:var(--gap);">
+      <div class="panel accent-cyan">
+        <div class="panel-title">💪 WEIGHT PROGRESSION</div>
+        <div class="chart-container tall"><canvas id="chartWeight"></canvas></div>
+      </div>
+      <div class="panel accent-orange">
+        <div class="panel-title">⚡ WEEKLY XP TREND</div>
+        <div class="chart-container tall"><canvas id="chartXP"></canvas></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-bottom:var(--gap);">
+      <div class="panel accent-gold">
+        <div class="panel-title">🇩🇪 GERMAN HOURS / WEEK</div>
+        <div class="chart-container tall"><canvas id="chartGerman"></canvas></div>
+      </div>
+      <div class="panel accent-purple">
+        <div class="panel-title">🧠 ML CURRICULUM %</div>
+        <div class="chart-container tall"><canvas id="chartML"></canvas></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="panel accent-orange">
+        <div class="panel-title">🏋️ STRENGTH PROGRESSION</div>
+        <div class="chart-container tall"><canvas id="chartStrength"></canvas></div>
+      </div>
+      <div class="panel accent-purple">
+        <div class="panel-title">📊 DAY TYPE BREAKDOWN (this campaign)</div>
+        <div class="chart-container" style="height:240px;display:flex;align-items:center;justify-content:center;"><canvas id="chartDayType" style="max-width:240px;"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ REWARDS ═══════════════ -->
+  <div id="tab-rewards" class="tab-content">
+    <div class="verse-strip">"Well done, good and faithful servant. You have been faithful over a little; I will set you over much." — Matt 25:23</div>
+    <div class="panel accent-red" style="margin-bottom:var(--gap);">
+      <div class="panel-title">⚠ BAD HABITS TRACKER</div>
+      <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-bottom:12px;">Log when you slip. No judgment — just awareness. Each logged habit costs XP.</div>
+      <div id="habitsList">
+        <div class="habit-item"><div><div class="habit-name">🍔 Junk Food</div><div class="habit-cost">-5 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-junk">0</div><button class="habit-log-btn" onclick="logHabit('junk','🍔 Junk Food',-5)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">📱 Doom Scrolling (&gt;30min)</div><div class="habit-cost">-5 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-scroll">0</div><button class="habit-log-btn" onclick="logHabit('scroll','📱 Doom Scroll',-5)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">😴 Poor Sleep (&lt;6hrs)</div><div class="habit-cost">-10 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-sleep">0</div><button class="habit-log-btn" onclick="logHabit('sleep','😴 Bad Sleep',-10)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">🎮 Excessive Gaming (&gt;2hrs)</div><div class="habit-cost">-5 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-game">0</div><button class="habit-log-btn" onclick="logHabit('game','🎮 Excess Gaming',-5)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">⏭ Skipped German on a weekday</div><div class="habit-cost">-10 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-skipger">0</div><button class="habit-log-btn" onclick="logHabit('skipger','⏭ Skipped German',-10)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">🚫 Skipped Training (non-rest day)</div><div class="habit-cost">-10 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-skiptrain">0</div><button class="habit-log-btn" onclick="logHabit('skiptrain','🚫 Skipped Training',-10)">LOG</button></div></div>
+      </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <div><div class="stat-label">TOTAL XP LOST TO HABITS</div><div style="font-family:var(--font-display);font-size:2rem;color:var(--red);" id="habitXPLost">0</div></div>
+        <div class="panel-title" style="margin:0;">HABIT LOG</div>
+      </div>
+      <div class="table-wrap" style="margin-top:10px;"><table class="htable"><thead><tr><th>Date</th><th>Habit</th><th>XP Cost</th></tr></thead><tbody id="habitHistoryBody"><tr><td colspan="3" style="color:var(--muted);text-align:center;padding:14px;">No habits logged</td></tr></tbody></table></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:var(--gap);">
+      <div class="panel-title">🏆 REWARD SYSTEM</div>
+      <div style="font-family:var(--font-mono);font-size:.72rem;color:var(--muted);line-height:1.8;margin-bottom:8px;">Three tiers: <strong style="color:var(--accent);">Weekly</strong> (500+ XP), <strong style="color:var(--gold);">Monthly</strong> (level up), <strong style="color:var(--purple);">September Final</strong> (full campaign). No exceptions.</div>
+    </div>
+
+    <div class="reward-tier-title" style="color:var(--accent);">⚡ WEEKLY REWARDS — Hit 500+ XP</div>
+    <div class="reward-grid" id="rewardGridWeekly"></div>
+
+    <div class="reward-tier-title" style="color:var(--gold);">🏅 MONTHLY REWARDS — Level Up Required</div>
+    <div class="reward-grid" id="rewardGridMonthly"></div>
+
+    <div class="reward-tier-title" style="color:var(--purple);">🏆 SEPTEMBER FINAL REWARDS</div>
+    <div class="reward-grid" id="rewardGridFinal"></div>
+  </div>
+
+</div><!-- end container -->
+
+<script src="script.js"></script>
+</body>
+</html>
