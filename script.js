@@ -5,7 +5,7 @@ const HARDCODED_URL = "https://bwuapxgdsfcfwhdxffur.supabase.co";
 const HARDCODED_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3dWFweGdkc2ZjZndoZHhmZnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MTM1NzQsImV4cCI6MjA4Nzk4OTU3NH0.xRIbqrNAG8-XTUg5cwkb7LuKL6EG4Sw_RHoHLoaUEwc";
 
 
-const KEITH_PASSWORD = 'hello'; // Change this
+const KEITH_PASSWORD = 'Jesusismyrock'; 
 
 // ═══════════════════════════════════════════════════════
 // AUTH — with persistent session + cinematic transition
