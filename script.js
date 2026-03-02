@@ -562,7 +562,7 @@ function updateMVSBar() {
 // ═══════════════════════════════════════════════════════
 // XP
 // ═══════════════════════════════════════════════════════
-const XP_MAP={'xp-gym':20,'xp-run':20,'xp-mobility':5,'xp-deepwork':25,'xp-impl':10,'xp-german':30,'xp-protein':10,'xp-water':5,'xp-calories':5};
+const XP_MAP={'xp-gym':30,'xp-run':30,'xp-mobility':5,'xp-deepwork':30,'xp-impl':10,'xp-german':50,'xp-protein':10,'xp-water':5,'xp-calories':5};
 function calcXP(){return Object.keys(XP_MAP).reduce((s,id)=>s+(document.getElementById(id)?.checked?XP_MAP[id]:0),0);}
 function updateXP(){
   const xp=calcXP();
