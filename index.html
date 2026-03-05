@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grind Till Germany</title>
+<title>THE REBUILDER v3 — Keith's Campaign</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link rel="stylesheet" href="styles.css">
@@ -48,8 +48,6 @@
     </div>
   </header>
 
-  <!-- TWO DAY RULE ALERT -->
-  <div class="tdr-alert" id="tdrAlert">⚠ TWO-DAY RULE VIOLATION — You've missed 2+ consecutive days in a key pillar. Get back on track TODAY.</div>
   <!-- MVP STACK -->
   <div class="mvs-bar" id="mvsBar" style="display:none;">
     <span style="letter-spacing:2px;font-size:.6rem;">TODAY'S MVP STACK:</span>
@@ -118,7 +116,7 @@
       <div class="panel accent-cyan">
         <div class="panel-title">💪 BODY STATUS</div>
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;"><div class="med-num" id="dashWeight">—</div><div class="stat-label">KG BODYWEIGHT</div></div>
-        <div class="xp-label"><span>GOAL: 67–70 KG</span><strong id="dashWeightPct">—</strong></div>
+        <div class="xp-label"><span>GOAL: 55–65 KG</span><strong id="dashWeightPct">—</strong></div>
         <div class="bar" style="margin-bottom:10px;"><div class="bar-fill" id="bodyBarDash" style="width:0%"></div></div>
         <div style="font-size:.78rem;color:var(--muted);">Pull-up max: <strong id="dashPullup" style="color:var(--text)">— reps</strong></div>
       </div>
@@ -189,9 +187,16 @@
       </div>
       <div class="xp-cat">
         <div class="xp-cat-title">🇩🇪 GERMAN</div>
-        <div class="xp-item"><label><input type="checkbox" id="xp-german" onchange="updateXP()"><span>20 Hrs/Week Goal</span></label><span class="xp-val">+50</span></div>
-        <div style="margin-top:8px;"><div class="stat-label" style="margin-bottom:4px;">TODAY'S HOURS:</div>
-          <div class="german-hrs-row"><input type="number" id="germanHoursToday" min="0" max="16" step="0.5" value="0" onchange="updateXP()"><span class="mono muted" style="font-size:.72rem;">hrs</span></div>
+        <div class="xp-item">
+          <label><input type="checkbox" id="xp-german-daily" onchange="updateXP()"><span>Studied German Today</span></label>
+          <span class="xp-val">+20</span>
+        </div>
+        <div style="margin-top:8px;">
+          <div class="stat-label" style="margin-bottom:4px;">TODAY'S HOURS:</div>
+          <div class="german-hrs-row">
+            <input type="number" id="germanHoursToday" min="0" max="16" step="0.5" value="0" onchange="updateXP()">
+            <span class="mono muted" style="font-size:.72rem;">hrs</span>
+          </div>
         </div>
       </div>
       <div class="xp-cat">
@@ -214,7 +219,7 @@
     </div>
     <div class="panel" style="margin-top:14px;">
       <div class="panel-title">RECENT HISTORY</div>
-      <div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Type</th><th>XP</th><th>Training</th><th>ML</th><th>German</th><th>HC</th></tr></thead><tbody id="xpHistoryBody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:18px;">Loading...</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Type</th><th>XP</th><th>Training</th><th>ML</th><th>German</th><th>Actions</th></tr></thead><tbody id="xpHistoryBody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:18px;">Loading...</td></tr></tbody></table></div>
     </div>
   </div>
 
@@ -286,27 +291,24 @@
 
     <div class="grid-2" style="margin-bottom:var(--gap);">
       <div class="panel accent-cyan">
-        <div class="panel-title">📏 LOG MEASUREMENTS</div>
-        <div class="input-grid">
+        <div class="panel-title">⚖️ LOG BODYWEIGHT</div>
+        <div class="input-grid" style="grid-template-columns:1fr;">
           <div class="f"><label>Bodyweight (kg)</label><input type="number" id="inp-weight" step="0.1" placeholder="e.g. 63.5"></div>
-          <div class="f"><label>Waist (cm)</label><input type="number" id="inp-waist" step="0.5" placeholder="e.g. 78"></div>
-          <div class="f"><label>Shoulders (cm)</label><input type="number" id="inp-shoulders" step="0.5" placeholder="e.g. 112"></div>
-          <div class="f"><label>Pull-up Max (reps)</label><input type="number" id="inp-pullupmax" step="1" placeholder="e.g. 10"></div>
         </div>
-        <div class="save-bar"><button class="btn" onclick="saveBodyMetrics()">LOG BODY METRICS</button></div>
+        <div class="save-bar"><button class="btn" onclick="saveBodyWeight()">LOG WEIGHT</button></div>
       </div>
       <div class="panel accent-cyan">
         <div class="panel-title">🎯 GOAL TRACKER</div>
-        <div class="xp-label" style="margin-top:8px;"><span>Bodyweight: <strong id="bw-current" style="color:var(--text)">— kg</strong></span><strong>Goal: 67–70 kg</strong></div>
+        <div class="xp-label" style="margin-top:8px;"><span>Bodyweight: <strong id="bw-current" style="color:var(--text)">— kg</strong></span><strong>Goal: 55–65 kg</strong></div>
         <div class="bar" style="margin:6px 0 10px;"><div class="bar-fill" id="bwBar" style="width:0%"></div></div>
-        <div class="stat-label">START: ~60 kg → TARGET: 67 kg · Lean bulk</div>
+        <div class="stat-label">START: 55 kg → TARGET: 65 kg · Lean bulk</div>
         <div style="margin-top:10px;font-family:var(--font-mono);font-size:.65rem;color:var(--muted);">
           <div>Weekly gain target: <strong style="color:var(--accent)">+0.3–0.5 kg</strong></div>
           <div style="margin-top:4px;">Track weekly, not daily. Weigh same time each day.</div>
         </div>
       </div>
     </div>
-    <div class="panel"><div class="panel-title">MEASUREMENT HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Shoulders</th><th>Pull-up Max</th><th>Cals</th><th>Protein</th></tr></thead><tbody id="bodyHistoryBody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:18px;">Loading...</td></tr></tbody></table></div></div>
+    <div class="panel"><div class="panel-title">MEASUREMENT HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Shoulders</th><th>Pull-up Max</th><th>Cals</th><th>Protein</th><th>Actions</th></tr></thead><tbody id="bodyHistoryBody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:18px;">Loading...</td></tr></tbody></table></div></div>
   </div>
 
   <!-- ═══════════════ STRENGTH ═══════════════ -->
@@ -336,7 +338,7 @@
         </div>
       </div>
     </div>
-    <div class="panel"><div class="panel-title">STRENGTH HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Squat</th><th>Deadlift</th><th>W.Pull-up</th><th>Push-ups</th><th>Bench</th><th>Row</th></tr></thead><tbody id="strengthHistoryBody"></tbody></table></div></div>
+    <div class="panel"><div class="panel-title">STRENGTH HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Squat</th><th>Deadlift</th><th>W.Pull-up</th><th>Push-ups</th><th>Bench</th><th>Row</th><th>Actions</th></tr></thead><tbody id="strengthHistoryBody"></tbody></table></div></div>
   </div>
 
   <!-- ═══════════════ ENGINE ═══════════════ -->
@@ -346,26 +348,26 @@
       <div class="panel accent-purple">
         <div class="panel-title">🏃 LOG CARDIO SESSION</div>
         <div class="sess-btns" style="margin-bottom:10px;">
-          <div class="sess-btn selected" onclick="selectCardioType(this,'run5k')">🏃 5K Run</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'run10k')">🏃 10K Run</div>
+          <div class="sess-btn selected" onclick="selectCardioType(this,'run2k')">🏃 2K</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'run5k')">🏃 5K</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'run10k')">🏃 10K</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'run15k')">🏃 15K</div>
+          <div class="sess-btn" onclick="selectCardioType(this,'run20k')">🏃 20K</div>
           <div class="sess-btn" onclick="selectCardioType(this,'sprint')">⚡ Sprints</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'cycling')">🚴 Cycling</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'stairs')">🪜 Stairs</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'jump')">🦘 Jump Rope</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'walk')">🚶 Walk</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'swim')">🏊 Swim</div>
         </div>
         <div class="input-grid">
+          <div class="f engine-field" id="ef-2k"><label>2K Time (mm:ss)</label><input type="text" id="inp-2k" placeholder="e.g. 8:30"></div>
           <div class="f engine-field" id="ef-5k"><label>5K Time (mm:ss)</label><input type="text" id="inp-5k" placeholder="e.g. 23:00"></div>
           <div class="f engine-field" id="ef-10k"><label>10K Time (mm:ss)</label><input type="text" id="inp-10k" placeholder="e.g. 50:00"></div>
-          <div class="f engine-field" id="ef-sprint"><label>Sprint Distance</label><select id="inp-sprint-dist" style="background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px;font-family:var(--font-mono);font-size:.78rem;outline:none;"><option>100m</option><option>200m</option><option>400m</option><option>Other</option></select></div>
+          <div class="f engine-field" id="ef-15k"><label>15K Time (mm:ss)</label><input type="text" id="inp-15k" placeholder="e.g. 1:18:00"></div>
+          <div class="f engine-field" id="ef-20k"><label>20K Time (mm:ss)</label><input type="text" id="inp-20k" placeholder="e.g. 1:45:00"></div>
+          <div class="f engine-field" id="ef-sprint"><label>Sprint Distance</label>
+            <select id="inp-sprint-dist" style="background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px;font-family:var(--font-mono);font-size:.78rem;outline:none;">
+              <option>100m</option><option>200m</option><option>400m</option><option>Other</option>
+            </select>
+          </div>
           <div class="f engine-field" id="ef-sprint-time"><label>Sprint Time (sec)</label><input type="number" id="inp-sprint" step="0.1" placeholder="e.g. 12.5"></div>
-          <div class="f engine-field" id="ef-duration"><label>Duration (min)</label><input type="number" id="inp-duration" step="1" placeholder="e.g. 30"></div>
-          <div class="f engine-field" id="ef-distance"><label>Distance (km)</label><input type="number" id="inp-distance" step="0.1" placeholder="e.g. 5.2"></div>
-          <div class="f engine-field" id="ef-calories"><label>Calories Burned</label><input type="number" id="inp-cardio-cal" step="10" placeholder="e.g. 300"></div>
           <div class="f"><label>Resting HR (bpm)</label><input type="number" id="inp-rhr" step="1" placeholder="e.g. 58"></div>
-          <div class="f"><label>Avg HR during (bpm)</label><input type="number" id="inp-avghr" step="1" placeholder="e.g. 155"></div>
-          <div class="f"><label>RPE (1–10)</label><input type="number" id="inp-rpe" min="1" max="10" step="1" placeholder="e.g. 7"></div>
           <div class="f span2"><label>Notes</label><input type="text" id="inp-cardio-notes" placeholder="e.g. Felt strong, hilly route…"></div>
         </div>
         <div class="save-bar"><button class="btn btn-purple" onclick="saveEngine()">LOG ENGINE</button></div>
@@ -373,23 +375,32 @@
       <div class="panel accent-purple">
         <div class="panel-title">⚡ PERSONAL BESTS</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
+          <div><div class="stat-label">2K PB</div><div class="big-num" style="color:var(--purple);" id="pb-2k">—:—</div></div>
           <div><div class="stat-label">5K PB</div><div class="big-num" style="color:var(--purple);" id="pb-5k">—:—</div></div>
           <div><div class="stat-label">10K PB</div><div class="big-num" style="color:var(--purple);" id="pb-10k">—:—</div></div>
           <div><div class="stat-label">SPRINT PB</div><div class="med-num" style="color:var(--purple);" id="pb-sprint">—</div></div>
           <div><div class="stat-label">RESTING HR</div><div class="med-num" style="color:var(--purple);" id="cur-rhr">— bpm</div></div>
-          <div><div class="stat-label">BEST DURATION</div><div class="med-num" style="color:var(--purple);" id="pb-duration">— min</div></div>
-          <div><div class="stat-label">LAST AVG HR</div><div class="med-num" style="color:var(--purple);" id="last-avghr">— bpm</div></div>
         </div>
         <div class="divider"></div>
-        <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--muted);margin-top:4px;">
+        <div style="font-family:var(--font-mono);font-size:.80rem;color:var(--muted);margin-top:4px;">
           <div style="margin-bottom:4px;">🎯 Cardio targets (by Sep 2026):</div>
+          <div>· 2K under <strong style="color:var(--accent)">8:00</strong></div>
           <div>· 5K under <strong style="color:var(--accent)">22:00</strong></div>
-          <div>· Resting HR below <strong style="color:var(--accent)">55 bpm</strong></div>
           <div>· 10K under <strong style="color:var(--accent)">48:00</strong></div>
+          <div>· 15K under <strong style="color:var(--accent)">1:15:00</strong></div>
+          <div>· 20K under <strong style="color:var(--accent)">1:40:00</strong></div>
         </div>
       </div>
     </div>
-    <div class="panel"><div class="panel-title">ENGINE HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Type</th><th>Time/Dist</th><th>Duration</th><th>Avg HR</th><th>RPE</th><th>Rest HR</th><th>Notes</th></tr></thead><tbody id="engineHistoryBody"></tbody></table></div></div>
+    <div class="panel">
+      <div class="panel-title">ENGINE HISTORY</div>
+      <div class="table-wrap">
+        <table class="htable">
+          <thead><tr><th>Date</th><th>Type</th><th>Time</th><th>Rest HR</th><th>Notes</th><th>Actions</th></tr></thead>
+          <tbody id="engineHistoryBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <!-- ═══════════════ ML ═══════════════ -->
@@ -533,7 +544,7 @@
         </div>
       </div>
     </div>
-    <div class="panel"><div class="panel-title">ML LOG HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Modules</th><th>CS229</th><th>CS231N</th><th>DL/NLP</th><th>Projects</th><th>Commits</th></tr></thead><tbody id="mlHistoryBody"></tbody></table></div></div>
+    <div class="panel"><div class="panel-title">ML LOG HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Modules</th><th>CS229</th><th>CS231N</th><th>DL/NLP</th><th>Projects</th><th>Commits</th><th>Actions</th></tr></thead><tbody id="mlHistoryBody"></tbody></table></div></div>
   </div>
 
   <!-- ═══════════════ GERMAN ═══════════════ -->
@@ -552,11 +563,28 @@
           <div class="sess-btn" onclick="selectST(this,'writing')">✍️ Writing</div>
         </div>
         <div class="input-grid">
-          <div class="f"><label>Hours Today</label><div class="german-hrs-row"><input type="number" id="germanAddHours" min="0" max="16" step="0.5" value="0"></div></div>
-          <div class="f"><label>Minutes Spoken/Listened</label><input type="number" id="germanMinutes" min="0" step="5" placeholder="0"></div>
-          <div class="f span2"><label>Topic / Unit Covered</label><input type="text" id="germanTopic" placeholder="e.g. Konjunktiv II, ch.7 vocab…"></div>
-          <div class="f"><label>New Words Learned</label><input type="number" id="germanNewWords" min="0" step="1" placeholder="0"></div>
-          <div class="f"><label>Writing Words (if written)</label><input type="number" id="germanWritingWords" min="0" step="10" placeholder="0"></div>
+          <div class="f">
+            <label>Hours Today</label>
+            <div class="german-hrs-row">
+              <input type="number" id="germanAddHours" min="0" max="16" step="0.5" value="0">
+            </div>
+          </div>
+          <div class="f">
+            <label>New Words Learned</label>
+            <input type="number" id="germanNewWords" min="0" step="1" placeholder="0">
+          </div>
+          <div class="f span2">
+            <label>Topic / Unit Covered</label>
+            <input type="text" id="germanTopic" placeholder="e.g. Konjunktiv II, ch.7 vocab…">
+          </div>
+          <div class="f">
+            <label>Minutes Spoken / Listened</label>
+            <input type="number" id="germanMinutes" min="0" step="5" placeholder="0">
+          </div>
+          <div class="f">
+            <label>Writing Words</label>
+            <input type="number" id="germanWritingWords" min="0" step="10" placeholder="0">
+          </div>
         </div>
         <div class="save-bar"><button class="btn btn-gold" onclick="addGermanSession()">LOG SESSION</button></div>
       </div>
@@ -696,7 +724,7 @@
       <div class="table-wrap"><table class="skill-matrix"><thead><tr><th>Skill</th><th>A2?</th><th>B1?</th><th>B2?</th><th>Confidence (1–5)</th></tr></thead><tbody id="skillMatrixBody"></tbody></table></div>
       <div class="save-bar"><button class="btn btn-gold" onclick="saveSkillMatrix()">SAVE MATRIX</button></div>
     </div>
-    <div class="panel"><div class="panel-title">GERMAN SESSION HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Method</th><th>Hours</th><th>Topic</th><th>Words</th><th>Speak/Listen min</th><th>Weekly Total</th></tr></thead><tbody id="germanHistoryBody"></tbody></table></div></div>
+    <div class="panel"><div class="panel-title">GERMAN SESSION HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Method</th><th>Hours</th><th>Topic</th><th>Words</th><th>Speak/Listen min</th><th>Weekly Total</th><th>Actions</th></tr></thead><tbody id="germanHistoryBody"></tbody></table></div></div>
   </div>
 
   <!-- ═══════════════ CHARTS ═══════════════ -->
@@ -768,6 +796,23 @@
     <div class="reward-tier-title" style="color:var(--purple);">🏆 SEPTEMBER FINAL REWARDS</div>
     <div class="reward-grid" id="rewardGridFinal"></div>
   </div>
+
+  <!-- ═══ EDIT MODAL ═══ -->
+<div id="editModal" style="display:none;">
+  <div class="edit-backdrop" onclick="closeEditModal()"></div>
+  <div class="edit-box">
+    <div class="edit-modal-header">
+      <div class="edit-modal-title" id="editModalTitle">EDIT ENTRY</div>
+      <div class="edit-modal-date" id="editModalDate"></div>
+      <button class="edit-close-btn" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="edit-modal-body" id="editModalBody"></div>
+    <div class="edit-modal-footer">
+      <button class="btn btn-sm" style="border-color:var(--muted);color:var(--muted);" onclick="closeEditModal()">CANCEL</button>
+      <button class="btn btn-sm" id="editModalSaveBtn">SAVE CHANGES ⚡</button>
+    </div>
+  </div>
+</div>
 
 </div><!-- end container -->
 
