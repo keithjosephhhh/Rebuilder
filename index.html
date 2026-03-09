@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THE REBUILDER v3 — Keith's Campaign</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Bebas+Neue&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#05050a">
+<title>Keith's Campaign</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Bebas+Neue&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,10 +13,12 @@
 
 <!-- ══ AUTH SCREEN ══ -->
 <div id="authScreen">
+  <div class="auth-scanlines"></div>
   <div class="auth-box">
+    <div class="auth-logo">◈</div>
     <div class="auth-title">REBUILDER</div>
-    <div class="auth-sub">◈ CAMPAIGN MARCH 2026 – SEPTEMBER 2026 ◈</div>
-    <div style="font-family:var(--font-mono);font-size:.58rem;color:rgba(255,215,0,.4);text-align:center;font-style:italic;margin-bottom:20px;letter-spacing:1px;">"I can do all things through Christ who strengthens me." — Phil 4:13</div>
+    <div class="auth-sub">CAMPAIGN · 9 MAR 2026 → 1 SEP 2026</div>
+    <div class="auth-verse">"I can do all things through Christ who strengthens me." — Phil 4:13</div>
     <div class="auth-btns">
       <button class="auth-btn keith" onclick="showPWPrompt()">⚡ ENTER AS KEITH</button>
       <div class="auth-pw-wrap" id="pwWrap">
@@ -25,420 +28,760 @@
       </div>
       <button class="auth-btn guest" onclick="loginGuest()">👁 VIEW AS GUEST</button>
     </div>
-    <div class="auth-badge">◈ CAMPAIGN: 9 MAR 2026 → 1 SEP 2026 ◈ 176 DAYS ◈</div>
+    <div class="auth-badge">176 DAYS · 9 PILLARS · 1 GOAL</div>
   </div>
 </div>
 
-<div class="focus-toggle" id="focusToggle" onclick="toggleFocusMode()">🎯 FOCUS</div>
+<!-- ══ SIDEBAR NAV ══ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="sl-diamond">◈</span>
+    <span class="sl-text">REBUILDER</span>
+  </div>
+  <div class="sidebar-user" id="sidebarUser">⚡ KEITH</div>
 
-<div class="container">
-  <header>
-    <div class="header-left">
-      <h1>THE REBUILDER</h1>
-      <div class="subtitle">◈ KEITH'S CAMPAIGN ◈ 9 MARCH → 1 SEPTEMBER 2026 ◈ 176 DAYS</div>
-      <div style="font-family:var(--font-mono);font-size:.55rem;color:rgba(255,215,0,.3);letter-spacing:1px;font-style:italic;margin-top:5px;" id="dailyVerse">Loading verse…</div>
-    </div>
-    <div class="header-right">
-      <div class="campaign-dates">
-        <span id="currentDate">—</span>
-        <div id="campaignDay">DAY — OF 176</div>
-        <div id="campaignProgress" style="margin-top:4px;"></div>
-      </div>
-      <div id="userBadge" class="user-badge">⚡ KEITH</div>
-    </div>
-  </header>
+  <div class="sidebar-section">CORE</div>
+  <div class="nav-item active" onclick="switchTab('dashboard',this)" data-tab="dashboard">
+    <span class="nav-icon">⚔</span><span class="nav-label">Dashboard</span>
+  </div>
+  <div class="nav-item" onclick="switchTab('daily',this)" data-tab="daily">
+    <span class="nav-icon">📊</span><span class="nav-label">Daily XP</span>
+  </div>
 
-  <!-- MVP STACK -->
-  <div class="mvs-bar" id="mvsBar" style="display:none;">
-    <span style="letter-spacing:2px;font-size:.6rem;">TODAY'S MVP STACK:</span>
+  <div class="sidebar-section">BODY</div>
+  <div class="nav-item" onclick="switchTab('body',this)" data-tab="body">
+    <span class="nav-icon">💪</span><span class="nav-label">Body & Nutrition</span>
+  </div>
+  <div class="nav-item" onclick="switchTab('strength',this)" data-tab="strength">
+    <span class="nav-icon">🏋️</span><span class="nav-label">Strength</span>
+  </div>
+  <div class="nav-item" onclick="switchTab('engine',this)" data-tab="engine">
+    <span class="nav-icon">🏃</span><span class="nav-label">Cardio Engine</span>
+  </div>
+
+  <div class="sidebar-section">TRAINING</div>
+  <div class="nav-item" onclick="switchTab('training',this)" data-tab="training">
+    <span class="nav-icon">📋</span><span class="nav-label">Training Plan</span>
+  </div>
+
+  <div class="sidebar-section">MIND</div>
+  <div class="nav-item" onclick="switchTab('ml',this)" data-tab="ml">
+    <span class="nav-icon">🧠</span><span class="nav-label">ML / CS</span>
+  </div>
+  <div class="nav-item" onclick="switchTab('german',this)" data-tab="german">
+    <span class="nav-icon">🇩🇪</span><span class="nav-label">German</span>
+  </div>
+
+  <div class="sidebar-section">INTEL</div>
+  <div class="nav-item" onclick="switchTab('analytics',this)" data-tab="analytics">
+    <span class="nav-icon">📈</span><span class="nav-label">Analytics</span>
+  </div>
+  <div class="nav-item" onclick="switchTab('missions',this)" data-tab="missions">
+    <span class="nav-icon">🎯</span><span class="nav-label">Missions</span>
+  </div>
+  <div class="nav-item" onclick="switchTab('rewards',this)" data-tab="rewards">
+    <span class="nav-icon">🏆</span><span class="nav-label">Rewards</span>
+  </div>
+
+  <div class="sidebar-bottom">
+    <button class="logout-btn" id="logoutBtn" onclick="logOut()" style="display:none;">⏻ LOG OUT</button>
+  </div>
+</nav>
+
+<!-- ══ MOBILE TOPBAR ══ -->
+<div class="mobile-topbar">
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()">☰</button>
+  <div class="mobile-title">REBUILDER</div>
+  <div class="mobile-user" id="mobileUser">⚡</div>
+</div>
+
+<!-- ══ SIDEBAR OVERLAY ══ -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- ══ MAIN CONTENT ══ -->
+<main class="main-content" id="mainContent">
+
+  <!-- Campaign header strip -->
+  <div class="campaign-strip" id="campaignStrip">
+    <div class="cs-left">
+      <span id="currentDate">—</span>
+      <span class="cs-sep">·</span>
+      <span id="campaignDay">DAY — OF 176</span>
+    </div>
+    <div class="cs-center" id="campaignProgressBar">
+      <div class="cs-bar"><div class="cs-fill" id="csFill" style="width:0%"></div></div>
+      <span id="csPct">0%</span>
+    </div>
+    <div class="cs-right">
+      <span id="dailyVerseStrip">Loading verse…</span>
+    </div>
+  </div>
+
+  <!-- MVP Stack -->
+  <div class="mvs-bar" id="mvsBar">
+    <span class="mvs-label">TODAY:</span>
     <span class="mvs-item" id="mvs-train">🏋️ TRAIN</span>
-    <span class="mvs-item" id="mvs-ml">🧠 ML 90MIN</span>
+    <span class="mvs-item" id="mvs-ml">🧠 ML</span>
     <span class="mvs-item" id="mvs-german">🇩🇪 GERMAN</span>
     <span class="mvs-item" id="mvs-protein">🥩 PROTEIN</span>
+    <span class="mvs-item" id="mvs-water">💧 WATER</span>
   </div>
 
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('dashboard',this)">⚔ DASHBOARD</div>
-    <div class="tab" onclick="switchTab('daily',this)">📊 DAILY XP</div>
-    <div class="tab" onclick="switchTab('body',this)">💪 BODY</div>
-    <div class="tab" onclick="switchTab('strength',this)">🏋️ STRENGTH</div>
-    <div class="tab" onclick="switchTab('engine',this)">🏃 ENGINE</div>
-    <div class="tab" onclick="switchTab('ml',this)">🧠 ML</div>
-    <div class="tab" onclick="switchTab('german',this)">🇩🇪 GERMAN</div>
-    <div class="tab" onclick="switchTab('charts',this)">📈 CHARTS</div>
-    <div class="tab" onclick="switchTab('rewards',this)">🏆 REWARDS</div>
-  </div>
-
-  <!-- ═══════════════ DASHBOARD ═══════════════ -->
+  <!-- ═══ DASHBOARD ═══ -->
   <div id="tab-dashboard" class="tab-content active">
-    <div class="grid-level">
-      <div class="panel clip-tl">
-        <div class="level-badge">
-          <div class="level-number" id="dashLevel">1</div>
-          <div class="level-info"><h2 id="dashLevelName">THE REBUILDER</h2><p id="dashLevelPeriod">WEEK 1–2</p></div>
+    <div class="page-header">
+      <h1 class="page-title">COMMAND CENTER</h1>
+      <div id="userBadge" class="user-badge">⚡ KEITH</div>
+    </div>
+
+    <!-- Monthly Wrapped Button -->
+    <div id="wrappedBtn" style="display:none;margin-bottom:var(--gap);background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(0,229,255,.06));border:1px solid rgba(251,191,36,.25);padding:14px 18px;cursor:pointer;align-items:center;gap:12px;" onclick="openMonthlyWrapped()">
+      <span style="font-size:1.4rem;">🎁</span>
+      <div>
+        <div style="font-family:var(--font-display);font-size:1rem;color:var(--gold);">MONTHLY WRAPPED IS READY</div>
+        <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);">Tap to see how last month went</div>
+      </div>
+      <div style="margin-left:auto;color:var(--gold);">→</div>
+    </div>
+    <!-- Tomorrow's Note panel -->
+    <div class="panel" id="tomorrowNotePanel" style="margin-bottom:var(--gap);border-left:3px solid var(--gold);padding:12px 16px;">
+      <div onclick="toggleNotePanel()" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span>📝</span>
+          <span style="font-family:var(--font-mono);font-size:.65rem;color:var(--gold);letter-spacing:2px;">NOTE TO SELF</span>
         </div>
-        <div class="xp-label"><span>WEEKLY XP</span><strong><span id="weeklyXPdash">0</span> / 500</strong></div>
-        <div class="bar" style="margin-bottom:12px;"><div class="bar-fill" id="weeklyBar" style="width:0%"></div></div>
-        <div class="xp-label"><span>CAMPAIGN TOTAL</span><strong><span id="totalXPdash">0</span> XP</strong></div>
-        <div class="bar" style="margin-bottom:12px;"><div class="bar-fill" id="campaignBar" style="width:0%"></div></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
-          <div><div class="stat-label">SHIELD USES LEFT</div><div style="font-family:var(--font-display);font-size:1.4rem;color:var(--gold);" id="shieldCount">1</div></div>
-          <div><div class="stat-label">WEEK GRADE</div><div class="grade-badge" style="font-size:2rem;padding:0;" id="weekGrade">—</div></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="notePreview" style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">tap to add a note</span>
+          <span id="notePanelArrow" style="color:var(--muted);font-size:.65rem;">▼</span>
         </div>
       </div>
-      <div class="panel clip-tr">
-        <div class="panel-title">LEVEL TIMELINE</div>
-        <div class="level-timeline" id="levelTimeline"></div>
-        <div style="margin-top:12px;">
-          <div class="panel-title">STREAK STATUS</div>
-          <div class="streak-grid">
-            <div class="streak-card"><div class="streak-num" id="trainStreak">0</div><div class="streak-label">🔥 TRAINING</div><div class="streak-dots" id="trainDots"></div></div>
-            <div class="streak-card"><div class="streak-num" id="mlStreak">0</div><div class="streak-label">🧠 ML</div><div class="streak-dots" id="mlDots"></div></div>
-            <div class="streak-card"><div class="streak-num" id="germanStreak">0</div><div class="streak-label">🇩🇪 GERMAN</div><div class="streak-dots" id="germanDots"></div></div>
+      <div id="notePanelBody" style="display:none;margin-top:10px;">
+        <textarea id="tomorrowNoteInput" placeholder="Write a note to your future self — goals, reminders, mindset for tomorrow..." style="width:100%;min-height:72px;background:rgba(251,191,36,.03);border:1px solid rgba(251,191,36,.15);color:var(--text);font-family:var(--font-mono);font-size:.72rem;padding:9px;resize:vertical;line-height:1.6;box-sizing:border-box;outline:none;"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+          <span style="font-family:var(--font-mono);font-size:.55rem;color:var(--muted);">flashes every morning after 5:30am IST</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="tomorrowNoteSaved" style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);"></span>
+            <button onclick="saveTomorrowNote()" class="btn" style="font-size:.62rem;padding:4px 12px;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:var(--gold);">SAVE</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Weekly Summary Card -->
-    <div class="summary-card" id="weeklySummaryCard">
-      <div class="panel-title">📋 WEEKLY SUMMARY</div>
-      <div style="display:grid;grid-template-columns:80px 1fr;gap:16px;align-items:start;">
-        <div>
-          <div class="grade-badge" id="summaryGrade">—</div>
-          <div class="stat-label" style="text-align:center;">OVERALL</div>
+    <div class="dash-hero">
+      <div class="hero-left panel clip-tl">
+        <div class="level-display">
+          <div class="level-num" id="dashLevel">1</div>
+          <div class="level-info">
+            <div class="level-name" id="dashLevelName">THE REBUILDER</div>
+            <div class="level-week" id="dashLevelPeriod">WEEK 1–2</div>
+          </div>
+          <div class="week-grade" id="weekGrade">—</div>
         </div>
-        <div id="summaryRows"></div>
+        <div class="xp-section">
+          <div class="xp-row">
+            <span>WEEKLY XP</span>
+            <strong><span id="weeklyXPdash">0</span> / 500</strong>
+          </div>
+          <div class="bar"><div class="bar-fill" id="weeklyBar" style="width:0%"></div></div>
+          <div class="xp-row" style="margin-top:10px;">
+            <span>CAMPAIGN TOTAL</span>
+            <strong><span id="totalXPdash">0</span> XP</strong>
+          </div>
+          <div class="bar"><div class="bar-fill" id="campaignBar" style="width:0%"></div></div>
+        </div>
+        <div class="shield-row">
+          <div>
+            <div class="stat-label">SHIELD</div>
+            <div class="shield-count" id="shieldCount">1</div>
+          </div>
+          <div>
+            <div class="stat-label">STREAK BONUS</div>
+            <div class="shield-count" id="streakBonusDisplay" style="color:var(--gold)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="streak-grid">
+          <div class="streak-card">
+            <div class="streak-num" id="trainStreak" style="color:var(--accent2)">0</div>
+            <div class="streak-label">🏋️ TRAINING</div>
+            <div class="streak-dots" id="trainDots"></div>
+              <div class="streak-week-prog" id="trainWeekProg"></div>
+            <div class="streak-target">TARGET: 4 DAYS/WK</div>
+          </div>
+          <div class="streak-card">
+            <div class="streak-num" id="mlStreak" style="color:var(--purple)">0</div>
+            <div class="streak-label">🧠 ML STUDY</div>
+            <div class="streak-dots" id="mlDots"></div>
+              <div class="streak-week-prog" id="mlWeekProg"></div>
+            <div class="streak-target">TARGET: 4 DAYS/WK</div>
+          </div>
+          <div class="streak-card">
+            <div class="streak-num" id="germanStreak" style="color:var(--gold)">0</div>
+            <div class="streak-label">🇩🇪 GERMAN</div>
+            <div class="streak-dots" id="germanDots"></div>
+              <div class="streak-week-prog" id="germanWeekProg"></div>
+            <div class="streak-target">TARGET: 5 DAYS/WK</div>
+          </div>
+        </div>
+
+        <!-- Weekly Summary -->
+        <div class="weekly-summary panel">
+          <div class="panel-title">📋 WEEKLY BRIEF</div>
+          <div id="summaryRows"></div>
+        </div>
       </div>
     </div>
 
-    <div class="grid-2" style="margin-bottom:var(--gap);">
-      <div class="panel accent-cyan">
-        <div class="panel-title">💪 BODY STATUS</div>
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;"><div class="med-num" id="dashWeight">—</div><div class="stat-label">KG BODYWEIGHT</div></div>
-        <div class="xp-label"><span>GOAL: 55–65 KG</span><strong id="dashWeightPct">—</strong></div>
-        <div class="bar" style="margin-bottom:10px;"><div class="bar-fill" id="bodyBarDash" style="width:0%"></div></div>
-        <div style="font-size:.78rem;color:var(--muted);">Pull-up max: <strong id="dashPullup" style="color:var(--text)">— reps</strong></div>
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card panel accent-cyan" onclick="switchTab('body',document.querySelector('[data-tab=body]'))">
+        <div class="sc-label">BODYWEIGHT</div>
+        <div class="sc-val" id="dashWeight">— kg</div>
+        <div class="sc-sub" id="dashWeightSub">Goal: 55–65 kg</div>
+        <div class="bar sm" style="margin-top:6px;"><div class="bar-fill" id="bodyBarDash" style="width:0%"></div></div>
       </div>
-      <div class="panel accent-orange">
-        <div class="panel-title">💥 STRENGTH PBs</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div><div class="stat-label">SQUAT</div><div class="med-num" style="color:var(--accent2);" id="dashSquat">—</div></div>
-          <div><div class="stat-label">DEADLIFT</div><div class="med-num" style="color:var(--accent2);" id="dashDeadlift">—</div></div>
-          <div><div class="stat-label">W. PULL-UP</div><div class="med-num" style="color:var(--accent2);" id="dashWPullup">—</div></div>
-          <div><div class="stat-label">PUSH-UP MAX</div><div class="med-num" style="color:var(--accent2);" id="dashPushup">—</div></div>
-        </div>
+      <div class="stat-card panel accent-orange" onclick="switchTab('strength',document.querySelector('[data-tab=strength]'))">
+        <div class="sc-label">SQUAT PB</div>
+        <div class="sc-val" id="dashSquat">— kg</div>
+        <div class="sc-sub">Deadlift: <span id="dashDeadlift">—</span></div>
+      </div>
+      <div class="stat-card panel accent-purple" onclick="switchTab('ml',document.querySelector('[data-tab=ml]'))">
+        <div class="sc-label">ML PROGRESS</div>
+        <div class="sc-val" id="dashCurrPct">0%</div>
+        <div class="sc-sub">Projects: <span id="dashProjects">0</span></div>
+      </div>
+      <div class="stat-card panel accent-gold" onclick="switchTab('german',document.querySelector('[data-tab=german]'))">
+        <div class="sc-label">GERMAN HRS</div>
+        <div class="sc-val" id="dashGermanHours">0.0</div>
+        <div class="sc-sub">This week: <span id="dashGermanWeek">0.0</span> hr</div>
+      </div>
+      <div class="stat-card panel accent-green" onclick="switchTab('engine',document.querySelector('[data-tab=engine]'))">
+        <div class="sc-label">5K PB</div>
+        <div class="sc-val" id="dash5KPB">—:—</div>
+        <div class="sc-sub">Resting HR: <span id="dashRHR">— bpm</span></div>
+      </div>
+      <div class="stat-card panel" onclick="switchTab('missions',document.querySelector('[data-tab=missions]'))">
+        <div class="sc-label">MISSIONS</div>
+        <div class="sc-val" id="dashMissions" style="color:var(--accent2)">0 active</div>
+        <div class="sc-sub" id="dashMissionSub">Check for new ones</div>
       </div>
     </div>
-    <div class="grid-2">
-      <div class="panel accent-purple">
-        <div class="panel-title">🧠 ML PROGRESS</div>
-        <div style="margin-bottom:8px;"><span class="tag tag-cyan">CS229</span><span class="tag tag-purple">Deep Learning</span><span class="tag tag-orange">NLP/LLMs</span></div>
-        <div class="xp-label"><span>Curriculum</span><strong id="dashCurrPct">0%</strong></div>
-        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="currBar" style="width:0%"></div></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-          <div><div class="stat-label">CS229</div><div class="med-num" style="color:var(--purple);" id="dashCS229">0%</div></div>
-          <div><div class="stat-label">PROJECTS</div><div class="med-num" style="color:var(--purple);" id="dashProjects">0</div></div>
-          <div><div class="stat-label">COMMITS/WK</div><div class="med-num" style="color:var(--purple);" id="dashCommits">0</div></div>
-        </div>
-      </div>
-      <div class="panel accent-gold">
-        <div class="panel-title">🇩🇪 GERMAN STATUS</div>
-        <div class="stat-label" style="margin-bottom:6px;">LEVEL: <span style="color:var(--gold)">A2</span> → TARGET: <span style="color:var(--accent)">B2</span> by Sep 2026</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-          <div><div class="stat-label">TOTAL HRS</div><div class="big-num" style="color:var(--gold);" id="dashGermanHours">0.0</div></div>
-          <div><div class="stat-label">THIS WEEK</div><div class="big-num" style="color:var(--gold);" id="dashGermanWeek">0.0</div></div>
-        </div>
-        <div class="xp-label"><span>WEEKLY (20HR target)</span><strong id="dashGermanPct">0%</strong></div>
-        <div class="bar gold"><div class="bar-fill" id="germanBarDash" style="width:0%"></div></div>
-      </div>
+
+    <!-- Level Timeline -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">LEVEL TIMELINE</div>
+      <div class="level-timeline" id="levelTimeline"></div>
     </div>
   </div>
 
-  <!-- ═══════════════ DAILY XP ═══════════════ -->
+  <!-- ═══ DAILY XP ═══ -->
   <div id="tab-daily" class="tab-content">
+    <div class="page-header">
+      <h1 class="page-title">DAILY XP LOG</h1>
+      <div class="mono muted" id="todayDateLabel">—</div>
+    </div>
+
     <!-- Day Type -->
     <div class="panel" style="margin-bottom:var(--gap);">
       <div class="panel-title">⚡ DAY TYPE</div>
-      <div class="dt-label">Select today's mode — affects XP weighting and expectations</div>
       <div class="day-type-row">
-        <div class="dt-btn" id="dt-prime" onclick="selectDayType('prime',this)">🔥 PRIME<br><span style="font-size:.55rem;color:var(--muted);">Full output: train+ML+German+nutrition</span></div>
-        <div class="dt-btn" id="dt-core" onclick="selectDayType('core',this)">⚡ CORE<br><span style="font-size:.55rem;color:var(--muted);">Train+ML+German minimum</span></div>
-        <div class="dt-btn" id="dt-social" onclick="selectDayType('social',this)">🤝 SOCIAL<br><span style="font-size:.55rem;color:var(--muted);">Events/family — reduced targets</span></div>
-        <div class="dt-btn" id="dt-recovery" onclick="selectDayType('recovery',this)">🛌 RECOVERY<br><span style="font-size:.55rem;color:var(--muted);">Active rest — mobility + light review</span></div>
+        <div class="dt-btn" id="dt-prime" onclick="selectDayType('prime',this)">
+          🔥 PRIME<span>Full output day</span>
+        </div>
+        <div class="dt-btn" id="dt-core" onclick="selectDayType('core',this)">
+          ⚡ CORE<span>Essential habits</span>
+        </div>
+        <div class="dt-btn" id="dt-social" onclick="selectDayType('social',this)">
+          🤝 SOCIAL<span>Events / family</span>
+        </div>
+        <div class="dt-btn" id="dt-recovery" onclick="selectDayType('recovery',this)">
+          🛌 RECOVERY<span>Active rest day</span>
+        </div>
       </div>
     </div>
 
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-      <div class="mono" style="font-size:.7rem;color:var(--muted);">DATE: <span id="todayDateLabel" style="color:var(--accent)">—</span></div>
-      <div class="mono" style="font-size:.7rem;color:var(--muted);">WEEKLY: <span id="weeklyXPlabel" style="color:var(--green);font-size:.82rem;">0 XP</span> / 500</div>
-    </div>
     <div class="xp-grid">
       <div class="xp-cat">
-        <div class="xp-cat-title">🏋️ TRAINING</div>
-        <div class="xp-item"><label><input type="checkbox" id="xp-gym" onchange="updateXP()"><span>Gym Session</span></label><span class="xp-val">+30</span></div>
-        <div class="xp-item"><label><input type="checkbox" id="xp-run" onchange="updateXP()"><span>Run / Sprints</span></label><span class="xp-val">+30</span></div>
-        <div class="xp-item"><label><input type="checkbox" id="xp-mobility" onchange="updateXP()"><span>Mobility</span></label><span class="xp-val">+5</span></div>
+        <div class="xp-cat-title" style="color:var(--accent2)">🏋️ TRAINING</div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-gym" onchange="updateXP()"><span>Gym Session</span></label><span class="xp-val">+20</span></div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-run" onchange="updateXP()"><span>Run / Sprints</span></label><span class="xp-val">+20</span></div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-mobility" onchange="updateXP()"><span>Mobility Work</span></label><span class="xp-val">+5</span></div>
       </div>
       <div class="xp-cat">
-        <div class="xp-cat-title">🧠 ML</div>
-        <div class="xp-item"><label><input type="checkbox" id="xp-deepwork" onchange="updateXP()"><span>90 Min Deep Work</span></label><span class="xp-val">+30</span></div>
+        <div class="xp-cat-title" style="color:var(--purple)">🧠 ML STUDY</div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-deepwork" onchange="updateXP()"><span>90 Min Deep Work</span></label><span class="xp-val">+25</span></div>
         <div class="xp-item"><label><input type="checkbox" id="xp-impl" onchange="updateXP()"><span>Implementation</span></label><span class="xp-val">+10</span></div>
       </div>
       <div class="xp-cat">
-        <div class="xp-cat-title">🇩🇪 GERMAN</div>
-        <div class="xp-item">
-          <label><input type="checkbox" id="xp-german-daily" onchange="updateXP()"><span>Studied German Today</span></label>
-          <span class="xp-val">+20</span>
-        </div>
-        <div style="margin-top:8px;">
-          <div class="stat-label" style="margin-bottom:4px;">TODAY'S HOURS:</div>
-          <div class="german-hrs-row">
-            <input type="number" id="germanHoursToday" min="0" max="16" step="0.5" value="0" onchange="updateXP()">
-            <span class="mono muted" style="font-size:.72rem;">hrs</span>
-          </div>
-        </div>
+        <div class="xp-cat-title" style="color:var(--gold)">🇩🇪 GERMAN</div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-german-daily" onchange="updateXP()"><span>Studied German</span></label><span class="xp-val">+20</span></div>
+        <input type="hidden" id="germanHoursToday" value="0">
       </div>
       <div class="xp-cat">
-        <div class="xp-cat-title">🥗 NUTRITION</div>
-        <div class="xp-item"><label><input type="checkbox" id="xp-protein" onchange="updateXP()"><span>Protein Hit</span></label><span class="xp-val">+10</span></div>
+        <div class="xp-cat-title" style="color:var(--green)">🥗 NUTRITION</div>
+        <div class="xp-item"><label><input type="checkbox" id="xp-protein" onchange="updateXP()"><span>Protein Hit (80g+)</span></label><span class="xp-val">+10</span></div>
         <div class="xp-item"><label><input type="checkbox" id="xp-water" onchange="updateXP()"><span>3L Water</span></label><span class="xp-val">+5</span></div>
         <div class="xp-item"><label><input type="checkbox" id="xp-calories" onchange="updateXP()"><span>Calorie Target</span></label><span class="xp-val">+5</span></div>
       </div>
     </div>
+
     <div class="today-total">
       <div class="t-label">TODAY'S XP</div>
-      <div style="text-align:center;"><div class="t-value"><span id="todayXP">0</span> / 100</div><div class="stat-label" style="margin-top:4px;" id="xpStatusMsg">Log your activities above</div></div>
-      <div style="text-align:right;"><div class="stat-label">DAY TYPE</div><div style="font-family:var(--font-display);font-size:1.1rem;color:var(--accent2);" id="dayTypeDisplay">—</div></div>
+      <div style="text-align:center;">
+        <div class="t-value"><span id="todayXP">0</span><span class="t-max"> / 100</span></div>
+        <div class="stat-label" id="xpStatusMsg" style="margin-top:4px;">Select day type and log activities</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="stat-label">DAY TYPE</div>
+        <div class="day-type-badge" id="dayTypeDisplay">—</div>
+      </div>
     </div>
-    <div style="margin-top:8px;"><div class="bar lg"><div class="bar-fill" id="todayBar" style="width:0%"></div></div></div>
+    <div class="bar lg"><div class="bar-fill" id="todayBar" style="width:0%"></div></div>
+
     <div class="save-bar">
       <small id="saveMsg">☁ Saves to Supabase</small>
-      <button class="btn btn-orange" onclick="useStreakShield()" id="shieldBtn" style="border-color:var(--gold);color:var(--gold);">🛡 USE SHIELD</button>
-      <button class="btn btn-orange" onclick="saveDay()">LOG TODAY ⚡</button>
+      <button class="btn" style="border-color:var(--gold);color:var(--gold);" onclick="useStreakShield()">🛡 SHIELD</button>
+      <button class="btn btn-accent" onclick="saveDay()">LOG TODAY ⚡</button>
     </div>
-    <div class="panel" style="margin-top:14px;">
-      <div class="panel-title">RECENT HISTORY</div>
-      <div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Type</th><th>XP</th><th>Training</th><th>ML</th><th>German</th><th>Actions</th></tr></thead><tbody id="xpHistoryBody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:18px;">Loading...</td></tr></tbody></table></div>
+
+    <!-- Recent logs compact view -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">RECENT ACTIVITY</div>
+      <div id="recentActivityFeed"></div>
     </div>
   </div>
 
-  <!-- ═══════════════ BODY ═══════════════ -->
+  <!-- ═══ BODY ═══ -->
   <div id="tab-body" class="tab-content">
-    <div class="panel" style="margin-bottom:var(--gap);">
+    <div class="page-header">
+      <h1 class="page-title">BODY & NUTRITION</h1>
+      <div class="mono muted" style="font-size:.7rem;">"Whether you eat or drink, do it all for the glory of God." — 1 Cor 10:31</div>
+    </div>
+
+    <!-- NUTRITION LOG — TOP -->
+    <div class="panel">
       <div class="panel-title">🥗 NUTRITION LOG — LEAN BULK</div>
-      <div class="verse-inline">"Whether you eat or drink, do it all for the glory of God." — 1 Cor 10:31</div>
-      <div class="macro-grid" style="margin-top:12px;">
-        <div class="macro-card"><div class="macro-num" style="color:var(--accent2);" id="cal-today">—</div><div class="macro-label">CALORIES</div><div class="macro-target">TARGET: 2800–3000</div></div>
-        <div class="macro-card"><div class="macro-num" style="color:var(--green);" id="prot-today">—</div><div class="macro-label">PROTEIN (g)</div><div class="macro-target">TARGET: 80g+</div></div>
-        <div class="macro-card"><div class="macro-num" style="color:var(--purple);" id="carb-today">—</div><div class="macro-label">CARBS (g)</div><div class="macro-target">TARGET: 300–350g</div></div>
-        <div class="macro-card"><div class="macro-num" style="color:var(--gold);" id="fat-today">—</div><div class="macro-label">FAT (g)</div><div class="macro-target">TARGET: 70–90g</div></div>
+      <div class="macro-summary">
+        <div class="macro-card">
+          <div class="macro-num" style="color:var(--accent2);" id="cal-today">—</div>
+          <div class="macro-label">CALORIES</div>
+          <div class="macro-target">2800–3000</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-num" style="color:var(--green);" id="prot-today">—</div>
+          <div class="macro-label">PROTEIN (g)</div>
+          <div class="macro-target">80g+ min</div>
+          <div class="bar sm" style="margin-top:4px;"><div class="bar-fill green" id="protBar" style="width:0%"></div></div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-num" style="color:var(--purple);" id="carb-today">—</div>
+          <div class="macro-label">CARBS (g)</div>
+          <div class="macro-target">300–350g</div>
+        </div>
+        <div class="macro-card">
+          <div class="macro-num" style="color:var(--gold);" id="fat-today">—</div>
+          <div class="macro-label">FAT (g)</div>
+          <div class="macro-target">70–90g</div>
+        </div>
       </div>
-      <div style="margin-top:10px;">
-        <div class="xp-label"><span>PROTEIN PROGRESS</span><strong><span id="prot-progress-val">0</span>g / 80g</strong></div>
-        <div class="bar green" style="margin-bottom:10px;"><div class="bar-fill" id="protBar" style="width:0%"></div></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:8px;" id="mealPanels">
-        <div style="background:var(--panel2);border:1px solid var(--border);padding:12px;">
-          <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--accent);letter-spacing:2px;margin-bottom:8px;">🌅 BREAKFAST</div>
-          <div class="f" style="margin-bottom:6px;"><label>Description</label><input type="text" id="meal-b-desc" placeholder="e.g. Oats, eggs, banana"></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+
+      <div class="meal-grid">
+        <div class="meal-panel">
+          <div class="meal-title" style="color:var(--accent);">🌅 BREAKFAST</div>
+          <div class="f"><label>Description</label><input type="text" id="meal-b-desc" placeholder="e.g. Oats, eggs, banana"></div>
+          <div class="input-grid">
             <div class="f"><label>Cals</label><input type="number" id="meal-b-cal" placeholder="500" onchange="updateMealTotals()"></div>
             <div class="f"><label>Protein (g)</label><input type="number" id="meal-b-prot" placeholder="30" onchange="updateMealTotals()"></div>
             <div class="f"><label>Carbs (g)</label><input type="number" id="meal-b-carb" placeholder="70" onchange="updateMealTotals()"></div>
             <div class="f"><label>Fat (g)</label><input type="number" id="meal-b-fat" placeholder="15" onchange="updateMealTotals()"></div>
           </div>
         </div>
-        <div style="background:var(--panel2);border:1px solid var(--border);padding:12px;">
-          <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--gold);letter-spacing:2px;margin-bottom:8px;">☀️ LUNCH</div>
-          <div class="f" style="margin-bottom:6px;"><label>Description</label><input type="text" id="meal-l-desc" placeholder="e.g. Rice, chicken, veg"></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="meal-panel">
+          <div class="meal-title" style="color:var(--gold);">☀️ LUNCH</div>
+          <div class="f"><label>Description</label><input type="text" id="meal-l-desc" placeholder="e.g. Rice, chicken, veg"></div>
+          <div class="input-grid">
             <div class="f"><label>Cals</label><input type="number" id="meal-l-cal" placeholder="800" onchange="updateMealTotals()"></div>
             <div class="f"><label>Protein (g)</label><input type="number" id="meal-l-prot" placeholder="40" onchange="updateMealTotals()"></div>
             <div class="f"><label>Carbs (g)</label><input type="number" id="meal-l-carb" placeholder="100" onchange="updateMealTotals()"></div>
             <div class="f"><label>Fat (g)</label><input type="number" id="meal-l-fat" placeholder="25" onchange="updateMealTotals()"></div>
           </div>
         </div>
-        <div style="background:var(--panel2);border:1px solid var(--border);padding:12px;">
-          <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--purple);letter-spacing:2px;margin-bottom:8px;">🌙 DINNER</div>
-          <div class="f" style="margin-bottom:6px;"><label>Description</label><input type="text" id="meal-d-desc" placeholder="e.g. Dal, roti, salad"></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="meal-panel">
+          <div class="meal-title" style="color:var(--purple);">🌙 DINNER</div>
+          <div class="f"><label>Description</label><input type="text" id="meal-d-desc" placeholder="e.g. Dal, roti, salad"></div>
+          <div class="input-grid">
             <div class="f"><label>Cals</label><input type="number" id="meal-d-cal" placeholder="700" onchange="updateMealTotals()"></div>
             <div class="f"><label>Protein (g)</label><input type="number" id="meal-d-prot" placeholder="35" onchange="updateMealTotals()"></div>
             <div class="f"><label>Carbs (g)</label><input type="number" id="meal-d-carb" placeholder="90" onchange="updateMealTotals()"></div>
             <div class="f"><label>Fat (g)</label><input type="number" id="meal-d-fat" placeholder="20" onchange="updateMealTotals()"></div>
           </div>
         </div>
-      </div>
-      <div style="margin-top:10px;background:var(--panel2);border:1px solid var(--border);padding:12px;">
-        <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--muted);letter-spacing:2px;margin-bottom:8px;">🍎 SNACKS / EXTRAS</div>
-        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:8px;align-items:end;">
+        <div class="meal-panel">
+          <div class="meal-title" style="color:var(--muted);">🍎 SNACKS</div>
           <div class="f"><label>Description</label><input type="text" id="meal-s-desc" placeholder="e.g. Protein shake, nuts"></div>
-          <div class="f"><label>Cals</label><input type="number" id="meal-s-cal" placeholder="200" onchange="updateMealTotals()"></div>
-          <div class="f"><label>Protein</label><input type="number" id="meal-s-prot" placeholder="25" onchange="updateMealTotals()"></div>
-          <div class="f"><label>Carbs</label><input type="number" id="meal-s-carb" placeholder="20" onchange="updateMealTotals()"></div>
-          <div class="f"><label>Fat</label><input type="number" id="meal-s-fat" placeholder="8" onchange="updateMealTotals()"></div>
+          <div class="input-grid">
+            <div class="f"><label>Cals</label><input type="number" id="meal-s-cal" placeholder="200" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Protein (g)</label><input type="number" id="meal-s-prot" placeholder="25" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Carbs (g)</label><input type="number" id="meal-s-carb" placeholder="20" onchange="updateMealTotals()"></div>
+            <div class="f"><label>Fat (g)</label><input type="number" id="meal-s-fat" placeholder="8" onchange="updateMealTotals()"></div>
+          </div>
         </div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-top:8px;padding:8px;background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.15);">
+        ⚠ Gain limit: <strong style="color:var(--accent2);">+0.3–0.5 kg/week max</strong> · Protein min 80g/day · Only filled meals will be saved
       </div>
       <div class="save-bar">
-        <small>Logs all 4 meals as today's nutrition entry</small>
-        <button class="btn btn-sm" onclick="saveNutrition()">LOG ALL MEALS ⚡</button>
-      </div>
-      <div style="margin-top:8px;font-family:var(--font-mono);font-size:.63rem;color:var(--muted);">
-        ⚠ Weight gain threshold: <strong style="color:var(--accent2);">+0.3–0.5 kg/week max</strong> · If rising faster, drop 200 cals · Protein minimum 80g/day
+        <small>Only filled meals are saved — blanks are preserved</small>
+        <button class="btn btn-sm" onclick="saveNutrition()">LOG MEALS ⚡</button>
       </div>
     </div>
 
-    <div class="grid-2" style="margin-bottom:var(--gap);">
-      <div class="panel accent-cyan">
-        <div class="panel-title">⚖️ LOG BODYWEIGHT</div>
-        <div class="input-grid" style="grid-template-columns:1fr;">
-          <div class="f"><label>Bodyweight (kg)</label><input type="number" id="inp-weight" step="0.1" placeholder="e.g. 63.5"></div>
-        </div>
-        <div class="save-bar"><button class="btn" onclick="saveBodyWeight()">LOG WEIGHT</button></div>
-      </div>
-      <div class="panel accent-cyan">
-        <div class="panel-title">🎯 GOAL TRACKER</div>
-        <div class="xp-label" style="margin-top:8px;"><span>Bodyweight: <strong id="bw-current" style="color:var(--text)">— kg</strong></span><strong>Goal: 55–65 kg</strong></div>
-        <div class="bar" style="margin:6px 0 10px;"><div class="bar-fill" id="bwBar" style="width:0%"></div></div>
-        <div class="stat-label">START: 55 kg → TARGET: 65 kg · Lean bulk</div>
-        <div style="margin-top:10px;font-family:var(--font-mono);font-size:.65rem;color:var(--muted);">
-          <div>Weekly gain target: <strong style="color:var(--accent)">+0.3–0.5 kg</strong></div>
-          <div style="margin-top:4px;">Track weekly, not daily. Weigh same time each day.</div>
-        </div>
-      </div>
+    <!-- Weight Progress Chart -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">📈 WEIGHT TREND</div>
+      <div class="chart-container"><canvas id="chartWeightBody"></canvas></div>
     </div>
-    <div class="panel"><div class="panel-title">MEASUREMENT HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Shoulders</th><th>Pull-up Max</th><th>Cals</th><th>Protein</th><th>Actions</th></tr></thead><tbody id="bodyHistoryBody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:18px;">Loading...</td></tr></tbody></table></div></div>
-  </div>
 
-  <!-- ═══════════════ STRENGTH ═══════════════ -->
-  <div id="tab-strength" class="tab-content">
-    <div class="grid-2" style="margin-bottom:var(--gap);">
-      <div class="panel accent-orange">
-        <div class="panel-title">🏋️ LOG SESSION</div>
-        <div class="input-grid">
-          <div class="f"><label>Squat (kg)</label><input type="number" id="inp-squat" step="2.5" placeholder="e.g. 80"></div>
-          <div class="f"><label>Deadlift (kg)</label><input type="number" id="inp-deadlift" step="2.5" placeholder="e.g. 100"></div>
-          <div class="f"><label>Weighted Pull-up (+kg)</label><input type="number" id="inp-wpullup" step="2.5" placeholder="e.g. 15"></div>
-          <div class="f"><label>Push-ups Max</label><input type="number" id="inp-pushup" step="1" placeholder="e.g. 35"></div>
-          <div class="f"><label>Bench Press (kg)</label><input type="number" id="inp-bench" step="2.5" placeholder="e.g. 60"></div>
-          <div class="f"><label>Barbell Row (kg)</label><input type="number" id="inp-row" step="2.5" placeholder="e.g. 70"></div>
-        </div>
-        <div class="save-bar"><button class="btn btn-orange" onclick="saveStrength()">LOG STRENGTH</button></div>
-      </div>
-      <div class="panel accent-orange">
-        <div class="panel-title">📈 PERSONAL BESTS</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;">
-          <div><div class="stat-label">SQUAT PB</div><div class="big-num" style="color:var(--accent2);" id="pb-squat">—</div></div>
-          <div><div class="stat-label">DEADLIFT PB</div><div class="big-num" style="color:var(--accent2);" id="pb-deadlift">—</div></div>
-          <div><div class="stat-label">W. PULL-UP PB</div><div class="big-num" style="color:var(--accent2);" id="pb-wpullup">—</div></div>
-          <div><div class="stat-label">PUSH-UP PB</div><div class="big-num" style="color:var(--accent2);" id="pb-pushup">—</div></div>
-          <div><div class="stat-label">BENCH PB</div><div class="big-num" style="color:var(--accent2);" id="pb-bench">—</div></div>
-          <div><div class="stat-label">ROW PB</div><div class="big-num" style="color:var(--accent2);" id="pb-row">—</div></div>
-        </div>
-      </div>
+    <!-- Nutrition History Feed -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">🍽 NUTRITION HISTORY</div>
+      <div id="bodyHistoryFeed"></div>
     </div>
-    <div class="panel"><div class="panel-title">STRENGTH HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Squat</th><th>Deadlift</th><th>W.Pull-up</th><th>Push-ups</th><th>Bench</th><th>Row</th><th>Actions</th></tr></thead><tbody id="strengthHistoryBody"></tbody></table></div></div>
-  </div>
 
-  <!-- ═══════════════ ENGINE ═══════════════ -->
-  <div id="tab-engine" class="tab-content">
-    <div class="verse-strip">"Do you not know that your body is a temple of the Holy Spirit?" — 1 Cor 6:19</div>
-    <div class="grid-2" style="margin-bottom:var(--gap);">
-      <div class="panel accent-purple">
-        <div class="panel-title">🏃 LOG CARDIO SESSION</div>
-        <div class="sess-btns" style="margin-bottom:10px;">
-          <div class="sess-btn selected" onclick="selectCardioType(this,'run2k')">🏃 2K</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'run5k')">🏃 5K</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'run10k')">🏃 10K</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'run15k')">🏃 15K</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'run20k')">🏃 20K</div>
-          <div class="sess-btn" onclick="selectCardioType(this,'sprint')">⚡ Sprints</div>
-        </div>
-        <div class="input-grid">
-          <div class="f engine-field" id="ef-2k"><label>2K Time (mm:ss)</label><input type="text" id="inp-2k" placeholder="e.g. 8:30"></div>
-          <div class="f engine-field" id="ef-5k"><label>5K Time (mm:ss)</label><input type="text" id="inp-5k" placeholder="e.g. 23:00"></div>
-          <div class="f engine-field" id="ef-10k"><label>10K Time (mm:ss)</label><input type="text" id="inp-10k" placeholder="e.g. 50:00"></div>
-          <div class="f engine-field" id="ef-15k"><label>15K Time (mm:ss)</label><input type="text" id="inp-15k" placeholder="e.g. 1:18:00"></div>
-          <div class="f engine-field" id="ef-20k"><label>20K Time (mm:ss)</label><input type="text" id="inp-20k" placeholder="e.g. 1:45:00"></div>
-          <div class="f engine-field" id="ef-sprint"><label>Sprint Distance</label>
-            <select id="inp-sprint-dist" style="background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px;font-family:var(--font-mono);font-size:.78rem;outline:none;">
-              <option>100m</option><option>200m</option><option>400m</option><option>Other</option>
-            </select>
-          </div>
-          <div class="f engine-field" id="ef-sprint-time"><label>Sprint Time (sec)</label><input type="number" id="inp-sprint" step="0.1" placeholder="e.g. 12.5"></div>
-          <div class="f"><label>Resting HR (bpm)</label><input type="number" id="inp-rhr" step="1" placeholder="e.g. 58"></div>
-          <div class="f span2"><label>Notes</label><input type="text" id="inp-cardio-notes" placeholder="e.g. Felt strong, hilly route…"></div>
-        </div>
-        <div class="save-bar"><button class="btn btn-purple" onclick="saveEngine()">LOG ENGINE</button></div>
+    <!-- Body Stats — collapsible section like strength PB cards -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title" style="cursor:pointer;" onclick="toggleBodyStats()">
+        📏 BODY STATS &amp; MEASUREMENTS
+        <span id="bodyStatsToggleArrow" style="margin-left:auto;color:var(--muted);font-size:.8rem;">▼ EXPAND</span>
       </div>
-      <div class="panel accent-purple">
-        <div class="panel-title">⚡ PERSONAL BESTS</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
-          <div><div class="stat-label">2K PB</div><div class="big-num" style="color:var(--purple);" id="pb-2k">—:—</div></div>
-          <div><div class="stat-label">5K PB</div><div class="big-num" style="color:var(--purple);" id="pb-5k">—:—</div></div>
-          <div><div class="stat-label">10K PB</div><div class="big-num" style="color:var(--purple);" id="pb-10k">—:—</div></div>
-          <div><div class="stat-label">SPRINT PB</div><div class="med-num" style="color:var(--purple);" id="pb-sprint">—</div></div>
-          <div><div class="stat-label">RESTING HR</div><div class="med-num" style="color:var(--purple);" id="cur-rhr">— bpm</div></div>
+      <div id="bodyStatsSection" style="display:none;">
+        <!-- Stats display row -->
+        <div class="stats-mini-grid" style="margin-bottom:12px;">
+          <div><div class="stat-label">BODYWEIGHT</div><div class="med-num bw-current" id="bwCurrent" style="color:var(--accent)">—</div></div>
+          <div><div class="stat-label">PULL-UP MAX</div><div class="med-num" id="dashPullup" style="color:var(--accent)">—</div></div>
+          <div><div class="stat-label">WAIST</div><div class="med-num" id="dashWaist" style="color:var(--accent)">—</div></div>
+          <div><div class="stat-label">SHOULDERS</div><div class="med-num" id="dashShoulders" style="color:var(--accent)">—</div></div>
+          <div><div class="stat-label">GAIN/WK</div><div class="med-num" id="dashGainWk" style="color:var(--green)">—</div></div>
+          <div><div class="stat-label">PROGRESS</div><div class="med-num" id="bwPct" style="color:var(--gold)">—</div></div>
         </div>
+        <div class="bar" style="margin-bottom:16px;"><div class="bar-fill" id="bwBar" style="width:0%"></div></div>
         <div class="divider"></div>
-        <div style="font-family:var(--font-mono);font-size:.80rem;color:var(--muted);margin-top:4px;">
-          <div style="margin-bottom:4px;">🎯 Cardio targets (by Sep 2026):</div>
-          <div>· 2K under <strong style="color:var(--accent)">8:00</strong></div>
-          <div>· 5K under <strong style="color:var(--accent)">22:00</strong></div>
-          <div>· 10K under <strong style="color:var(--accent)">48:00</strong></div>
-          <div>· 15K under <strong style="color:var(--accent)">1:15:00</strong></div>
-          <div>· 20K under <strong style="color:var(--accent)">1:40:00</strong></div>
+        <!-- Log weight -->
+        <div class="body-grid" style="margin-top:12px;">
+          <div class="f">
+            <label>Log Today's Weight (kg)</label>
+            <div style="display:flex;gap:8px;">
+              <input type="number" id="inp-weight" step="0.1" placeholder="e.g. 63.5" style="flex:1;">
+              <button class="btn btn-sm" onclick="saveBodyWeight()">LOG</button>
+            </div>
+          </div>
+          <div class="f">
+            <label>Weekly Measurements</label>
+            <div class="input-grid">
+              <div class="f"><label>Waist (cm)</label><input type="number" id="inp-waist" step="0.5" placeholder="78"></div>
+              <div class="f"><label>Shoulders (cm)</label><input type="number" id="inp-shoulders" step="0.5" placeholder="112"></div>
+              <div class="f"><label>Pull-up Max</label><input type="number" id="inp-pullup" step="1" placeholder="10"></div>
+            </div>
+            <div style="margin-top:8px;"><button class="btn btn-sm" onclick="saveWeeklyMeasurements()">SAVE MEASUREMENTS</button></div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">ENGINE HISTORY</div>
-      <div class="table-wrap">
-        <table class="htable">
-          <thead><tr><th>Date</th><th>Type</th><th>Time</th><th>Rest HR</th><th>Notes</th><th>Actions</th></tr></thead>
-          <tbody id="engineHistoryBody"></tbody>
-        </table>
+        <!-- Body history with weight + measurements (clickable like PB cards) -->
+        <div id="bodyStatsHistoryFeed" style="margin-top:12px;"></div>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════ ML ═══════════════ -->
-  <div id="tab-ml" class="tab-content">
-    <div class="verse-strip">"Commit your work to the Lord, and your plans will be established." — Prov 16:3</div>
-    <div class="grid-2" style="margin-bottom:var(--gap);">
-      <div class="panel accent-purple">
-        <div class="panel-title">🧠 SESSION LOG</div>
-        <div style="margin-bottom:10px;"><span class="tag tag-cyan">CS229+Python</span><span class="tag tag-purple">Deep Learning</span><span class="tag tag-orange">NLP/LLMs</span></div>
-        <div class="input-grid">
-          <div class="f"><label>CS229 Lectures Done (total)</label><input type="number" id="inp-lectures" step="1" placeholder="0" min="0"></div>
-          <div class="f"><label>CS229 Total (21 lectures)</label><input type="number" id="inp-lectures-planned" step="1" value="21"></div>
-          <div class="f"><label>CS231N Lectures Done (total)</label><input type="number" id="inp-231n" step="1" placeholder="0" min="0"></div>
-          <div class="f"><label>CS231N Total (18 lectures)</label><input type="number" id="inp-231n-planned" step="1" value="18"></div>
-          <div class="f"><label>Python Modules Done</label><input type="number" id="inp-modules" step="1" placeholder="0"></div>
-          <div class="f"><label>Projects Built</label><input type="number" id="inp-projects" step="1" placeholder="0"></div>
-          <div class="f"><label>GitHub Commits This Week</label><input type="number" id="inp-commits" step="1" placeholder="0"></div>
-          <div class="f"><label>DL / NLP Resources Done</label><input type="number" id="inp-dlnlp" step="1" placeholder="0"></div>
-        </div>
-        <div class="save-bar"><button class="btn btn-purple" onclick="saveML()">UPDATE ML ⚡</button></div>
+  <!-- ═══ STRENGTH ═══ -->
+  <div id="tab-strength" class="tab-content">
+    <div class="page-header">
+      <h1 class="page-title">STRENGTH LAB</h1>
+      <div class="mono muted" style="font-size:.7rem;">Click any PB card to view full history</div>
+    </div>
+
+    <!-- PB Cards - clickable -->
+    <div class="pb-grid">
+      <div class="pb-card" onclick="openPBModal('squat')">
+        <div class="pb-icon">🦵</div>
+        <div class="pb-label">SQUAT</div>
+        <div class="pb-val" id="pb-squat">— kg</div>
+        <div class="pb-trend" id="pt-squat"></div>
+        <div class="pb-hint">tap for history</div>
       </div>
-      <div class="panel accent-purple">
-        <div class="panel-title">📊 LIVE PROGRESS</div>
-        <div class="xp-label"><span>CS229 Lectures</span><strong><span id="ml-lec-done">0</span>/<span id="ml-lec-plan">21</span></strong></div>
-        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="lecturesBar" style="width:0%"></div></div>
-        <div class="xp-label"><span>CS231N Lectures</span><strong><span id="ml-231n-done">0</span>/<span id="ml-231n-plan">18</span></strong></div>
-        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="lectures231nBar" style="width:0%"></div></div>
-        <div class="xp-label"><span>Python Modules</span><strong><span id="ml-mod-show">0</span> done</strong></div>
-        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="modulesBar" style="width:0%"></div></div>
-        <div class="xp-label"><span>DL + NLP Resources</span><strong><span id="ml-dlnlp-show">0</span> done</strong></div>
-        <div class="bar purple" style="margin-bottom:10px;"><div class="bar-fill" id="dlnlpBar" style="width:0%"></div></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div><div class="stat-label">PROJECTS</div><div class="big-num" style="color:var(--purple);" id="ml-proj-show">0</div></div>
-          <div><div class="stat-label">COMMITS/WK</div><div class="big-num" style="color:var(--purple);" id="ml-com-show">0</div></div>
-        </div>
+      <div class="pb-card" onclick="openPBModal('deadlift')">
+        <div class="pb-icon">⚡</div>
+        <div class="pb-label">DEADLIFT</div>
+        <div class="pb-val" id="pb-deadlift">— kg</div>
+        <div class="pb-trend" id="pt-deadlift"></div>
+        <div class="pb-hint">tap for history</div>
+      </div>
+      <div class="pb-card" onclick="openPBModal('wpullup')">
+        <div class="pb-icon">🔺</div>
+        <div class="pb-label">W. PULL-UP</div>
+        <div class="pb-val" id="pb-wpullup">— kg</div>
+        <div class="pb-trend" id="pt-wpullup"></div>
+        <div class="pb-hint">tap for history</div>
+      </div>
+      <div class="pb-card" onclick="openPBModal('pushup')">
+        <div class="pb-icon">💥</div>
+        <div class="pb-label">PUSH-UPS</div>
+        <div class="pb-val" id="pb-pushup">— reps</div>
+        <div class="pb-trend" id="pt-pushup"></div>
+        <div class="pb-hint">tap for history</div>
+      </div>
+      <div class="pb-card" onclick="openPBModal('bench')">
+        <div class="pb-icon">🏋️</div>
+        <div class="pb-label">BENCH</div>
+        <div class="pb-val" id="pb-bench">— kg</div>
+        <div class="pb-trend" id="pt-bench"></div>
+        <div class="pb-hint">tap for history</div>
+      </div>
+      <div class="pb-card" onclick="openPBModal('row')">
+        <div class="pb-icon">🔄</div>
+        <div class="pb-label">BARBELL ROW</div>
+        <div class="pb-val" id="pb-row">— kg</div>
+        <div class="pb-trend" id="pt-row"></div>
+        <div class="pb-hint">tap for history</div>
       </div>
     </div>
-    <div class="panel" style="margin-bottom:var(--gap);">
+
+    <!-- Strength Chart -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">📈 STRENGTH PROGRESSION</div>
+      <div class="chart-filter-row">
+        <button class="cf-btn active" onclick="filterStrengthChart('all',this)">ALL</button>
+        <button class="cf-btn" onclick="filterStrengthChart('squat',this)">Squat</button>
+        <button class="cf-btn" onclick="filterStrengthChart('deadlift',this)">Deadlift</button>
+        <button class="cf-btn" onclick="filterStrengthChart('bench',this)">Bench</button>
+        <button class="cf-btn" onclick="filterStrengthChart('wpullup',this)">W.Pull-up</button>
+      </div>
+      <div class="chart-container"><canvas id="chartStrength"></canvas></div>
+    </div>
+
+    <!-- Log Session -->
+    <div class="panel accent-orange" style="margin-top:var(--gap);">
+      <div class="panel-title">🏋️ LOG SESSION</div>
+      <div class="input-grid">
+        <div class="f"><label>Squat (kg)</label><input type="number" id="inp-squat" step="2.5" placeholder="e.g. 80"></div>
+        <div class="f"><label>Deadlift (kg)</label><input type="number" id="inp-deadlift" step="2.5" placeholder="e.g. 100"></div>
+        <div class="f"><label>W. Pull-up (+kg)</label><input type="number" id="inp-wpullup" step="2.5" placeholder="e.g. 15"></div>
+        <div class="f"><label>Push-ups Max</label><input type="number" id="inp-pushup" step="1" placeholder="e.g. 35"></div>
+        <div class="f"><label>Bench (kg)</label><input type="number" id="inp-bench" step="2.5" placeholder="e.g. 60"></div>
+        <div class="f"><label>Row (kg)</label><input type="number" id="inp-row" step="2.5" placeholder="e.g. 70"></div>
+      </div>
+      <div class="f" style="margin-top:10px;"><label>Session Notes</label><input type="text" id="inp-strength-notes" placeholder="e.g. Felt strong, new PR attempt…"></div>
+      <div class="save-bar"><button class="btn btn-orange" onclick="saveStrength()">LOG STRENGTH ⚡</button></div>
+    </div>
+  </div>
+
+  <!-- ═══ ENGINE (CARDIO) ═══ -->
+  <div id="tab-engine" class="tab-content">
+    <div class="page-header">
+      <h1 class="page-title">CARDIO ENGINE</h1>
+      <div class="mono muted" style="font-size:.7rem;">"Do you not know that your body is a temple?" — 1 Cor 6:19</div>
+    </div>
+
+    <div class="engine-pb-grid">
+      <div class="epb-card"><div class="epb-label">2K PB</div><div class="epb-val" id="pb-2k">—:—</div><div class="epb-target">Target: 8:00</div></div>
+      <div class="epb-card"><div class="epb-label">5K PB</div><div class="epb-val" id="epb-5k">—:—</div><div class="epb-target">Target: 22:00</div></div>
+      <div class="epb-card"><div class="epb-label">10K PB</div><div class="epb-val" id="epb-10k">—:—</div><div class="epb-target">Target: 48:00</div></div>
+      <div class="epb-card"><div class="epb-label">15K PB</div><div class="epb-val" id="epb-15k">—:—</div><div class="epb-target">Target: 1:15:00</div></div>
+      <div class="epb-card"><div class="epb-label">SPRINT PB</div><div class="epb-val" id="epb-sprint">— s</div><div class="epb-target">Best time</div></div>
+      <div class="epb-card"><div class="epb-label">REST HR</div><div class="epb-val" id="cur-rhr">— bpm</div><div class="epb-target">Target: &lt;55</div></div>
+    </div>
+
+    <!-- Log Panel -->
+    <div class="panel accent-purple" style="margin-top:var(--gap);">
+      <div class="panel-title">🏃 LOG SESSION</div>
+      <div class="sess-btns">
+        <div class="sess-btn selected" onclick="selectCardioType(this,'run2k')">2K</div>
+        <div class="sess-btn" onclick="selectCardioType(this,'run5k')">5K</div>
+        <div class="sess-btn" onclick="selectCardioType(this,'run10k')">10K</div>
+        <div class="sess-btn" onclick="selectCardioType(this,'run15k')">15K</div>
+        <div class="sess-btn" onclick="selectCardioType(this,'run20k')">20K</div>
+        <div class="sess-btn" onclick="selectCardioType(this,'sprint')">SPRINT</div>
+      </div>
+      <div class="input-grid" style="margin-top:12px;">
+        <div class="f engine-field" id="ef-2k"><label>2K Time (mm:ss)</label><input type="text" id="inp-2k" placeholder="8:30"></div>
+        <div class="f engine-field" id="ef-5k" style="display:none;"><label>5K Time (mm:ss)</label><input type="text" id="inp-5k" placeholder="23:00"></div>
+        <div class="f engine-field" id="ef-10k" style="display:none;"><label>10K Time (mm:ss)</label><input type="text" id="inp-10k" placeholder="50:00"></div>
+        <div class="f engine-field" id="ef-15k" style="display:none;"><label>15K Time (mm:ss)</label><input type="text" id="inp-15k" placeholder="1:18:00"></div>
+        <div class="f engine-field" id="ef-20k" style="display:none;"><label>20K Time (mm:ss)</label><input type="text" id="inp-20k" placeholder="1:45:00"></div>
+        <div class="f engine-field" id="ef-sprint" style="display:none;"><label>Distance</label>
+          <select id="inp-sprint-dist"><option>100m</option><option>200m</option><option>400m</option><option>Other</option></select>
+        </div>
+        <div class="f engine-field" id="ef-sprint-time" style="display:none;"><label>Sprint Time (sec)</label><input type="number" id="inp-sprint" step="0.1" placeholder="12.5"></div>
+        <div class="f"><label>Resting HR (bpm)</label><input type="number" id="inp-rhr" step="1" placeholder="58"></div>
+        <div class="f span2"><label>Notes</label><input type="text" id="inp-cardio-notes" placeholder="e.g. Felt strong, hilly route…"></div>
+      </div>
+      <div class="save-bar"><button class="btn btn-purple" onclick="saveEngine()">LOG SESSION ⚡</button></div>
+    </div>
+
+    <!-- Chart -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">📈 CARDIO PROGRESSION</div>
+      <div class="chart-container"><canvas id="chartEngine"></canvas></div>
+    </div>
+
+    <!-- History Feed -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">CARDIO LOG</div>
+      <div id="engineHistoryFeed"></div>
+    </div>
+  </div>
+
+  <!-- ═══ ML ═══ -->
+  <div id="tab-ml" class="tab-content">
+    <div class="page-header">
+      <h1 class="page-title">ML / CS STUDY</h1>
+      <div class="mono muted" style="font-size:.7rem;">"Commit your work to the Lord, and your plans will be established." — Prov 16:3</div>
+    </div>
+
+    <div class="ml-stats-row">
+      <div class="ml-stat-card panel accent-purple">
+        <div class="stat-label">CS229</div>
+        <div class="ml-big" id="ml-lec-pct">0%</div>
+        <div class="xp-row"><span><span id="ml-lec-done">0</span>/<span id="ml-lec-plan">21</span> lectures</span></div>
+        <div class="bar purple"><div class="bar-fill" id="lecturesBar" style="width:0%"></div></div>
+      </div>
+      <div class="ml-stat-card panel accent-purple">
+        <div class="stat-label">CS231N</div>
+        <div class="ml-big" id="ml-231n-pct">0%</div>
+        <div class="xp-row"><span><span id="ml-231n-done">0</span>/<span id="ml-231n-plan">18</span> lectures</span></div>
+        <div class="bar purple"><div class="bar-fill" id="lectures231nBar" style="width:0%"></div></div>
+      </div>
+      <div class="ml-stat-card panel accent-purple">
+        <div class="stat-label">PROJECTS</div>
+        <div class="ml-big" id="ml-proj-show" style="color:var(--accent2)">0</div>
+        <div class="xp-row"><span>Target: 10+</span></div>
+      </div>
+      <div class="ml-stat-card panel accent-purple">
+        <div class="stat-label">COMMITS/WK</div>
+        <div class="ml-big" id="ml-com-show" style="color:var(--green)">0</div>
+        <div class="xp-row"><span>Target: 5+/wk</span></div>
+      </div>
+    </div>
+
+    <!-- ML Log Form -->
+    <div class="panel accent-purple" style="margin-top:var(--gap);">
+      <div class="panel-title">🧠 UPDATE PROGRESS</div>
+      <div class="input-grid">
+        <div class="f"><label>CS229 Lectures Done</label><input type="number" id="inp-lectures" step="1" placeholder="0" min="0"></div>
+        <div class="f"><label>CS229 Total</label><input type="number" id="inp-lectures-planned" step="1" value="21"></div>
+        <div class="f"><label>CS231N Done</label><input type="number" id="inp-231n" step="1" placeholder="0" min="0"></div>
+        <div class="f"><label>CS231N Total</label><input type="number" id="inp-231n-planned" step="1" value="18"></div>
+        <div class="f"><label>Python Modules</label><input type="number" id="inp-modules" step="1" placeholder="0"></div>
+        <div class="f"><label>Projects Built</label><input type="number" id="inp-projects" step="1" placeholder="0"></div>
+        <div class="f"><label>GitHub Commits/Wk</label><input type="number" id="inp-commits" step="1" placeholder="0"></div>
+        <div class="f"><label>DL/NLP Resources</label><input type="number" id="inp-dlnlp" step="1" placeholder="0"></div>
+      </div>
+      <div class="save-bar"><button class="btn btn-purple" onclick="saveML()">UPDATE ML ⚡</button></div>
+    </div>
+
+    <!-- Curriculum -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title" style="cursor:pointer;user-select:none;" onclick="toggleStudyTimeline()">
+        🗓️ 24-WEEK STUDY PLAN
+        <span id="studyTimelineArrow" style="margin-left:auto;color:var(--muted);font-size:.75rem;">▼</span>
+      </div>
+      <div id="studyTimelineBody" style="display:none;margin:12px 0 20px;">
+        <div class="study-timeline">
+
+          <div class="stl-block" id="stl-1">
+            <div class="stl-weeks">WEEKS 1–4</div>
+            <div class="stl-connector"></div>
+            <div class="stl-content">
+              <div class="stl-title" style="color:var(--accent);">CS229 + Classical ML</div>
+              <div class="stl-tags">
+                <span class="stl-tag">Linear Regression</span>
+                <span class="stl-tag">SVM</span>
+                <span class="stl-tag">Trees</span>
+                <span class="stl-tag">Scikit-learn</span>
+                <span class="stl-tag">Feature Eng.</span>
+              </div>
+            </div>
+            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-1" style="background:var(--accent);"></div></div>
+          </div>
+
+          <div class="stl-block" id="stl-2">
+            <div class="stl-weeks">WEEKS 5–8</div>
+            <div class="stl-connector"></div>
+            <div class="stl-content">
+              <div class="stl-title" style="color:var(--blue);">CS231n + Computer Vision</div>
+              <div class="stl-tags">
+                <span class="stl-tag">CNNs</span>
+                <span class="stl-tag">PyTorch</span>
+                <span class="stl-tag">Training Loops</span>
+                <span class="stl-tag">Vision Models</span>
+              </div>
+            </div>
+            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-2" style="background:var(--blue);"></div></div>
+          </div>
+
+          <div class="stl-block" id="stl-3">
+            <div class="stl-weeks">WEEKS 9–12</div>
+            <div class="stl-connector"></div>
+            <div class="stl-content">
+              <div class="stl-title" style="color:var(--purple);">Transformers</div>
+              <div class="stl-tags">
+                <span class="stl-tag">Attention</span>
+                <span class="stl-tag">HuggingFace</span>
+                <span class="stl-tag">Fine-tuning</span>
+                <span class="stl-tag">Tokenizers</span>
+              </div>
+            </div>
+            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-3" style="background:var(--purple);"></div></div>
+          </div>
+
+          <div class="stl-block" id="stl-4">
+            <div class="stl-weeks">WEEKS 13–16</div>
+            <div class="stl-connector"></div>
+            <div class="stl-content">
+              <div class="stl-title" style="color:var(--gold);">RAG System</div>
+              <div class="stl-tags">
+                <span class="stl-tag">Embeddings</span>
+                <span class="stl-tag">Vector DBs</span>
+                <span class="stl-tag">LangChain</span>
+                <span class="stl-tag">Semantic Search</span>
+              </div>
+            </div>
+            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-4" style="background:var(--gold);"></div></div>
+          </div>
+
+          <div class="stl-block" id="stl-5">
+            <div class="stl-weeks">WEEKS 17–20</div>
+            <div class="stl-connector"></div>
+            <div class="stl-content">
+              <div class="stl-title" style="color:var(--green);">ML Engineering + Deployment</div>
+              <div class="stl-tags">
+                <span class="stl-tag">Docker</span>
+                <span class="stl-tag">FastAPI</span>
+                <span class="stl-tag">MLflow</span>
+                <span class="stl-tag">CI/CD</span>
+                <span class="stl-tag">Cloud</span>
+              </div>
+            </div>
+            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-5" style="background:var(--green);"></div></div>
+          </div>
+
+          <div class="stl-block" id="stl-6">
+            <div class="stl-weeks">WEEKS 21–24</div>
+            <div class="stl-connector"></div>
+            <div class="stl-content">
+              <div class="stl-title" style="color:var(--accent2);">Final Project + Polishing</div>
+              <div class="stl-tags">
+                <span class="stl-tag">Full Pipeline</span>
+                <span class="stl-tag">Portfolio</span>
+                <span class="stl-tag">Ship It</span>
+              </div>
+            </div>
+            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-6" style="background:var(--accent2);"></div></div>
+          </div>
+
+        </div>
+      </div>
+
       <div class="panel-title">📚 CURRICULUM TRACKER</div>
       <div class="curr-track">
         <div class="curr-hdr" onclick="toggleTrack('track-cs229')">
@@ -481,7 +824,7 @@
           <div class="curr-tog" id="tog-track-cs231n">▼</div>
         </div>
         <div class="curr-body" id="track-cs231n">
-          <div class="curr-item"><input type="checkbox" id="n231-1" onchange="saveCurriculum()"><label for="n231-1">Lec 1: Introduction to CNNs for Visual Recognition</label></div>
+          <div class="curr-item"><input type="checkbox" id="n231-1" onchange="saveCurriculum()"><label for="n231-1">Lec 1: Intro to CNNs for Visual Recognition</label></div>
           <div class="curr-item"><input type="checkbox" id="n231-2" onchange="saveCurriculum()"><label for="n231-2">Lec 2: Image Classification Pipelines</label></div>
           <div class="curr-item"><input type="checkbox" id="n231-3" onchange="saveCurriculum()"><label for="n231-3">Lec 3: Loss Functions & Optimization</label></div>
           <div class="curr-item"><input type="checkbox" id="n231-4" onchange="saveCurriculum()"><label for="n231-4">Lec 4: Introduction to Neural Networks</label></div>
@@ -518,8 +861,8 @@
           <div class="curr-item"><input type="checkbox" id="dl-6" onchange="saveCurriculum()"><label for="dl-6">Batch norm, dropout, regularisation</label></div>
           <div class="curr-item"><input type="checkbox" id="dl-7" onchange="saveCurriculum()"><label for="dl-7">Training loops, optimisers, schedulers</label></div>
           <div class="curr-item"><input type="checkbox" id="dl-8" onchange="saveCurriculum()"><label for="dl-8">fast.ai Part 1</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-9" onchange="saveCurriculum()"><label for="dl-9">PROJECT: Image classifier (PyTorch) deployed</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-10" onchange="saveCurriculum()"><label for="dl-10">PROJECT: Train small NN on custom dataset</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-9" onchange="saveCurriculum()"><label for="dl-9">PROJECT: Image classifier deployed</label></div>
+          <div class="curr-item"><input type="checkbox" id="dl-10" onchange="saveCurriculum()"><label for="dl-10">PROJECT: Train NN on custom dataset</label></div>
         </div>
       </div>
       <div class="curr-track">
@@ -539,283 +882,573 @@
           <div class="curr-item"><input type="checkbox" id="nlp-6" onchange="saveCurriculum()"><label for="nlp-6">Prompt engineering + in-context learning</label></div>
           <div class="curr-item"><input type="checkbox" id="nlp-7" onchange="saveCurriculum()"><label for="nlp-7">RAG implementation</label></div>
           <div class="curr-item"><input type="checkbox" id="nlp-8" onchange="saveCurriculum()"><label for="nlp-8">LangChain / LlamaIndex</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-9" onchange="saveCurriculum()"><label for="nlp-9">PROJECT: Fine-tune small LLM on custom data</label></div>
+          <div class="curr-item"><input type="checkbox" id="nlp-9" onchange="saveCurriculum()"><label for="nlp-9">PROJECT: Fine-tune small LLM</label></div>
           <div class="curr-item"><input type="checkbox" id="nlp-10" onchange="saveCurriculum()"><label for="nlp-10">PROJECT: Build + deploy NLP app</label></div>
         </div>
       </div>
     </div>
-    <div class="panel"><div class="panel-title">ML LOG HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Modules</th><th>CS229</th><th>CS231N</th><th>DL/NLP</th><th>Projects</th><th>Commits</th><th>Actions</th></tr></thead><tbody id="mlHistoryBody"></tbody></table></div></div>
-  </div>
 
-  <!-- ═══════════════ GERMAN ═══════════════ -->
-  <div id="tab-german" class="tab-content">
-    <div class="verse-strip">"Go therefore and make disciples of all nations… teaching them all that I have commanded you." — Matt 28:19</div>
-    <div class="grid-2" style="margin-bottom:var(--gap);">
-      <div class="panel accent-gold">
-        <div class="panel-title">🇩🇪 LOG SESSION</div>
-        <div class="stat-label" style="margin-bottom:8px;">A2 → B1 → B2 · Target: 20hr/week</div>
-        <div class="sess-btns">
-          <div class="sess-btn selected" onclick="selectST(this,'textbook')">📖 Textbook</div>
-          <div class="sess-btn" onclick="selectST(this,'anki')">🃏 Anki</div>
-          <div class="sess-btn" onclick="selectST(this,'youtube')">▶️ YouTube</div>
-          <div class="sess-btn" onclick="selectST(this,'podcast')">🎧 Podcast</div>
-          <div class="sess-btn" onclick="selectST(this,'speaking')">🗣️ Speaking</div>
-          <div class="sess-btn" onclick="selectST(this,'writing')">✍️ Writing</div>
-        </div>
-        <div class="input-grid">
-          <div class="f">
-            <label>Hours Today</label>
-            <div class="german-hrs-row">
-              <input type="number" id="germanAddHours" min="0" max="16" step="0.5" value="0">
+    <!-- ═══ SKILLS VAULT — hidden reference panel ═══ -->
+    <div class="panel" style="margin-top:var(--gap);border-color:rgba(167,139,250,.2);">
+      <div class="panel-title" style="cursor:pointer;user-select:none;" onclick="toggleSkillsVault()">
+        🔐 SKILLS VAULT
+        <span style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-left:8px;">— tap to reveal</span>
+        <span id="skillsVaultArrow" style="margin-left:auto;color:var(--muted);font-size:.75rem;">▼</span>
+      </div>
+      <div id="skillsVaultBody" style="display:none;margin-top:12px;">
+
+        <!-- 5 Systems Roadmap -->
+        <div style="margin-bottom:16px;">
+          <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--purple);letter-spacing:2px;margin-bottom:10px;">THE 5 SYSTEMS — ML ENGINEER ROADMAP</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="skills-system-card" style="border-left-color:var(--accent);">
+              <div class="ssc-num" style="color:var(--accent);">01</div>
+              <div class="ssc-body">
+                <div class="ssc-name">ML FOUNDATIONS</div>
+                <div class="ssc-goal">Understand models</div>
+                <div class="ssc-covers">CS229 · Scikit-learn · Feature Engineering · Hyperparameter Tuning · Model Evaluation</div>
+                <div class="ssc-project">👉 Classic ML pipeline</div>
+              </div>
+            </div>
+            <div class="skills-system-card" style="border-left-color:var(--blue);">
+              <div class="ssc-num" style="color:var(--blue);">02</div>
+              <div class="ssc-body">
+                <div class="ssc-name">DEEP LEARNING / VISION</div>
+                <div class="ssc-goal">Neural networks</div>
+                <div class="ssc-covers">CS231n · CNNs · PyTorch · Training loops</div>
+                <div class="ssc-project">👉 Computer vision project</div>
+              </div>
+            </div>
+            <div class="skills-system-card" style="border-left-color:var(--purple);">
+              <div class="ssc-num" style="color:var(--purple);">03</div>
+              <div class="ssc-body">
+                <div class="ssc-name">NLP / TRANSFORMERS</div>
+                <div class="ssc-goal">Modern language models</div>
+                <div class="ssc-covers">HuggingFace · Tokenizers · Fine-tuning Transformers</div>
+                <div class="ssc-project">👉 Transformer NLP project</div>
+              </div>
+            </div>
+            <div class="skills-system-card" style="border-left-color:var(--gold);">
+              <div class="ssc-num" style="color:var(--gold);">04</div>
+              <div class="ssc-body">
+                <div class="ssc-name">LLM APPLICATIONS</div>
+                <div class="ssc-goal">AI product building</div>
+                <div class="ssc-covers">RAG · Embeddings · Vector Databases · LLM Pipelines</div>
+                <div class="ssc-project">👉 LLM application</div>
+              </div>
+            </div>
+            <div class="skills-system-card" style="border-left-color:var(--green);">
+              <div class="ssc-num" style="color:var(--green);">05</div>
+              <div class="ssc-body">
+                <div class="ssc-name">ML ENGINEERING / MLOps</div>
+                <div class="ssc-goal">Production systems</div>
+                <div class="ssc-covers">Docker · FastAPI · CI/CD · MLflow · Model Versioning · Cloud Basics</div>
+                <div class="ssc-project">👉 Deployed ML system</div>
+              </div>
             </div>
           </div>
-          <div class="f">
-            <label>New Words Learned</label>
-            <input type="number" id="germanNewWords" min="0" step="1" placeholder="0">
+        </div>
+
+        <div style="border-top:1px solid var(--border);padding-top:14px;">
+          <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--purple);letter-spacing:2px;margin-bottom:10px;">FULL SKILL CHECKLIST — ML ENGINEER</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;" id="skillChecklistGrid">
+
+            <div class="skill-category">
+              <div class="skill-cat-title" style="color:var(--accent);">⚙️ CORE ENGINEERING</div>
+              <div class="skill-item"><input type="checkbox" id="sk-docker" onchange="saveSkills()"><label for="sk-docker">Docker</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-git" onchange="saveSkills()"><label for="sk-git">Git</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-fastapi" onchange="saveSkills()"><label for="sk-fastapi">FastAPI</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-deploy" onchange="saveSkills()"><label for="sk-deploy">Model Deployment</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-cloud" onchange="saveSkills()"><label for="sk-cloud">Cloud Basics (AWS/GCP)</label></div>
+            </div>
+
+            <div class="skill-category">
+              <div class="skill-cat-title" style="color:var(--accent);">🧠 ML & DATA</div>
+              <div class="skill-item"><input type="checkbox" id="sk-sklearn" onchange="saveSkills()"><label for="sk-sklearn">Scikit-learn</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-feateng" onchange="saveSkills()"><label for="sk-feateng">Feature Engineering</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-hyperparam" onchange="saveSkills()"><label for="sk-hyperparam">Hyperparameter Tuning</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-eval" onchange="saveSkills()"><label for="sk-eval">Model Evaluation</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-mlflow" onchange="saveSkills()"><label for="sk-mlflow">Experiment Tracking (MLflow)</label></div>
+            </div>
+
+            <div class="skill-category">
+              <div class="skill-cat-title" style="color:var(--purple);">🤗 NLP / LLM</div>
+              <div class="skill-item"><input type="checkbox" id="sk-hf" onchange="saveSkills()"><label for="sk-hf">HuggingFace Transformers</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-tok" onchange="saveSkills()"><label for="sk-tok">Tokenizers</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-finetune" onchange="saveSkills()"><label for="sk-finetune">Fine-tuning Transformers</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-rag" onchange="saveSkills()"><label for="sk-rag">RAG</label></div>
+            </div>
+
+            <div class="skill-category">
+              <div class="skill-cat-title" style="color:var(--gold);">🗄️ DATA & DB</div>
+              <div class="skill-item"><input type="checkbox" id="sk-sql" onchange="saveSkills()"><label for="sk-sql">Advanced SQL</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-etl" onchange="saveSkills()"><label for="sk-etl">Data Pipelines / ETL</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-vecdb" onchange="saveSkills()"><label for="sk-vecdb">Vector DBs (FAISS/Pinecone)</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-embed" onchange="saveSkills()"><label for="sk-embed">Embeddings & Semantic Search</label></div>
+            </div>
+
+            <div class="skill-category">
+              <div class="skill-cat-title" style="color:var(--green);">🔧 MLOps</div>
+              <div class="skill-item"><input type="checkbox" id="sk-modver" onchange="saveSkills()"><label for="sk-modver">Model Versioning</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-cicd" onchange="saveSkills()"><label for="sk-cicd">CI/CD for ML</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-dvc" onchange="saveSkills()"><label for="sk-dvc">Data Versioning (DVC)</label></div>
+            </div>
+
+            <div class="skill-category">
+              <div class="skill-cat-title" style="color:var(--orange);">🔌 BACKEND & AI</div>
+              <div class="skill-item"><input type="checkbox" id="sk-restapi" onchange="saveSkills()"><label for="sk-restapi">REST APIs for ML</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-asyncapi" onchange="saveSkills()"><label for="sk-asyncapi">Async APIs (FastAPI adv.)</label></div>
+              <div class="skill-item"><input type="checkbox" id="sk-llmpipe" onchange="saveSkills()"><label for="sk-llmpipe">LLM App Pipelines</label></div>
+            </div>
+
           </div>
-          <div class="f span2">
-            <label>Topic / Unit Covered</label>
-            <input type="text" id="germanTopic" placeholder="e.g. Konjunktiv II, ch.7 vocab…">
-          </div>
-          <div class="f">
-            <label>Minutes Spoken / Listened</label>
-            <input type="number" id="germanMinutes" min="0" step="5" placeholder="0">
-          </div>
-          <div class="f">
-            <label>Writing Words</label>
-            <input type="number" id="germanWritingWords" min="0" step="10" placeholder="0">
+          <!-- Skills progress bar -->
+          <div style="margin-top:12px;">
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-bottom:4px;">
+              <span>SKILLS UNLOCKED</span><span id="skillsProgressLabel">0 / 26</span>
+            </div>
+            <div class="bar"><div class="bar-fill purple" id="skillsProgressBar" style="width:0%;background:var(--purple);"></div></div>
           </div>
         </div>
-        <div class="save-bar"><button class="btn btn-gold" onclick="addGermanSession()">LOG SESSION</button></div>
       </div>
-      <div class="panel accent-gold">
-        <div class="panel-title">⏱️ HOURS OVERVIEW</div>
-        <div style="text-align:center;padding:8px 0 12px;">
-          <div class="big-num" style="color:var(--gold);font-size:clamp(2.5rem,7vw,4rem);" id="german-total-hours">0.0</div>
-          <div class="stat-label">TOTAL HOURS</div>
-        </div>
-        <div class="xp-label"><span>WEEKLY (20HR target)</span><strong><span id="german-weekly-show">0.0</span> / 20.0</strong></div>
-        <div class="bar gold" style="margin-bottom:12px;"><div class="bar-fill" id="germanWeeklyBar" style="width:0%"></div></div>
-        <div class="stat-label" style="margin-bottom:8px;">HOURS BY METHOD</div>
+    </div>
+
+    <!-- ML History Feed -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">ML LOG HISTORY</div>
+      <div id="mlHistoryFeed"></div>
+    </div>
+  </div>
+
+  <!-- ═══ GERMAN ═══ -->
+  <div id="tab-german" class="tab-content">
+    <div class="page-header">
+      <h1 class="page-title">GERMAN CAMPAIGN</h1>
+      <div class="mono muted" style="font-size:.7rem;">A2 → B1 → B2 · Target: 20hr/week · 5 days/week</div>
+    </div>
+
+    <div class="german-hero">
+      <div class="gh-total panel accent-gold">
+        <div class="stat-label">TOTAL HOURS</div>
+        <div class="german-big" id="german-total-hours">0.0</div>
+        <div class="xp-row"><span>This week</span><strong><span id="german-weekly-show">0.0</span> / 20hr</strong></div>
+        <div class="bar gold"><div class="bar-fill" id="germanWeeklyBar" style="width:0%"></div></div>
+      </div>
+      <div class="gh-methods panel accent-gold">
+        <div class="panel-title">HOURS BY METHOD</div>
         <div class="method-grid">
-          <div class="method-row">📖 Textbook: <span id="hrs-textbook">0.0</span></div>
-          <div class="method-row">🃏 Anki: <span id="hrs-anki">0.0</span></div>
-          <div class="method-row">▶️ YouTube: <span id="hrs-youtube">0.0</span></div>
-          <div class="method-row">🎧 Podcast: <span id="hrs-podcast">0.0</span></div>
-          <div class="method-row">🗣️ Speaking: <span id="hrs-speaking">0.0</span></div>
-          <div class="method-row">✍️ Writing: <span id="hrs-writing">0.0</span></div>
-          <div class="method-row">📝 Vocab: <span id="total-words">0</span></div>
-          <div class="method-row">🗣️ Speak min: <span id="total-speaking-min">0</span></div>
+          <div class="method-row">📖 Textbook<span id="hrs-textbook">0.0</span></div>
+          <div class="method-row">🃏 Anki<span id="hrs-anki">0.0</span></div>
+          <div class="method-row">▶️ YouTube<span id="hrs-youtube">0.0</span></div>
+          <div class="method-row">🎧 Podcast<span id="hrs-podcast">0.0</span></div>
+          <div class="method-row">🗣️ Speaking<span id="hrs-speaking">0.0</span></div>
+          <div class="method-row">✍️ Writing<span id="hrs-writing">0.0</span></div>
         </div>
-      </div>
-    </div>
-
-    <!-- Grammar milestones -->
-    <div class="panel" style="margin-bottom:var(--gap);">
-      <div class="panel-title">📐 GRAMMAR MILESTONES — A2 → B1 → B2</div>
-      <div style="margin-bottom:4px;font-family:var(--font-display);font-size:.82rem;letter-spacing:2px;color:var(--accent);">◈ A2 GRAMMAR MASTERY</div>
-      <div style="font-family:var(--font-mono);font-size:.63rem;color:var(--muted);margin-bottom:10px;">Milestone: Write 150 words · Speak 3 min without switching to English</div>
-      <div class="grid-2" style="margin-bottom:14px;">
-        <div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-1"> Präsens — all conjugations fluent</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-2"> Perfekt — past tense confident</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-3"> Präteritum — sein, haben, modal verbs</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-4"> Modal verbs — können, müssen, dürfen, wollen</label></div></div>
-        </div>
-        <div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-5"> Nebensätze — weil, dass, wenn</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-6"> Akkusativ & Dativ — no guessing</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-7" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-7"> Wechselpräpositionen — in/an/auf correct</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-8" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-8"> Reflexive verbs — sich waschen etc.</label></div></div>
-        </div>
-      </div>
-      <div class="ms-item" style="background:rgba(0,212,255,.04);padding:10px;border:1px solid rgba(0,212,255,.15);margin-bottom:16px;">
-        <input type="checkbox" class="ms-check" id="gm-a2-test" onchange="saveGermanMilestones()" style="border-color:var(--accent);">
-        <div><span class="ms-badge ms-a2">TEST</span><label class="ms-text" for="gm-a2-test"> ✔ Write 150-word diary entry with minimal mistakes</label></div>
-      </div>
-      <div class="divider"></div>
-      <div style="margin-bottom:4px;font-family:var(--font-display);font-size:.82rem;letter-spacing:2px;color:var(--gold);">◈ B1 FOUNDATION</div>
-      <div style="font-family:var(--font-mono);font-size:.63rem;color:var(--muted);margin-bottom:10px;">Milestone: 250–300 word essay · Speak 5–7 min · Understand slow news</div>
-      <div class="grid-2" style="margin-bottom:14px;">
-        <div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-1"> Konjunktiv II — würde, hätte, wäre</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-2"> Plusquamperfekt — narrative past perfect</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-3"> Passiv — Präsens & Präteritum</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-4"> Relativsätze</label></div></div>
-        </div>
-        <div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-5"> Temporal connectors — während, bevor, nachdem</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-6"> Connectors — trotzdem, deshalb, obwohl</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-7" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-7"> Complex sentences — longer constructions</label></div></div>
-        </div>
-      </div>
-      <div class="ms-item" style="background:rgba(255,215,0,.04);padding:10px;border:1px solid rgba(255,215,0,.15);margin-bottom:16px;">
-        <input type="checkbox" class="ms-check" id="gm-b1-test" onchange="saveGermanMilestones()" style="border-color:var(--gold);">
-        <div><span class="ms-badge ms-b1">TEST</span><label class="ms-text" for="gm-b1-test"> ✔ Speak 5–7 min on abstract topic without notes</label></div>
-      </div>
-      <div class="divider"></div>
-      <div style="margin-bottom:4px;font-family:var(--font-display);font-size:.82rem;letter-spacing:2px;color:var(--purple);">◈ B2 LOWER — ACADEMIC + PROFESSIONAL</div>
-      <div style="font-family:var(--font-mono);font-size:.63rem;color:var(--muted);margin-bottom:10px;">Milestone: 350-word essay · Participate in debate · Understand podcasts at normal speed</div>
-      <div class="grid-2" style="margin-bottom:14px;">
-        <div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-1"> Konjunktiv I — reported speech</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-2"> Advanced connectors — indem, sofern</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-3"> Nominalisierung — noun formations</label></div></div>
-        </div>
-        <div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-4"> Nuanced opinions — complex views</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-5"> Advanced adjective endings</label></div></div>
-          <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-6"> Flexible sentence structure</label></div></div>
-        </div>
-      </div>
-      <div class="ms-item" style="background:rgba(168,85,247,.04);padding:10px;border:1px solid rgba(168,85,247,.15);">
-        <input type="checkbox" class="ms-check" id="gm-b2-test" onchange="saveGermanMilestones()" style="border-color:var(--purple);">
-        <div><span class="ms-badge ms-b2">TEST</span><label class="ms-text" for="gm-b2-test"> ✔ Write 350-word argument essay without panic</label></div>
-      </div>
-    </div>
-
-    <div class="grid-3" style="margin-bottom:var(--gap);">
-      <div class="panel accent-gold">
-        <div class="panel-title">📝 VOCAB MILESTONES</div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="vocab-1"> 500 Anki words retained</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="vocab-2"> 1,000–1,500 active words</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="vocab-3"> 2,000–2,500 active words</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="vocab-4"> 3,500–4,000 active words</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="vocab-5"> Describe work, studies, politics</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="vocab-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="vocab-6"> Explain ML topics in German</label></div></div>
-        <div style="margin-top:12px;" class="stat-label">TOTAL WORDS LOGGED:</div>
-        <div style="font-family:var(--font-display);font-size:2rem;color:var(--gold);" id="german-vocab-total">0</div>
-      </div>
-      <div class="panel accent-gold">
-        <div class="panel-title">🎤 SPEAKING MILESTONES</div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="speak-1"> Simple conversation on familiar topics</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="speak-2"> Speak 3 min without switching to English</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="speak-3"> Express opinions + justify (5–7 min)</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="speak-4"> Argue, compare, defend a position</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="speak-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="speak-5"> Speak fluently for 10+ minutes</label></div></div>
         <div class="divider"></div>
-        <div class="panel-title" style="margin-bottom:8px;">🎧 LISTENING</div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="listen-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="listen-1"> Slow YouTube learner videos</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="listen-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="listen-2"> News with subtitles</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="listen-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="listen-3"> Podcasts without subtitles</label></div></div>
-        <div style="margin-top:12px;" class="stat-label">SPEAKING/LISTENING MINUTES:</div>
-        <div style="font-family:var(--font-display);font-size:2rem;color:var(--gold);" id="german-speak-total">0</div>
-      </div>
-      <div class="panel accent-gold">
-        <div class="panel-title">✍️ WRITING MILESTONES</div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="write-1"> 150-word simple narrative</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="write-2"> Formal email written correctly</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="write-3"> Opinion text with arguments</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="write-4"> 350-word argumentative essay</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="write-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="write-5"> Write within time limit (exam condition)</label></div></div>
-        <div style="margin-top:12px;" class="stat-label">WRITING WORDS LOGGED:</div>
-        <div style="font-family:var(--font-display);font-size:2rem;color:var(--gold);" id="german-writing-total">0</div>
-        <div class="divider"></div>
-        <div class="panel-title" style="margin-bottom:8px;">🧪 EXAM READINESS</div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="exam-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="exam-1"> 70%+ in mock B2 test</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="exam-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="exam-2"> Finish reading section on time</label></div></div>
-        <div class="ms-item"><input type="checkbox" class="ms-check" id="exam-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="exam-3"> Speak 10 min in exam setting</label></div></div>
+        <div class="method-row">📝 Words learned<span id="total-words">0</span></div>
+        <div class="method-row">🗣️ Speak/Listen min<span id="total-speaking-min">0</span></div>
       </div>
     </div>
 
-    <div class="panel" style="margin-bottom:var(--gap);">
-      <div class="panel-title">📊 MONTHLY SKILL MATRIX</div>
-      <div class="stat-label" style="margin-bottom:12px;">Update once a month — rate confidence 1–5.</div>
-      <div class="table-wrap"><table class="skill-matrix"><thead><tr><th>Skill</th><th>A2?</th><th>B1?</th><th>B2?</th><th>Confidence (1–5)</th></tr></thead><tbody id="skillMatrixBody"></tbody></table></div>
-      <div class="save-bar"><button class="btn btn-gold" onclick="saveSkillMatrix()">SAVE MATRIX</button></div>
+    <!-- Log Session -->
+    <div class="panel accent-gold" style="margin-top:var(--gap);">
+      <div class="panel-title">🇩🇪 LOG SESSION</div>
+      <div class="sess-btns">
+        <div class="sess-btn selected" onclick="selectST(this,'textbook')">📖 Textbook</div>
+        <div class="sess-btn" onclick="selectST(this,'anki')">🃏 Anki</div>
+        <div class="sess-btn" onclick="selectST(this,'youtube')">▶️ YouTube</div>
+        <div class="sess-btn" onclick="selectST(this,'podcast')">🎧 Podcast</div>
+        <div class="sess-btn" onclick="selectST(this,'speaking')">🗣️ Speaking</div>
+        <div class="sess-btn" onclick="selectST(this,'writing')">✍️ Writing</div>
+      </div>
+      <div class="input-grid" style="margin-top:12px;">
+        <div class="f"><label>Hours Today</label><input type="number" id="germanAddHours" min="0" max="16" step="0.5" value="0"></div>
+        <div class="f"><label>New Words Learned</label><input type="number" id="germanNewWords" min="0" step="1" placeholder="0"></div>
+        <div class="f span2"><label>Topic / Unit Covered</label><input type="text" id="germanTopic" placeholder="e.g. Konjunktiv II, ch.7 vocab…"></div>
+        <div class="f"><label>Speak/Listen Minutes</label><input type="number" id="germanMinutes" min="0" step="5" placeholder="0"></div>
+        <div class="f"><label>Writing Words</label><input type="number" id="germanWritingWords" min="0" step="10" placeholder="0"></div>
+      </div>
+      <div class="save-bar"><button class="btn btn-gold" onclick="addGermanSession()">LOG SESSION ⚡</button></div>
     </div>
-    <div class="panel"><div class="panel-title">GERMAN SESSION HISTORY</div><div class="table-wrap"><table class="htable"><thead><tr><th>Date</th><th>Method</th><th>Hours</th><th>Topic</th><th>Words</th><th>Speak/Listen min</th><th>Weekly Total</th><th>Actions</th></tr></thead><tbody id="germanHistoryBody"></tbody></table></div></div>
+
+    <!-- Grammar Milestones -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">📐 GRAMMAR MILESTONES — A2 → B2</div>
+
+      <div class="ms-level-header" style="color:var(--accent);">◈ A2 MASTERY</div>
+      <div class="ms-grid">
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-1"> Präsens — all conjugations fluent</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-2"> Perfekt — past tense confident</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-3"> Präteritum — sein, haben, modal verbs</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-4"> Modal verbs — können, müssen, dürfen</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-5"> Nebensätze — weil, dass, wenn</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-6"> Akkusativ & Dativ — no guessing</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-7" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-7"> Wechselpräpositionen</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-a2-8" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-a2">A2</span><label class="ms-text" for="gm-a2-8"> Reflexive verbs</label></div></div>
+      </div>
+      <div class="ms-test-item"><input type="checkbox" class="ms-check" id="gm-a2-test" onchange="saveGermanMilestones()"><span class="ms-badge ms-a2">TEST</span><label for="gm-a2-test"> Write 150-word diary entry with minimal mistakes</label></div>
+
+      <div class="ms-level-header" style="color:var(--gold);margin-top:16px;">◈ B1 FOUNDATION</div>
+      <div class="ms-grid">
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-1"> Konjunktiv II — würde, hätte, wäre</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-2"> Plusquamperfekt</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-3"> Passiv — Präsens & Präteritum</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-4"> Relativsätze</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-5"> Temporal connectors</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-6"> Connectors — trotzdem, deshalb, obwohl</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b1-7" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b1">B1</span><label class="ms-text" for="gm-b1-7"> Complex sentences</label></div></div>
+      </div>
+      <div class="ms-test-item"><input type="checkbox" class="ms-check" id="gm-b1-test" onchange="saveGermanMilestones()"><span class="ms-badge ms-b1">TEST</span><label for="gm-b1-test"> Speak 5–7 min on abstract topic without notes</label></div>
+
+      <div class="ms-level-header" style="color:var(--purple);margin-top:16px;">◈ B2 PROFESSIONAL</div>
+      <div class="ms-grid">
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-1" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-1"> Konjunktiv I — reported speech</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-2" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-2"> Advanced connectors</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-3" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-3"> Nominalisierung</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-4" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-4"> Nuanced opinions</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-5" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-5"> Advanced adjective endings</label></div></div>
+        <div class="ms-item"><input type="checkbox" class="ms-check" id="gm-b2-6" onchange="saveGermanMilestones()"><div><span class="ms-badge ms-b2">B2</span><label class="ms-text" for="gm-b2-6"> Flexible sentence structure</label></div></div>
+      </div>
+      <div class="ms-test-item"><input type="checkbox" class="ms-check" id="gm-b2-test" onchange="saveGermanMilestones()"><span class="ms-badge ms-b2">TEST</span><label for="gm-b2-test"> Write 350-word argument essay without panic</label></div>
+    </div>
+
+    <!-- German chart -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">📈 GERMAN HOURS TREND</div>
+      <div class="chart-container"><canvas id="chartGerman"></canvas></div>
+    </div>
+
+    <!-- German History Feed -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">SESSION HISTORY</div>
+      <div id="germanHistoryFeed"></div>
+    </div>
   </div>
 
-  <!-- ═══════════════ CHARTS ═══════════════ -->
-  <div id="tab-charts" class="tab-content">
-    <div class="grid-2" style="margin-bottom:var(--gap);">
-      <div class="panel accent-cyan">
-        <div class="panel-title">💪 WEIGHT PROGRESSION</div>
-        <div class="chart-container tall"><canvas id="chartWeight"></canvas></div>
+  <!-- ═══ ANALYTICS ═══ -->
+  <div id="tab-analytics" class="tab-content">
+    <div class="page-header">
+      <h1 class="page-title">ANALYTICS & INTEL</h1>
+      <div class="mono muted" style="font-size:.7rem;">Deep performance analysis across all pillars</div>
+    </div>
+
+    <!-- Summary row -->
+    <div class="analytics-summary">
+      <div class="an-card panel">
+        <div class="stat-label">CAMPAIGN PACE</div>
+        <div class="an-val" id="an-pace">—</div>
+        <div class="an-sub" id="an-pace-sub">XP/day avg</div>
       </div>
-      <div class="panel accent-orange">
+      <div class="an-card panel">
+        <div class="stat-label">BEST WEEK</div>
+        <div class="an-val" id="an-bestweek" style="color:var(--green)">— XP</div>
+        <div class="an-sub" id="an-bestweek-sub">—</div>
+      </div>
+      <div class="an-card panel">
+        <div class="stat-label">CONSISTENCY</div>
+        <div class="an-val" id="an-consistency" style="color:var(--accent)">—%</div>
+        <div class="an-sub">Active days / total</div>
+      </div>
+      <div class="an-card panel">
+        <div class="stat-label">PROJECTED FINISH</div>
+        <div class="an-val" id="an-projected" style="color:var(--gold)">—</div>
+        <div class="an-sub">At current pace</div>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+      <div class="panel">
         <div class="panel-title">⚡ WEEKLY XP TREND</div>
-        <div class="chart-container tall"><canvas id="chartXP"></canvas></div>
+        <div class="chart-container"><canvas id="chartXP"></canvas></div>
       </div>
-    </div>
-    <div class="grid-2" style="margin-bottom:var(--gap);">
-      <div class="panel accent-gold">
+      <div class="panel">
+        <div class="panel-title">💪 WEIGHT PROGRESSION</div>
+        <div class="chart-container"><canvas id="chartWeight"></canvas></div>
+      </div>
+      <div class="panel">
         <div class="panel-title">🇩🇪 GERMAN HOURS / WEEK</div>
-        <div class="chart-container tall"><canvas id="chartGerman"></canvas></div>
+        <div class="chart-container"><canvas id="chartGermanAnalytics"></canvas></div>
       </div>
-      <div class="panel accent-purple">
-        <div class="panel-title">🧠 ML CURRICULUM %</div>
-        <div class="chart-container tall"><canvas id="chartML"></canvas></div>
+      <div class="panel">
+        <div class="panel-title">🧠 ML CURRICULUM</div>
+        <div class="chart-container" style="display:flex;align-items:center;justify-content:center;"><canvas id="chartML" style="max-width:240px;max-height:240px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">📊 DAY TYPE BREAKDOWN</div>
+        <div class="chart-container" style="display:flex;align-items:center;justify-content:center;"><canvas id="chartDayType" style="max-width:240px;max-height:240px;"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">🏃 CARDIO PROGRESSION</div>
+        <div class="chart-container"><canvas id="chartEngineAnalytics"></canvas></div>
       </div>
     </div>
-    <div class="grid-2">
-      <div class="panel accent-orange">
-        <div class="panel-title">🏋️ STRENGTH PROGRESSION</div>
-        <div class="chart-container tall"><canvas id="chartStrength"></canvas></div>
+
+    <!-- Habit tracker -->
+    <div class="panel accent-red" style="margin-top:var(--gap);">
+      <div class="panel-title">⚠ BAD HABITS TRACKER</div>
+      <div id="habitsList">
+        <div class="habit-item"><div><div class="habit-name">🍔 Junk Food</div><div class="habit-cost">-5 XP</div></div><div class="habit-right"><div class="habit-count" id="hab-junk">0</div><button class="habit-log-btn" onclick="logHabit('junk','🍔 Junk Food',-5)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">📱 Doom Scrolling (&gt;30min)</div><div class="habit-cost">-5 XP</div></div><div class="habit-right"><div class="habit-count" id="hab-scroll">0</div><button class="habit-log-btn" onclick="logHabit('scroll','📱 Doom Scroll',-5)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">😴 Poor Sleep (&lt;6hrs)</div><div class="habit-cost">-10 XP</div></div><div class="habit-right"><div class="habit-count" id="hab-sleep">0</div><button class="habit-log-btn" onclick="logHabit('sleep','😴 Bad Sleep',-10)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">🎮 Excessive Gaming (&gt;2hrs)</div><div class="habit-cost">-5 XP</div></div><div class="habit-right"><div class="habit-count" id="hab-game">0</div><button class="habit-log-btn" onclick="logHabit('game','🎮 Excess Gaming',-5)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">⏭ Skipped German (weekday)</div><div class="habit-cost">-10 XP</div></div><div class="habit-right"><div class="habit-count" id="hab-skipger">0</div><button class="habit-log-btn" onclick="logHabit('skipger','⏭ Skipped German',-10)">LOG</button></div></div>
+        <div class="habit-item"><div><div class="habit-name">🚫 Skipped Training (non-rest)</div><div class="habit-cost">-10 XP</div></div><div class="habit-right"><div class="habit-count" id="hab-skiptrain">0</div><button class="habit-log-btn" onclick="logHabit('skiptrain','🚫 Skipped Training',-10)">LOG</button></div></div>
       </div>
-      <div class="panel accent-purple">
-        <div class="panel-title">📊 DAY TYPE BREAKDOWN (this campaign)</div>
-        <div class="chart-container" style="height:240px;display:flex;align-items:center;justify-content:center;"><canvas id="chartDayType" style="max-width:240px;"></canvas></div>
+      <div class="habit-total">
+        <div class="stat-label">TOTAL XP LOST</div>
+        <div class="habit-total-val" id="habitXPLost">0</div>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════ REWARDS ═══════════════ -->
+  <!-- ═══ MISSIONS ═══ -->
+  <div id="tab-missions" class="tab-content">
+    <div class="page-header">
+      <h1 class="page-title">SECRET MISSIONS</h1>
+      <div class="mono muted" style="font-size:.7rem;">Complete objectives for bonus XP · Progress tracked automatically</div>
+    </div>
+
+    <!-- Mission Stats Bar -->
+    <div class="mission-stats-bar">
+      <div class="msb-item">
+        <div class="msb-val" id="msb-total">0</div>
+        <div class="msb-label">TOTAL</div>
+      </div>
+      <div class="msb-item">
+        <div class="msb-val" id="msb-claimed" style="color:var(--green)">0</div>
+        <div class="msb-label">CLAIMED</div>
+      </div>
+      <div class="msb-item">
+        <div class="msb-val" id="msb-ready" style="color:var(--gold)">0</div>
+        <div class="msb-label">CLAIMABLE</div>
+      </div>
+      <div class="msb-item">
+        <div class="msb-val" id="msb-xp" style="color:var(--accent)">0</div>
+        <div class="msb-label">BONUS XP</div>
+      </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="mission-filters">
+      <button class="mf-btn active" onclick="filterMissions('all',this)">ALL</button>
+      <button class="mf-btn" onclick="filterMissions('campaign',this)">⚔ CAMPAIGN</button>
+      <button class="mf-btn" onclick="filterMissions('strength',this)">🏋️ STRENGTH</button>
+      <button class="mf-btn" onclick="filterMissions('cardio',this)">🏃 CARDIO</button>
+      <button class="mf-btn" onclick="filterMissions('ml',this)">🧠 ML</button>
+      <button class="mf-btn" onclick="filterMissions('german',this)">🇩🇪 GERMAN</button>
+      <button class="mf-btn" onclick="filterMissions('nutrition',this)">🥗 NUTRITION</button>
+    </div>
+
+    <div id="missionsGrid"></div>
+  </div>
+
+  <!-- ═══ REWARDS ═══ -->
   <div id="tab-rewards" class="tab-content">
-    <div class="verse-strip">"Well done, good and faithful servant. You have been faithful over a little; I will set you over much." — Matt 25:23</div>
-    <div class="panel accent-red" style="margin-bottom:var(--gap);">
-      <div class="panel-title">⚠ BAD HABITS TRACKER</div>
-      <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-bottom:12px;">Log when you slip. No judgment — just awareness. Each logged habit costs XP.</div>
-      <div id="habitsList">
-        <div class="habit-item"><div><div class="habit-name">🍔 Junk Food</div><div class="habit-cost">-5 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-junk">0</div><button class="habit-log-btn" onclick="logHabit('junk','🍔 Junk Food',-5)">LOG</button></div></div>
-        <div class="habit-item"><div><div class="habit-name">📱 Doom Scrolling (&gt;30min)</div><div class="habit-cost">-5 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-scroll">0</div><button class="habit-log-btn" onclick="logHabit('scroll','📱 Doom Scroll',-5)">LOG</button></div></div>
-        <div class="habit-item"><div><div class="habit-name">😴 Poor Sleep (&lt;6hrs)</div><div class="habit-cost">-10 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-sleep">0</div><button class="habit-log-btn" onclick="logHabit('sleep','😴 Bad Sleep',-10)">LOG</button></div></div>
-        <div class="habit-item"><div><div class="habit-name">🎮 Excessive Gaming (&gt;2hrs)</div><div class="habit-cost">-5 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-game">0</div><button class="habit-log-btn" onclick="logHabit('game','🎮 Excess Gaming',-5)">LOG</button></div></div>
-        <div class="habit-item"><div><div class="habit-name">⏭ Skipped German on a weekday</div><div class="habit-cost">-10 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-skipger">0</div><button class="habit-log-btn" onclick="logHabit('skipger','⏭ Skipped German',-10)">LOG</button></div></div>
-        <div class="habit-item"><div><div class="habit-name">🚫 Skipped Training (non-rest day)</div><div class="habit-cost">-10 XP per occurrence</div></div><div style="display:flex;align-items:center;gap:12px;"><div class="habit-count" id="hab-skiptrain">0</div><button class="habit-log-btn" onclick="logHabit('skiptrain','🚫 Skipped Training',-10)">LOG</button></div></div>
-      </div>
-      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-        <div><div class="stat-label">TOTAL XP LOST TO HABITS</div><div style="font-family:var(--font-display);font-size:2rem;color:var(--red);" id="habitXPLost">0</div></div>
-        <div class="panel-title" style="margin:0;">HABIT LOG</div>
-      </div>
-      <div class="table-wrap" style="margin-top:10px;"><table class="htable"><thead><tr><th>Date</th><th>Habit</th><th>XP Cost</th></tr></thead><tbody id="habitHistoryBody"><tr><td colspan="3" style="color:var(--muted);text-align:center;padding:14px;">No habits logged</td></tr></tbody></table></div>
+    <div class="page-header">
+      <h1 class="page-title">REWARD VAULT</h1>
+      <div class="mono muted" style="font-size:.7rem;">"Well done, good and faithful servant." — Matt 25:23</div>
     </div>
 
-    <div class="panel" style="margin-bottom:var(--gap);">
-      <div class="panel-title">🏆 REWARD SYSTEM</div>
-      <div style="font-family:var(--font-mono);font-size:.72rem;color:var(--muted);line-height:1.8;margin-bottom:8px;">Three tiers: <strong style="color:var(--accent);">Weekly</strong> (500+ XP), <strong style="color:var(--gold);">Monthly</strong> (level up), <strong style="color:var(--purple);">September Final</strong> (full campaign). No exceptions.</div>
-    </div>
-
-    <div class="reward-tier-title" style="color:var(--accent);">⚡ WEEKLY REWARDS — Hit 500+ XP</div>
+    <div class="reward-tier-title" style="color:var(--accent);">📓 WEEKLY REWARDS — Hit your weekly targets</div>
     <div class="reward-grid" id="rewardGridWeekly"></div>
 
-    <div class="reward-tier-title" style="color:var(--gold);">🏅 MONTHLY REWARDS — Level Up Required</div>
+    <div class="reward-tier-title" style="color:var(--blue);margin-top:20px;">⚡ BI-WEEKLY REWARDS — Level Up (every 2 weeks)</div>
+    <div class="reward-grid" id="rewardGridBiweekly"></div>
+
+    <div class="reward-tier-title" style="color:var(--gold);margin-top:20px;">🏅 MONTHLY REWARDS — Serious progress only</div>
     <div class="reward-grid" id="rewardGridMonthly"></div>
 
-    <div class="reward-tier-title" style="color:var(--purple);">🏆 SEPTEMBER FINAL REWARDS</div>
-    <div class="reward-grid" id="rewardGridFinal"></div>
+    <div class="reward-tier-title" style="color:var(--accent2);margin-top:20px;">🎯 PERFORMANCE REWARDS — Goal-triggered</div>
+    <div class="reward-grid" id="rewardGridPerformance"></div>
+
+    <div class="reward-tier-title" style="color:var(--purple);margin-top:20px;">🏷️ IDENTITY REWARDS — Always earnable</div>
+    <div class="reward-grid" id="rewardGridIdentity"></div>
   </div>
 
-  <!-- ═══ EDIT MODAL ═══ -->
-<div id="editModal" style="display:none;">
-  <div class="edit-backdrop" onclick="closeEditModal()"></div>
-  <div class="edit-box">
-    <div class="edit-modal-header">
-      <div class="edit-modal-title" id="editModalTitle">EDIT ENTRY</div>
-      <div class="edit-modal-date" id="editModalDate"></div>
-      <button class="edit-close-btn" onclick="closeEditModal()">✕</button>
+  <!-- ═══ TRAINING PLAN ═══ -->
+  <div id="tab-training" class="tab-content">
+    <div class="page-header">
+      <h1 class="page-title">TRAINING</h1>
+      <div class="mono muted" style="font-size:.7rem;">5 days/week · 176-day campaign</div>
     </div>
-    <div class="edit-modal-body" id="editModalBody"></div>
-    <div class="edit-modal-footer">
-      <button class="btn btn-sm" style="border-color:var(--muted);color:var(--muted);" onclick="closeEditModal()">CANCEL</button>
-      <button class="btn btn-sm" id="editModalSaveBtn">SAVE CHANGES ⚡</button>
+
+    <!-- STATS TILES — Arrow style -->
+    <div class="tr-stat-grid" id="trStatGrid">
+      <div class="tr-stat-tile">
+        <div class="tr-stat-icon">🏋️</div>
+        <div class="tr-stat-val" id="trStatSessions">—</div>
+        <div class="tr-stat-label">Sessions</div>
+      </div>
+      <div class="tr-stat-tile">
+        <div class="tr-stat-icon">📅</div>
+        <div class="tr-stat-val" id="trStatWeekDays">—</div>
+        <div class="tr-stat-label">This Week</div>
+      </div>
+      <div class="tr-stat-tile">
+        <div class="tr-stat-icon">🔥</div>
+        <div class="tr-stat-val" id="trStatStreak">—</div>
+        <div class="tr-stat-label">Wk Streak</div>
+      </div>
+      <div class="tr-stat-tile">
+        <div class="tr-stat-icon">⚡</div>
+        <div class="tr-stat-val" id="trStatSetsToday">—</div>
+        <div class="tr-stat-label">Sets Done</div>
+      </div>
+    </div>
+
+    <!-- WEEKLY PROGRESS BAR — like Arrow's level progress -->
+    <div class="tr-week-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-family:var(--font-display);font-size:.9rem;letter-spacing:1px;">WEEKLY TRAINING GOAL</span>
+        <span style="font-family:var(--font-mono);font-size:.7rem;" id="trWeekLabel">0 / 4 days</span>
+      </div>
+      <div class="tr-week-dots" id="trWeekDots"><!-- 7 day dots filled by JS --></div>
+      <div class="bar" style="margin-top:10px;height:6px;">
+        <div class="bar-fill" id="trWeekBar" style="width:0%;background:var(--green);box-shadow:0 0 6px rgba(45,212,191,.4);transition:width .5s;"></div>
+      </div>
+    </div>
+
+    <!-- WORKOUT CHOOSER — pick any workout anytime, no day locking -->
+    <div style="margin-bottom:var(--gap);">
+      <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-bottom:8px;">WHAT ARE YOU TRAINING TODAY?</div>
+      <div class="tr-day-scroll" id="trDayScroll">
+        <div class="tr-day-card" onclick="selectTrainingDay(0)">
+          <div class="tr-dc-icon">💪</div>
+          <div class="tr-dc-name">Upper Strength</div>
+          <div class="tr-dc-sub">Lats · Chest · Arms</div>
+        </div>
+        <div class="tr-day-card" onclick="selectTrainingDay(1)">
+          <div class="tr-dc-icon">⚡</div>
+          <div class="tr-dc-name">Speed + Core</div>
+          <div class="tr-dc-sub">Sprint · Agility</div>
+        </div>
+        <div class="tr-day-card" onclick="selectTrainingDay(2)">
+          <div class="tr-dc-icon">🦵</div>
+          <div class="tr-dc-name">Lower Strength</div>
+          <div class="tr-dc-sub">Quads · Hamstrings</div>
+        </div>
+        <div class="tr-day-card" onclick="selectTrainingDay(3)">
+          <div class="tr-dc-icon">🔥</div>
+          <div class="tr-dc-name">Upper Hypertrophy</div>
+          <div class="tr-dc-sub">Shoulders · Arms</div>
+        </div>
+        <div class="tr-day-card" onclick="selectTrainingDay(4)">
+          <div class="tr-dc-icon">🏃</div>
+          <div class="tr-dc-name">Conditioning</div>
+          <div class="tr-dc-sub">Engine · Cardio</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVE WORKOUT PANEL — exercise checklist -->
+    <div id="activeWorkoutPanel"><!-- filled by JS --></div>
+
+    <!-- PHASE PROGRESS — compact at bottom -->
+    <div class="tr-phases-row">
+      <div class="tr-phase-pill tr-ph-active">
+        <span style="color:var(--accent);font-weight:700;">PHASE 1</span>
+        <span>Build Base · Mar–Apr</span>
+        <span style="color:var(--green);">ACTIVE</span>
+      </div>
+      <div class="tr-phase-pill">
+        <span style="color:var(--muted);">PHASE 2</span>
+        <span style="color:var(--muted);">Performance · May–Jun</span>
+      </div>
+      <div class="tr-phase-pill">
+        <span style="color:var(--muted);">PHASE 3</span>
+        <span style="color:var(--muted);">Peak Form · Jul–Aug</span>
+      </div>
+    </div>
+
+    <!-- RULES footer -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:var(--gap);">
+      <div style="padding:10px;background:var(--panel2);border:1px solid var(--border);text-align:center;">
+        <div style="font-size:1.2rem;">😴</div>
+        <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--accent);margin-top:4px;">REST DAYS</div>
+        <div style="font-size:.65rem;color:var(--muted);margin-top:2px;">Sat–Sun walk &amp; stretch only</div>
+      </div>
+      <div style="padding:10px;background:var(--panel2);border:1px solid var(--border);text-align:center;">
+        <div style="font-size:1.2rem;">📈</div>
+        <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--gold);margin-top:4px;">PROGRESSION</div>
+        <div style="font-size:.65rem;color:var(--muted);margin-top:2px;">+2.5kg compounds every 1–2 wks</div>
+      </div>
+      <div style="padding:10px;background:var(--panel2);border:1px solid var(--border);text-align:center;">
+        <div style="font-size:1.2rem;">🏃</div>
+        <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--green);margin-top:4px;">CARDIO</div>
+        <div style="font-size:.65rem;color:var(--muted);margin-top:2px;">Max 2 extra · not after legs</div>
+      </div>
+    </div>
+  </div>
+
+
+</main>
+
+<!-- ═══ MONTHLY WRAPPED MODAL ═══ -->
+<div id="wrappedModal" style="display:none;position:fixed;inset:0;z-index:99998;align-items:center;justify-content:center;">
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);" onclick="closeWrapped()"></div>
+  <div style="position:relative;background:var(--panel);border:1px solid rgba(251,191,36,.2);max-width:520px;width:92%;max-height:88vh;overflow-y:auto;padding:24px;box-shadow:0 0 60px rgba(251,191,36,.12),0 0 120px rgba(0,229,255,.06);">
+    <button onclick="closeWrapped()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
+    <div id="wrappedBody"></div>
+    <div style="margin-top:16px;text-align:center;">
+      <button class="btn" onclick="closeWrapped()" style="font-family:var(--font-display);letter-spacing:2px;">CLOSE WRAPPED</button>
     </div>
   </div>
 </div>
 
-</div><!-- end container -->
+<!-- ═══ PB HISTORY MODAL ═══ -->
+<div id="pbModal" style="display:none;">
+  <div class="modal-backdrop" onclick="closePBModal()"></div>
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="pbModalTitle">HISTORY</div>
+      <button class="modal-close" onclick="closePBModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="chart-container" style="margin-bottom:16px;"><canvas id="pbHistoryChart"></canvas></div>
+      <div id="pbHistoryList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EDIT MODAL ═══ -->
+<div id="editModal" style="display:none;">
+  <div class="modal-backdrop" onclick="closeEditModal()"></div>
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="editModalTitle">EDIT ENTRY</div>
+      <div class="modal-date" id="editModalDate"></div>
+      <button class="modal-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="edit-modal-body" id="editModalBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" style="border-color:var(--muted);color:var(--muted);" onclick="closeEditModal()">CANCEL</button>
+        <button class="btn btn-sm btn-accent" id="editModalSaveBtn">SAVE ⚡</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
+<!-- ═══ MORNING NOTE FLASH MODAL ═══ -->
+<div id="morningModal" style="display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);">
+  <div style="max-width:420px;width:90%;background:var(--panel);border:1px solid rgba(251,191,36,.3);padding:28px 24px;position:relative;box-shadow:0 0 60px rgba(251,191,36,.08);">
+    <!-- Close -->
+    <button onclick="closeMorningNote()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1;">✕</button>
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:2rem;margin-bottom:8px;">☀️</div>
+      <div style="font-family:var(--font-display);font-size:1.4rem;color:var(--gold);letter-spacing:3px;">GOOD MORNING</div>
+      <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-top:4px;" id="morningDate"></div>
+    </div>
+    <!-- The note -->
+    <div style="background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.15);padding:16px 18px;font-family:var(--font-mono);font-size:.85rem;color:var(--text);line-height:1.8;white-space:pre-wrap;min-height:60px;" id="morningNoteText"></div>
+    <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-top:8px;text-align:right;">— from yesterday's you</div>
+    <!-- CTA -->
+    <button onclick="closeMorningNote()" style="width:100%;margin-top:20px;background:var(--gold);color:#000;border:none;padding:12px;font-family:var(--font-display);font-size:1rem;letter-spacing:3px;cursor:pointer;">LET'S GO ⚡</button>
+  </div>
+</div>
+
 </body>
 </html>
