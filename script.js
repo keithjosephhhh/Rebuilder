@@ -1662,24 +1662,32 @@ async function loadTomorrowNote() {
 function checkMorningFlash() {
   if (!state.tomorrowNote?.text?.trim()) return;
 
-  // Get current time in IST (UTC+5:30)
-  const now = new Date();
+  // Get current IST date + time
+  const now   = new Date();
   const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-  const istMs = utcMs + (5.5 * 3600000);
-  const ist = new Date(istMs);
-  const hours   = ist.getHours();
-  const minutes = ist.getMinutes();
-  const istMinutes = hours * 60 + minutes;
+  const ist   = new Date(utcMs + 5.5 * 3600000);
+  const istMinutes = ist.getHours() * 60 + ist.getMinutes();
+  const todayIST   = ist.toISOString().slice(0, 10);
 
-  // Flash between 5:30am (330 min) and 11:59pm (1439 min)
+  // Only flash after 5:30am IST
   if (istMinutes < 330) return;
 
+  // Only flash the day AFTER the note was saved
+  // savedAt is an ISO string — extract the date part in IST
+  const savedAt = state.tomorrowNote.savedAt;
+  if (!savedAt) return;
+  const savedUtcMs = new Date(savedAt).getTime() + new Date(savedAt).getTimezoneOffset() * 60000;
+  const savedIST   = new Date(savedUtcMs + 5.5 * 3600000);
+  const savedDateIST = savedIST.toISOString().slice(0, 10);
+
+  // Must be a different (later) day
+  if (todayIST <= savedDateIST) return;
+
   // Don't flash again if already dismissed today
-  const todayKey = ist.toISOString().slice(0, 10);
-  if (state.noteFlashDismissed === todayKey) return;
+  if (state.noteFlashDismissed === todayIST) return;
 
   // Show after a short delay so the app finishes loading first
-  setTimeout(() => showMorningNoteModal(state.tomorrowNote.text, todayKey), 800);
+  setTimeout(() => showMorningNoteModal(state.tomorrowNote.text, todayIST), 800);
 }
 
 function showMorningNoteModal(text, todayKey) {
@@ -1811,136 +1819,234 @@ function renderBodyStatsHistory() {
 // ══════════════════════════════════════════════════════════
 const TRAINING_DAYS = {
   0: {
-    name: 'UPPER STRENGTH', sub: '+ AESTHETIC', color: 'var(--green)', day: 'MON',
-    focus: 'Lats · Chest · Shoulders · Arms',
-    goal: 'Build the anime upper body frame',
-    muscles: ['Lats','Chest','Shoulders','Biceps','Core'],
-    exercises: [
-      { name: 'Weighted Pull-ups',          sets: 4, reps: '6',     rest: '3min', note: 'Add weight if reps are clean' },
-      { name: 'Incline DB Press',           sets: 4, reps: '8',     rest: '2min', note: 'Upper chest emphasis' },
-      { name: 'Overhead Press',             sets: 3, reps: '6–8',   rest: '2min', note: 'Strict — no leg drive' },
-      { name: 'Lateral Raises',             sets: 4, reps: '12–15', rest: '90s',  note: 'Slow eccentric' },
-      { name: 'Barbell Rows',               sets: 3, reps: '8–10',  rest: '2min', note: 'Drive elbows back' },
-      { name: 'Bicep Curls',                sets: 3, reps: '10–12', rest: '90s',  note: 'Supinate at top' },
-      { name: 'Hanging Leg Raises',         sets: 3, reps: '12',    rest: '60s',  note: 'Core finisher' },
+    name: 'UPPER POWER',
+    sub: 'Frame Builder',
+    goal: 'Build back width + upper chest + shoulders',
+    color: 'var(--green)',
+    muscles: ['Lats','Chest','Shoulders','Arms','Core'],
+    type: 'strength',
+    sections: [
+      {
+        title: 'MAIN WORKOUT',
+        exercises: [
+          { name: 'Weighted Pull-ups',      sets: 4, reps: '6–8',  rest: '3min', note: 'Add weight each session if reps clean', type: 'weight' },
+          { name: 'Incline Dumbbell Press', sets: 4, reps: '8',    rest: '2min', note: 'Upper chest emphasis', type: 'weight' },
+          { name: 'Barbell Rows',           sets: 3, reps: '8',    rest: '2min', note: 'Drive elbows back, squeeze', type: 'weight' },
+          { name: 'Overhead Press',         sets: 3, reps: '8',    rest: '2min', note: 'Strict form — no leg drive', type: 'weight' },
+          { name: 'Dumbbell Lateral Raises',sets: 4, reps: '15',   rest: '90s',  note: 'Slow eccentric — feel the delt', type: 'weight' },
+          { name: 'Hanging Leg Raises',     sets: 4, reps: '15',   rest: '60s',  note: 'Core finisher — slow and controlled', type: 'reps' },
+        ]
+      },
+      {
+        title: 'OPTIONAL FINISHER',
+        optional: true,
+        exercises: [
+          { name: 'Incline Walk',           sets: 1, reps: '10 min', rest: '—', note: 'Easy pace, just moving', type: 'time' },
+        ]
+      }
     ]
   },
   1: {
-    name: 'SPEED + CORE', sub: 'ATHLETIC', color: 'var(--blue)', day: 'TUE',
-    focus: 'Sprint Power · Agility · Core',
-    goal: 'Athletic output — not exhausting',
-    muscles: ['Core','Calves','Hip Flexors','Glutes'],
-    exercises: [
-      { name: 'Sprint Intervals',  sets: 7, reps: '60m',    rest: '2min', note: '90% effort' },
-      { name: 'Agility Ladder',    sets: 1, reps: '5 min',  rest: '—',    note: 'High knees, in-out' },
-      { name: 'Cone Drills',       sets: 4, reps: 'rounds', rest: '90s',  note: 'T-drill or shuttle' },
-      { name: 'Planks',            sets: 3, reps: '60s',    rest: '45s',  note: 'Squeeze glutes' },
-      { name: 'Side Planks',       sets: 3, reps: '45s',    rest: '45s',  note: 'Each side' },
-      { name: 'Ab Rollout',        sets: 3, reps: '10',     rest: '60s',  note: 'Protect lumbar' },
+    name: 'SPEED & CONDITIONING',
+    sub: 'VO₂ Max + Fat Burn',
+    goal: 'Improve VO₂ max and fat burning',
+    color: 'var(--blue)',
+    muscles: ['Full Body','Core','Calves','Lungs'],
+    type: 'cardio',
+    sections: [
+      {
+        title: 'RUNNING',
+        exercises: [
+          { name: '1 km Warm-up Jog',       sets: 1, reps: '1 km',    rest: '—',    note: 'Easy pace — get loose', type: 'time' },
+          { name: '400m Sprints × 6',        sets: 6, reps: '400m',    rest: '90s',  note: '90% effort — quality over quantity', type: 'time' },
+          { name: '1 km Cool-down Jog',      sets: 1, reps: '1 km',    rest: '—',    note: 'Easy — let heart rate drop', type: 'time' },
+        ]
+      },
+      {
+        title: 'CORE',
+        exercises: [
+          { name: 'Plank',                   sets: 3, reps: '1 min',   rest: '45s',  note: 'Anterior tilt corrected — squeeze glutes', type: 'time' },
+          { name: 'Hollow Body Hold',        sets: 3, reps: '45 sec',  rest: '45s',  note: 'Lower back pressed to floor', type: 'time' },
+        ]
+      }
     ]
   },
   2: {
-    name: 'LOWER STRENGTH', sub: '+ EXPLOSIVE', color: 'var(--gold)', day: 'WED',
-    focus: 'Quads · Hamstrings · Explosive Power',
-    goal: 'Strong legs = speed retention',
+    name: 'LOWER BODY STRENGTH',
+    sub: 'Athletic Legs',
+    goal: 'Strong athletic legs',
+    color: 'var(--gold)',
     muscles: ['Quads','Hamstrings','Glutes','Calves'],
-    exercises: [
-      { name: 'Squat / Trap Bar DL',   sets: 4, reps: '5',  rest: '3min', note: 'Alternate each week' },
-      { name: 'Bulgarian Split Squat', sets: 3, reps: '8',  rest: '2min', note: 'Deep stretch' },
-      { name: 'Romanian DL',           sets: 3, reps: '8',  rest: '2min', note: 'Feel hamstrings load' },
-      { name: 'Box Jumps',             sets: 3, reps: '5',  rest: '2min', note: 'Max height — land soft' },
-      { name: 'Calf Raises',           sets: 4, reps: '15', rest: '60s',  note: 'Full ROM' },
+    type: 'strength',
+    sections: [
+      {
+        title: 'MAIN WORKOUT',
+        exercises: [
+          { name: 'Back Squat / Trap Bar DL',  sets: 4, reps: '5–8',  rest: '3min', note: 'Alternate each week — never both same day', type: 'weight' },
+          { name: 'Bulgarian Split Squat',     sets: 3, reps: '10',   rest: '2min', note: '10 each leg — deep stretch', type: 'weight' },
+          { name: 'Romanian Deadlift',         sets: 3, reps: '8',    rest: '2min', note: 'Hinge — feel the hamstrings load', type: 'weight' },
+          { name: 'Leg Press / Hack Squat',    sets: 3, reps: '12',   rest: '2min', note: 'Full ROM — pause at bottom', type: 'weight' },
+          { name: 'Box Jumps',                 sets: 3, reps: '5',    rest: '2min', note: 'Max height — land soft and absorb', type: 'reps' },
+          { name: 'Standing Calf Raises',      sets: 5, reps: '15',   rest: '60s',  note: 'Full ROM — pause at top and bottom', type: 'weight' },
+        ]
+      }
     ]
   },
   3: {
-    name: 'UPPER HYPERTROPHY', sub: 'ANIME BUILD', color: 'var(--purple)', day: 'THU',
-    focus: 'Shoulders · Arms · Forearms',
-    goal: 'Shoulder width + arm thickness',
-    muscles: ['Shoulders','Triceps','Biceps','Forearms'],
-    exercises: [
-      { name: 'Seated Shoulder Press',      sets: 3, reps: '10', rest: '2min', note: 'Controlled' },
-      { name: 'Heavy Lateral Raises',       sets: 4, reps: '12', rest: '90s',  note: 'Slight lean' },
-      { name: 'Rear Delt Fly',              sets: 3, reps: '15', rest: '60s',  note: 'Squeeze at top' },
-      { name: 'Close-Grip Bench',           sets: 3, reps: '8',  rest: '2min', note: 'Elbows tucked' },
-      { name: 'Tricep Extensions',          sets: 3, reps: '12', rest: '90s',  note: 'Overhead stretch' },
-      { name: 'Hammer Curls',               sets: 3, reps: '10', rest: '90s',  note: 'Brachialis focus' },
-      { name: 'Wrist Curls / Farmer Carry', sets: 3, reps: '—',  rest: '60s',  note: 'Grip strength' },
+    name: 'REST & RECOVERY',
+    sub: 'Active Rest Day',
+    goal: 'Recovery so muscles actually grow',
+    color: 'var(--muted)',
+    muscles: ['Full Body Recovery'],
+    type: 'rest',
+    sections: [
+      {
+        title: 'DO THIS',
+        exercises: [
+          { name: 'Light Walking',             sets: 1, reps: '20–30 min', rest: '—', note: 'Easy pace — just keep moving', type: 'time' },
+          { name: 'Mobility Stretching',       sets: 1, reps: '15 min',    rest: '—', note: 'Hip flexors, hamstrings, shoulders', type: 'time' },
+          { name: 'Football Juggling',         sets: 1, reps: 'optional',  rest: '—', note: 'Easy — skill practice, not fitness', type: 'reps' },
+        ]
+      }
     ]
   },
   4: {
-    name: 'CONDITIONING', sub: 'HYBRID ENGINE', color: 'var(--accent2)', day: 'FRI',
-    focus: 'Endurance · Alternate each week',
-    goal: 'Maintain engine, protect muscle',
-    muscles: ['Full Body','Cardio','Lungs'],
-    exercises: [
-      { name: 'Wk A — 5K Tempo Run',    sets: 1, reps: 'run',     rest: '—',   note: 'Race pace — log in Engine' },
-      { name: 'Wk B — Zone 2 (30 min)', sets: 1, reps: 'run',     rest: '—',   note: '60–70% max HR' },
-      { name: 'Wk B — Burpees',         sets: 3, reps: '10',      rest: '60s', note: 'After the run' },
-      { name: 'Wk C — Football Drills', sets: 1, reps: 'session', rest: '—',   note: 'Sprints, cuts, plyos' },
+    name: 'UPPER HYPERTROPHY',
+    sub: 'Anime Shoulders',
+    goal: 'Capped shoulders + arms',
+    color: 'var(--purple)',
+    muscles: ['Shoulders','Back','Triceps','Biceps','Forearms'],
+    type: 'strength',
+    sections: [
+      {
+        title: 'MAIN WORKOUT',
+        exercises: [
+          { name: 'Lat Pulldowns',             sets: 4, reps: '10–12', rest: '2min', note: 'Full stretch at top, squeeze at bottom', type: 'weight' },
+          { name: 'Dumbbell Lateral Raises',   sets: 5, reps: '15–20', rest: '60s',  note: 'Slight lean — target mid delt', type: 'weight' },
+          { name: 'Rear Delt Fly',             sets: 3, reps: '15',    rest: '60s',  note: 'Cable or DB — squeeze at top', type: 'weight' },
+          { name: 'Dips / Flat DB Press',      sets: 3, reps: '10',    rest: '2min', note: 'Chest or tricep focus — your choice', type: 'weight' },
+        ]
+      },
+      {
+        title: 'SUPERSET',
+        superset: true,
+        exercises: [
+          { name: 'Hammer Curls',              sets: 4, reps: '12',    rest: '—',    note: 'Neutral grip — brachialis', type: 'weight' },
+          { name: 'Rope Pushdowns',            sets: 4, reps: '12',    rest: '60s',  note: 'Superset with curls — no rest between', type: 'weight' },
+        ]
+      },
+      {
+        title: 'FINISHER',
+        exercises: [
+          { name: 'Farmer Carries',            sets: 3, reps: '40m',   rest: '90s',  note: 'Heavy — grip and trap density', type: 'weight' },
+        ]
+      }
+    ]
+  },
+  5: {
+    name: 'ENDURANCE & ATHLETICISM',
+    sub: 'Aerobic Base',
+    goal: 'Build aerobic base and agility',
+    color: 'var(--accent2)',
+    muscles: ['Full Body','Cardio','Agility'],
+    type: 'cardio',
+    sections: [
+      {
+        title: 'RUN',
+        exercises: [
+          { name: '5K Tempo Run',              sets: 1, reps: '5 km',   rest: '—',   note: 'Uncomfortable but sustainable pace — log time in Engine tab', type: 'time' },
+        ]
+      },
+      {
+        title: 'AGILITY',
+        exercises: [
+          { name: 'Football Agility Drills',   sets: 1, reps: '15 min', rest: '—',   note: 'Cone drills, shuttle runs, quick feet', type: 'time' },
+        ]
+      }
     ]
   }
 };
 
 let _activeTrainingDay = null;
-// _workoutLog[dayIdx][exIdx][setIdx] = { done: bool, weight: str, reps: str, time: str }
+// _workoutLog[dayIdx][sectionIdx][exIdx][setIdx] = { done, weight, reps, time }
 let _workoutLog = {};
-let _workoutDate = null; // date string of current workout session
+let _workoutDate = null;
 
-function _logKey(d, e, s) { return d+'-'+e+'-'+s; }
-
-function _getSet(d, e, s) {
-  if (!_workoutLog[d]) _workoutLog[d] = {};
-  if (!_workoutLog[d][e]) _workoutLog[d][e] = {};
-  if (!_workoutLog[d][e][s]) _workoutLog[d][e][s] = { done: false, weight: '', reps: '', time: '' };
-  return _workoutLog[d][e][s];
+function _getSet(d, sec, e, s) {
+  if (!_workoutLog[d])         _workoutLog[d] = {};
+  if (!_workoutLog[d][sec])    _workoutLog[d][sec] = {};
+  if (!_workoutLog[d][sec][e]) _workoutLog[d][sec][e] = {};
+  if (!_workoutLog[d][sec][e][s]) _workoutLog[d][sec][e][s] = { done: false, weight: '', reps: '', time: '' };
+  return _workoutLog[d][sec][e][s];
 }
 
 function selectTrainingDay(dayIdx) {
+  // If a different workout is already active and has sets logged, ask first
+  if (_activeTrainingDay !== null && _activeTrainingDay !== dayIdx) {
+    const done = getTotalSetsDone(_activeTrainingDay);
+    if (done > 0) {
+      const current = TRAINING_DAYS[_activeTrainingDay].name;
+      const next    = TRAINING_DAYS[dayIdx].name;
+      if (!confirm(`You have ${done} set(s) logged for "${current}".\nSwitch to "${next}"? Your progress won't be lost — you can come back.`)) {
+        return; // stay on current
+      }
+    }
+  }
   _activeTrainingDay = dayIdx;
   if (!_workoutDate) _workoutDate = todayKey();
-  renderActiveWorkout();
-  document.querySelectorAll('.tr-day-card').forEach((c, i) => {
-    c.classList.toggle('tr-dc-active', i === dayIdx);
+  document.querySelectorAll('.wk-card').forEach((c, i) => {
+    c.classList.toggle('wk-active', i === dayIdx);
   });
+  renderActiveWorkout();
   const panel = document.getElementById('activeWorkoutPanel');
   if (panel) setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 
-function toggleSetDone(dayIdx, exIdx, setIdx) {
-  const s = _getSet(dayIdx, exIdx, setIdx);
-  s.done = !s.done;
-  // Read current inputs if toggling done
-  const wEl = document.getElementById('w-'+dayIdx+'-'+exIdx+'-'+setIdx);
-  const rEl = document.getElementById('r-'+dayIdx+'-'+exIdx+'-'+setIdx);
-  const tEl = document.getElementById('t-'+dayIdx+'-'+exIdx+'-'+setIdx);
-  if (wEl) s.weight = wEl.value;
-  if (rEl) s.reps   = rEl.value;
-  if (tEl) s.time   = tEl.value;
+function toggleSetDone(d, sec, e, s) {
+  const set = _getSet(d, sec, e, s);
+  // Capture inputs before toggling
+  const wEl = document.getElementById(`inp-w-${d}-${sec}-${e}-${s}`);
+  const rEl = document.getElementById(`inp-r-${d}-${sec}-${e}-${s}`);
+  const tEl = document.getElementById(`inp-t-${d}-${sec}-${e}-${s}`);
+  if (wEl) set.weight = wEl.value;
+  if (rEl) set.reps   = rEl.value;
+  if (tEl) set.time   = tEl.value;
+  set.done = !set.done;
   renderActiveWorkout();
   updateTrStats();
 }
 
-function saveSetInput(dayIdx, exIdx, setIdx) {
-  const s = _getSet(dayIdx, exIdx, setIdx);
-  const wEl = document.getElementById('w-'+dayIdx+'-'+exIdx+'-'+setIdx);
-  const rEl = document.getElementById('r-'+dayIdx+'-'+exIdx+'-'+setIdx);
-  const tEl = document.getElementById('t-'+dayIdx+'-'+exIdx+'-'+setIdx);
-  if (wEl) s.weight = wEl.value;
-  if (rEl) s.reps   = rEl.value;
-  if (tEl) s.time   = tEl.value;
+function saveSetVal(d, sec, e, s) {
+  const set = _getSet(d, sec, e, s);
+  const wEl = document.getElementById(`inp-w-${d}-${sec}-${e}-${s}`);
+  const rEl = document.getElementById(`inp-r-${d}-${sec}-${e}-${s}`);
+  const tEl = document.getElementById(`inp-t-${d}-${sec}-${e}-${s}`);
+  if (wEl) set.weight = wEl.value;
+  if (rEl) set.reps   = rEl.value;
+  if (tEl) set.time   = tEl.value;
 }
 
 function getTotalSetsDone(dayIdx) {
-  if (!_workoutLog[dayIdx]) return 0;
+  const day = TRAINING_DAYS[dayIdx];
+  if (!day) return 0;
   let c = 0;
-  Object.values(_workoutLog[dayIdx]).forEach(ex => Object.values(ex).forEach(set => { if(set.done) c++; }));
+  day.sections.forEach((sec, si) => {
+    sec.exercises.forEach((ex, ei) => {
+      const exSets = typeof ex.sets === 'number' ? ex.sets : 1;
+      for (let s = 0; s < exSets; s++) {
+        if (_workoutLog[dayIdx]?.[si]?.[ei]?.[s]?.done) c++;
+      }
+    });
+  });
   return c;
 }
 
 function getTotalSets(dayIdx) {
   const day = TRAINING_DAYS[dayIdx];
   if (!day) return 0;
-  return day.exercises.reduce((sum,ex) => sum + (typeof ex.sets==='number'?ex.sets:1), 0);
+  let t = 0;
+  day.sections.forEach(sec => sec.exercises.forEach(ex => t += typeof ex.sets === 'number' ? ex.sets : 1));
+  return t;
 }
 
 async function saveWorkout() {
@@ -1951,34 +2057,28 @@ async function saveWorkout() {
   const day = TRAINING_DAYS[d];
   const date = _workoutDate || todayKey();
 
-  // Build structured log
-  const exercises = day.exercises.map((ex, ei) => {
-    const sets = Array.from({length: typeof ex.sets==='number'?ex.sets:1}, (_,si) => {
-      const s = _getSet(d, ei, si);
-      // Read live DOM values too
-      const wEl = document.getElementById('w-'+d+'-'+ei+'-'+si);
-      const rEl = document.getElementById('r-'+d+'-'+ei+'-'+si);
-      const tEl = document.getElementById('t-'+d+'-'+ei+'-'+si);
-      return {
-        done:   s.done,
-        weight: wEl ? wEl.value : s.weight,
-        reps:   rEl ? rEl.value : s.reps,
-        time:   tEl ? tEl.value : s.time,
-      };
-    });
-    return { name: ex.name, sets };
-  });
+  const sections = day.sections.map((sec, si) => ({
+    title: sec.title,
+    exercises: sec.exercises.map((ex, ei) => {
+      const exSets = typeof ex.sets === 'number' ? ex.sets : 1;
+      const sets = Array.from({length: exSets}, (_, s) => {
+        const set = _getSet(d, si, ei, s);
+        const wEl = document.getElementById(`inp-w-${d}-${si}-${ei}-${s}`);
+        const rEl = document.getElementById(`inp-r-${d}-${si}-${ei}-${s}`);
+        const tEl = document.getElementById(`inp-t-${d}-${si}-${ei}-${s}`);
+        return { done: set.done, weight: wEl?.value||set.weight, reps: rEl?.value||set.reps, time: tEl?.value||set.time };
+      });
+      return { name: ex.name, sets };
+    })
+  }));
 
   const entry = {
-    date,
-    dayIdx: d,
-    dayName: day.name,
-    exercises,
+    date, dayIdx: d, dayName: day.name,
+    sections,
     totalSets: getTotalSets(d),
-    doneSets:  getTotalSetsDone(d),
+    doneSets: getTotalSetsDone(d),
   };
 
-  // Save to Supabase as workout_logs
   const existing = await supaFetch('GET', `rebuilder_logs?type=eq.workout_logs&logged_at=eq.${date}&limit=1`);
   if (existing && existing.length > 0) {
     await supaFetch('PATCH', `rebuilder_logs?type=eq.workout_logs&logged_at=eq.${date}`, { data: entry });
@@ -1986,24 +2086,23 @@ async function saveWorkout() {
     await supaFetch('POST', 'rebuilder_logs', { type: 'workout_logs', data: entry, logged_at: date });
   }
 
-  // If conditioning day with time entries — auto-populate engine tab
-  if (d === 4) {
-    const runSet = exercises.find(ex => ex.name.toLowerCase().includes('5k') || ex.name.toLowerCase().includes('zone 2'));
-    const timeVal = runSet?.sets?.[0]?.time;
+  // Cardio link: if 5K run time logged, pre-fill engine tab
+  if (d === 5) {
+    const runSec = sections[0];
+    const timeVal = runSec?.exercises?.[0]?.sets?.[0]?.time;
     if (timeVal) {
-      // Pre-fill engine tab run time
       const fiveKEl = document.getElementById('inp-fivek');
       if (fiveKEl && !fiveKEl.value) fiveKEl.value = timeVal;
-      notify('⏱ Run time copied to Engine tab — log it there for XP!', 'var(--blue)');
+      notify('⏱ Run time copied to Engine tab', 'var(--blue)');
     }
   }
 
-  notify('💾 Workout saved — ' + getTotalSetsDone(d) + '/' + getTotalSets(d) + ' sets', 'var(--green)');
+  notify('✓ Saved — ' + getTotalSetsDone(d) + '/' + getTotalSets(d) + ' sets', 'var(--green)');
   renderActiveWorkout();
 }
 
 function resetWorkout(dayIdx) {
-  if (!confirm('Reset all sets for this workout?')) return;
+  if (!confirm('Clear all logged sets?')) return;
   _workoutLog[dayIdx] = {};
   renderActiveWorkout();
   updateTrStats();
@@ -2014,132 +2113,146 @@ function renderActiveWorkout() {
   if (!el) return;
 
   if (_activeTrainingDay === null) {
-    el.innerHTML = '<div style="padding:20px 0;text-align:center;">'
-      + '<div style="color:var(--muted);font-family:var(--font-mono);font-size:.7rem;margin-bottom:16px;">← CHOOSE A WORKOUT ABOVE</div>'
-      + '</div>';
+    el.innerHTML = `<div style="padding:40px 16px;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:12px;">👆</div>
+      <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);letter-spacing:2px;">SELECT A WORKOUT ABOVE</div>
+    </div>`;
     return;
   }
 
-  const d = _activeTrainingDay;
+  const d   = _activeTrainingDay;
   const day = TRAINING_DAYS[d];
   const totalSets = getTotalSets(d);
   const doneSets  = getTotalSetsDone(d);
-  const pct = totalSets ? Math.round(doneSets/totalSets*100) : 0;
-  const complete = doneSets===totalSets && totalSets>0;
+  const pct       = totalSets ? Math.round(doneSets / totalSets * 100) : 0;
+  const complete  = doneSets === totalSets && totalSets > 0;
+  const isRest    = day.type === 'rest';
 
-  // Determine input type per exercise
-  function exInputType(ex) {
-    const n = ex.name.toLowerCase();
-    if (n.includes('plank') || n.includes('run') || n.includes('zone') || n.includes('interval') || n.includes('agility') || n.includes('ladder') || n.includes('drill') || n.includes('conditioning')) return 'time';
-    if (n.includes('sprint')) return 'time';
-    return 'weight'; // default — weight + reps
-  }
+  // ── Sections ─────────────────────────────────────────
+  const sectionsHTML = day.sections.map((sec, si) => {
+    const badge = sec.optional
+      ? `<span style="font-family:var(--font-mono);font-size:.5rem;color:var(--muted);background:rgba(255,255,255,.05);padding:2px 6px;margin-left:8px;">OPTIONAL</span>`
+      : sec.superset
+      ? `<span style="font-family:var(--font-mono);font-size:.5rem;color:var(--purple);background:rgba(167,139,250,.1);padding:2px 6px;margin-left:8px;">SUPERSET</span>`
+      : '';
 
-  const exRows = day.exercises.map((ex, ei) => {
-    const exSets = typeof ex.sets==='number' ? ex.sets : 1;
-    const exDone = Object.values(_workoutLog[d]?.[ei] || {}).filter(s=>s.done).length;
-    const exComplete = exDone===exSets;
-    const isTimed = exInputType(ex) === 'time';
+    const exHTML = sec.exercises.map((ex, ei) => {
+      const exSets     = typeof ex.sets === 'number' ? ex.sets : 1;
+      const exDone     = Array.from({length: exSets}, (_,s) => _workoutLog[d]?.[si]?.[ei]?.[s]?.done||false).filter(Boolean).length;
+      const exComplete = exDone === exSets && !isRest;
 
-    const setRows = Array.from({length:exSets}, (_,si) => {
-      const s = _getSet(d, ei, si);
-      const done = s.done;
-      return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);">'
-        // Set number bubble
-        + '<div onclick="toggleSetDone('+d+','+ei+','+si+')" style="'
-        + 'width:28px;height:28px;border-radius:50%;flex-shrink:0;'
-        + 'border:2px solid '+(done?day.color:'var(--border2)')+';'
-        + 'background:'+(done?day.color:'transparent')+';'
-        + 'display:flex;align-items:center;justify-content:center;'
-        + 'font-family:var(--font-display);font-size:.65rem;'
-        + 'color:'+(done?'#000':'var(--muted)')+';cursor:pointer;'
-        + 'transition:all .15s;box-shadow:'+(done?'0 0 6px '+day.color+'55':'none')+';'
-        + '">'+(done?'✓':(si+1))+'</div>'
-        // Inputs
-        + '<div style="display:flex;gap:6px;flex:1;align-items:center;">'
-        + (isTimed
-          // Time input
-          ? '<input id="t-'+d+'-'+ei+'-'+si+'" type="text" value="'+s.time+'" placeholder="mm:ss" onchange="saveSetInput('+d+','+ei+','+si+')" style="width:70px;background:var(--bg);border:1px solid var(--border2);color:var(--text);padding:4px 6px;font-family:var(--font-mono);font-size:.7rem;">'
-          // Weight + Reps inputs
-          : '<input id="w-'+d+'-'+ei+'-'+si+'" type="number" value="'+s.weight+'" placeholder="kg" onchange="saveSetInput('+d+','+ei+','+si+')" style="width:56px;background:var(--bg);border:1px solid var(--border2);color:var(--text);padding:4px 6px;font-family:var(--font-mono);font-size:.7rem;">'
-          + '<span style="color:var(--border2);font-size:.7rem;">×</span>'
-          + '<input id="r-'+d+'-'+ei+'-'+si+'" type="number" value="'+s.reps+'" placeholder="reps" onchange="saveSetInput('+d+','+ei+','+si+')" style="width:52px;background:var(--bg);border:1px solid var(--border2);color:var(--text);padding:4px 6px;font-family:var(--font-mono);font-size:.7rem;">'
-        )
-        + (s.done && (s.weight||s.time) ? '<span style="font-family:var(--font-mono);font-size:.6rem;color:'+(done?day.color:'var(--muted)')+';">✓</span>' : '')
-        + '</div>'
-        + '</div>';
+      // Set rows
+      const setsHTML = isRest ? '' : Array.from({length: exSets}, (_, s) => {
+        const set  = _getSet(d, si, ei, s);
+        const done = set.done;
+        const idp  = `${d}-${si}-${ei}-${s}`;
+        const col  = done ? day.color : 'var(--border2)';
+
+        let inputs = '';
+        if (ex.type === 'time') {
+          inputs = `<input id="inp-t-${idp}" type="text" value="${set.time}" placeholder="mm:ss"
+            oninput="saveSetVal(${d},${si},${ei},${s})"
+            style="width:72px;">`;
+        } else if (ex.type === 'reps') {
+          inputs = `<input id="inp-r-${idp}" type="number" value="${set.reps}" placeholder="reps"
+            oninput="saveSetVal(${d},${si},${ei},${s})"
+            style="width:68px;">`;
+        } else {
+          inputs = `<input id="inp-w-${idp}" type="number" value="${set.weight}" placeholder="kg"
+              oninput="saveSetVal(${d},${si},${ei},${s})" style="width:60px;">
+            <span style="color:var(--border2);font-family:var(--font-mono);font-size:.75rem;flex-shrink:0;">×</span>
+            <input id="inp-r-${idp}" type="number" value="${set.reps}" placeholder="reps"
+              oninput="saveSetVal(${d},${si},${ei},${s})" style="width:60px;">`;
+        }
+
+        return `<div class="set-row">
+          <div class="set-bubble" onclick="toggleSetDone(${d},${si},${ei},${s})"
+            style="border:2px solid ${col};background:${done ? day.color : 'transparent'};
+            color:${done ? '#000' : 'var(--muted)'};
+            box-shadow:${done ? '0 0 10px ' + day.color + '55' : 'none'};">
+            ${done ? '✓' : (s + 1)}
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">${inputs}</div>
+          <div style="margin-left:auto;font-family:var(--font-mono);font-size:.58rem;color:${done ? day.color : 'var(--border2)'};flex-shrink:0;">
+            ${ex.reps !== '—' ? 'target ' + ex.reps : ''}
+          </div>
+        </div>`;
+      }).join('');
+
+      return `<div class="ex-card${exComplete ? ' ex-done' : ''}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:${isRest ? 0 : 12}px;">
+          <div style="flex:1;padding-right:12px;">
+            <div style="font-family:var(--font-display);font-size:.95rem;
+              color:${exComplete ? 'var(--muted)' : day.color};letter-spacing:.5px;
+              text-decoration:${exComplete ? 'line-through' : 'none'};">${ex.name}</div>
+            <div style="font-family:var(--font-mono);font-size:.62rem;color:var(--muted);margin-top:4px;">
+              ${ex.sets} sets · ${ex.reps} reps · rest ${ex.rest}
+            </div>
+            ${ex.note ? `<div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-top:5px;font-style:italic;opacity:.8;">💡 ${ex.note}</div>` : ''}
+          </div>
+          ${isRest ? '' : `<div style="font-family:var(--font-display);font-size:.9rem;
+            color:${exComplete ? 'var(--green)' : day.color};flex-shrink:0;">
+            ${exDone}/${exSets}
+          </div>`}
+        </div>
+        ${setsHTML}
+      </div>`;
     }).join('');
 
-    return '<div style="background:var(--panel2);border:1px solid '+(exComplete?day.color+'55':'var(--border)')+';padding:12px 14px;transition:border-color .2s;">'
-      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">'
-      + '<div>'
-      + '<div style="font-family:var(--font-display);font-size:.9rem;color:'+(exComplete?'var(--muted)':day.color)+';letter-spacing:1px;">'
-      + ex.name+'</div>'
-      + '<div style="font-size:.62rem;color:var(--muted);font-family:var(--font-mono);margin-top:1px;">'
-      + 'Target: '+(ex.reps!=='—'?ex.reps+' reps · ':'')+'rest '+ex.rest
-      + (isTimed ? ' · ⏱ log time' : ' · log kg × reps')
-      + '</div>'
-      + '</div>'
-      + '<div style="font-family:var(--font-display);font-size:.8rem;color:'+(exComplete?'var(--green)':day.color)+';flex-shrink:0;">'+exDone+'/'+exSets+'</div>'
-      + '</div>'
-      + '<div>'+setRows+'</div>'
-      + (ex.note ? '<div style="font-size:.6rem;color:var(--muted);font-family:var(--font-mono);margin-top:6px;padding-top:4px;border-top:1px solid rgba(255,255,255,.03);">💡 '+ex.note+'</div>' : '')
-      + '</div>';
+    return `<div style="margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:0;margin-bottom:12px;">
+        <div style="width:3px;height:14px;background:${day.color};opacity:.5;margin-right:10px;flex-shrink:0;"></div>
+        <span style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);letter-spacing:3px;">${sec.title}</span>
+        ${badge}
+      </div>
+      ${exHTML}
+    </div>`;
   }).join('');
 
-  el.innerHTML = '<div style="background:var(--panel);border:1px solid var(--border);padding:16px;margin-top:var(--gap);">'
-    // Header
-    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">'
-    + '<div>'
-    + '<div style="font-family:var(--font-display);font-size:1.4rem;color:'+day.color+';letter-spacing:2px;">'+day.name+'</div>'
-    + '<div style="font-size:.7rem;color:var(--muted);margin-top:2px;">'+day.focus+'</div>'
-    + '<div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;">'
-    + day.muscles.map(m=>'<span style="font-family:var(--font-mono);font-size:.55rem;padding:2px 5px;border:1px solid rgba(255,255,255,.07);color:var(--muted);">'+m+'</span>').join('')
-    + '</div></div>'
-    + '<div style="text-align:right;flex-shrink:0;">'
-    + '<div style="font-family:var(--font-display);font-size:2rem;color:'+(complete?'var(--green)':day.color)+';">'+pct+'%</div>'
-    + '<div style="font-family:var(--font-mono);font-size:.58rem;color:var(--muted);">'+doneSets+'/'+totalSets+' sets</div>'
-    + '</div></div>'
-    // Progress bar
-    + '<div class="bar" style="height:4px;margin-bottom:14px;"><div class="bar-fill" style="width:'+pct+'%;background:'+day.color+';box-shadow:0 0 6px '+day.color+'55;transition:width .3s;"></div></div>'
-    // Complete banner
-    + (complete ? '<div style="padding:8px;background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.2);margin-bottom:12px;font-family:var(--font-display);font-size:.85rem;color:var(--green);text-align:center;letter-spacing:2px;">✓ WORKOUT COMPLETE 🔥</div>' : '')
-    // Exercises
-    + '<div style="display:flex;flex-direction:column;gap:8px;">'+exRows+'</div>'
-    // Footer buttons
-    + '<div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">'
-    + '<button onclick="saveWorkout()" style="flex:1;background:'+day.color+';color:#000;border:none;padding:10px;font-family:var(--font-display);font-size:.85rem;letter-spacing:2px;cursor:pointer;">💾 SAVE WORKOUT</button>'
-    + '<button onclick="resetWorkout('+d+')" style="background:none;border:1px solid var(--border2);color:var(--muted);font-family:var(--font-mono);font-size:.65rem;padding:10px 14px;cursor:pointer;">RESET</button>'
-    + '</div>'
-    + '<div style="margin-top:8px;font-size:.65rem;color:var(--muted);font-family:var(--font-mono);">🎯 '+day.goal+(d===4?' · Cardio time auto-copies to Engine tab':'')+'</div>'
-    + '</div>';
-}
+  // ── Full panel ────────────────────────────────────────
+  el.innerHTML = `
+    <div style="background:var(--panel);border:1px solid var(--border);border-top:3px solid ${day.color};overflow:hidden;">
 
-function updateTrStats() {
-  const sessions = xpHistory.filter(e=>e.gym||e.run).length;
-  const el = document.getElementById('trStatSessions'); if(el) el.textContent = sessions||'0';
+      <!-- Header -->
+      <div style="padding:24px 22px 20px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <div style="font-family:var(--font-display);font-size:1.4rem;color:${day.color};letter-spacing:2px;line-height:1;">${day.name}</div>
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-top:6px;">${day.goal}</div>
+            <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">
+              ${day.muscles.map(m => `<span style="font-family:var(--font-mono);font-size:.55rem;padding:3px 8px;border:1px solid ${day.color}33;color:${day.color};opacity:.8;">${m}</span>`).join('')}
+            </div>
+          </div>
+          ${isRest ? '' : `<div style="text-align:right;flex-shrink:0;padding-left:16px;">
+            <div style="font-family:var(--font-display);font-size:2.6rem;line-height:1;color:${complete ? 'var(--green)' : day.color};">${pct}%</div>
+            <div style="font-family:var(--font-mono);font-size:.58rem;color:var(--muted);margin-top:4px;">${doneSets} / ${totalSets} sets</div>
+          </div>`}
+        </div>
 
-  const ws = getWeekStart();
-  const weekDays = xpHistory.filter(e=>e.date>=ws&&(e.gym||e.run)).length;
-  const wdEl = document.getElementById('trStatWeekDays'); if(wdEl) wdEl.textContent = weekDays+'/4';
-  const strEl = document.getElementById('trStatStreak'); if(strEl) strEl.textContent = (state.streaks?.train||0)+'wk';
-  const sEl = document.getElementById('trStatSetsToday');
-  if(sEl) sEl.textContent = _activeTrainingDay!==null ? getTotalSetsDone(_activeTrainingDay) : '0';
+        ${isRest ? '' : `<div style="margin-top:18px;">
+          <div style="height:4px;background:var(--border2);">
+            <div style="width:${pct}%;height:100%;background:${day.color};transition:width .4s;box-shadow:0 0 8px ${day.color}55;"></div>
+          </div>
+        </div>`}
+      </div>
 
-  const dotsEl = document.getElementById('trWeekDots');
-  if (dotsEl) {
-    const today = new Date(); const todayStr = today.toISOString().slice(0,10);
-    const dow = today.getDay(); const toMon = dow===0?-6:1-dow;
-    dotsEl.innerHTML = Array.from({length:7},(_,i)=>{
-      const d2 = new Date(today); d2.setDate(today.getDate()+toMon+i);
-      const key = d2.toISOString().slice(0,10);
-      const logged = xpHistory.find(e=>e.date===key&&(e.gym||e.run));
-      const isToday = key===todayStr;
-      return '<div style="width:calc('+100/7+'% - 4px);height:6px;border-radius:3px;background:'+(logged?'var(--green)':isToday?'rgba(45,212,191,.2)':'var(--border2)')+';transition:background .3s;"></div>';
-    }).join('');
-  }
-  const barEl=document.getElementById('trWeekBar'); if(barEl) barEl.style.width=Math.min(100,weekDays/4*100)+'%';
-  const lblEl=document.getElementById('trWeekLabel'); if(lblEl) lblEl.textContent=weekDays+' / 4 days';
+      ${complete ? `<div style="margin:0 22px 16px;padding:10px 14px;background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.25);font-family:var(--font-display);font-size:.8rem;color:var(--green);text-align:center;letter-spacing:3px;">✓ WORKOUT COMPLETE 🔥</div>` : ''}
+
+      <!-- Exercises -->
+      <div style="padding:4px 22px 8px;">${sectionsHTML}</div>
+
+      <!-- Footer -->
+      <div style="padding:16px 22px 22px;border-top:1px solid var(--border);">
+        ${isRest
+          ? `<div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);text-align:center;padding:6px 0;letter-spacing:1px;">Recovery is where the gains actually happen. Rest well.</div>`
+          : `<div style="display:flex;gap:10px;">
+              <button onclick="saveWorkout()" style="flex:1;background:${day.color};color:#000;border:none;padding:14px;font-family:var(--font-display);font-size:.9rem;letter-spacing:2px;cursor:pointer;transition:opacity .15s;">SAVE WORKOUT</button>
+              <button onclick="resetWorkout(${d})" style="background:none;border:1px solid var(--border2);color:var(--muted);font-family:var(--font-mono);font-size:.62rem;padding:14px 18px;cursor:pointer;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)'">RESET</button>
+            </div>`
+        }
+      </div>
+
+    </div>`;
 }
 
 function renderTodayWorkout() { updateTrStats(); }
