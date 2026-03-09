@@ -1270,10 +1270,10 @@
   <div id="tab-training" class="tab-content">
     <div class="page-header">
       <h1 class="page-title">TRAINING</h1>
-      <div class="mono muted" style="font-size:.7rem;">5 days/week · 176-day campaign</div>
+      <div class="mono muted" style="font-size:.7rem;">Choose your workout — no fixed days</div>
     </div>
 
-    <!-- STATS TILES — Arrow style -->
+    <!-- QUICK STATS ROW -->
     <div class="tr-stat-grid" id="trStatGrid">
       <div class="tr-stat-tile">
         <div class="tr-stat-icon">🏋️</div>
@@ -1297,90 +1297,78 @@
       </div>
     </div>
 
-    <!-- WEEKLY PROGRESS BAR — like Arrow's level progress -->
+    <!-- WEEKLY PROGRESS -->
     <div class="tr-week-panel">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span style="font-family:var(--font-display);font-size:.9rem;letter-spacing:1px;">WEEKLY TRAINING GOAL</span>
-        <span style="font-family:var(--font-mono);font-size:.7rem;" id="trWeekLabel">0 / 4 days</span>
+        <span style="font-family:var(--font-display);font-size:.85rem;letter-spacing:1px;">WEEKLY GOAL</span>
+        <span style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted);" id="trWeekLabel">0 / 4 sessions</span>
       </div>
-      <div class="tr-week-dots" id="trWeekDots"><!-- 7 day dots filled by JS --></div>
-      <div class="bar" style="margin-top:10px;height:6px;">
-        <div class="bar-fill" id="trWeekBar" style="width:0%;background:var(--green);box-shadow:0 0 6px rgba(45,212,191,.4);transition:width .5s;"></div>
+      <div class="tr-week-dots" id="trWeekDots"></div>
+      <div class="bar" style="margin-top:8px;height:4px;">
+        <div class="bar-fill" id="trWeekBar" style="width:0%;background:var(--green);transition:width .5s;"></div>
       </div>
     </div>
 
-    <!-- WORKOUT CHOOSER — pick any workout anytime, no day locking -->
+    <!-- WORKOUT SELECTOR — 6 cards, free choice -->
     <div style="margin-bottom:var(--gap);">
-      <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-bottom:8px;">WHAT ARE YOU TRAINING TODAY?</div>
-      <div class="tr-day-scroll" id="trDayScroll">
-        <div class="tr-day-card" onclick="selectTrainingDay(0)">
-          <div class="tr-dc-icon">💪</div>
-          <div class="tr-dc-name">Upper Strength</div>
-          <div class="tr-dc-sub">Lats · Chest · Arms</div>
+      <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);letter-spacing:2px;margin-bottom:10px;">SELECT TODAY'S WORKOUT</div>
+      <div class="wk-selector" id="trDayScroll">
+
+        <div class="wk-card wk-upper-power" onclick="selectTrainingDay(0)">
+          <div class="wk-card-accent"></div>
+          <div class="wk-icon">💪</div>
+          <div class="wk-name">Upper Power</div>
+          <div class="wk-sub">Frame Builder</div>
+          <div class="wk-muscles">Back · Chest · Shoulders</div>
         </div>
-        <div class="tr-day-card" onclick="selectTrainingDay(1)">
-          <div class="tr-dc-icon">⚡</div>
-          <div class="tr-dc-name">Speed + Core</div>
-          <div class="tr-dc-sub">Sprint · Agility</div>
+
+        <div class="wk-card wk-speed" onclick="selectTrainingDay(1)">
+          <div class="wk-card-accent"></div>
+          <div class="wk-icon">⚡</div>
+          <div class="wk-name">Speed & Conditioning</div>
+          <div class="wk-sub">VO₂ Max + Core</div>
+          <div class="wk-muscles">Sprints · Agility · Planks</div>
         </div>
-        <div class="tr-day-card" onclick="selectTrainingDay(2)">
-          <div class="tr-dc-icon">🦵</div>
-          <div class="tr-dc-name">Lower Strength</div>
-          <div class="tr-dc-sub">Quads · Hamstrings</div>
+
+        <div class="wk-card wk-lower" onclick="selectTrainingDay(2)">
+          <div class="wk-card-accent"></div>
+          <div class="wk-icon">🦵</div>
+          <div class="wk-name">Lower Body</div>
+          <div class="wk-sub">Strength</div>
+          <div class="wk-muscles">Quads · Hamstrings · Calves</div>
         </div>
-        <div class="tr-day-card" onclick="selectTrainingDay(3)">
-          <div class="tr-dc-icon">🔥</div>
-          <div class="tr-dc-name">Upper Hypertrophy</div>
-          <div class="tr-dc-sub">Shoulders · Arms</div>
+
+        <div class="wk-card wk-rest" onclick="selectTrainingDay(3)">
+          <div class="wk-card-accent"></div>
+          <div class="wk-icon">😴</div>
+          <div class="wk-name">Rest / Recovery</div>
+          <div class="wk-sub">Active Rest</div>
+          <div class="wk-muscles">Walk · Stretch · Mobility</div>
         </div>
-        <div class="tr-day-card" onclick="selectTrainingDay(4)">
-          <div class="tr-dc-icon">🏃</div>
-          <div class="tr-dc-name">Conditioning</div>
-          <div class="tr-dc-sub">Engine · Cardio</div>
+
+        <div class="wk-card wk-hypertrophy" onclick="selectTrainingDay(4)">
+          <div class="wk-card-accent"></div>
+          <div class="wk-icon">🔥</div>
+          <div class="wk-name">Upper Hypertrophy</div>
+          <div class="wk-sub">Anime Shoulders</div>
+          <div class="wk-muscles">Shoulders · Arms · Traps</div>
         </div>
+
+        <div class="wk-card wk-endurance" onclick="selectTrainingDay(5)">
+          <div class="wk-card-accent"></div>
+          <div class="wk-icon">🏃</div>
+          <div class="wk-name">Endurance & Athleticism</div>
+          <div class="wk-sub">Aerobic Base</div>
+          <div class="wk-muscles">5K · Football Drills</div>
+        </div>
+
       </div>
     </div>
 
-    <!-- ACTIVE WORKOUT PANEL — exercise checklist -->
-    <div id="activeWorkoutPanel"><!-- filled by JS --></div>
+    <!-- ACTIVE WORKOUT PANEL — rendered by JS -->
+    <div id="activeWorkoutPanel"></div>
 
-    <!-- PHASE PROGRESS — compact at bottom -->
-    <div class="tr-phases-row">
-      <div class="tr-phase-pill tr-ph-active">
-        <span style="color:var(--accent);font-weight:700;">PHASE 1</span>
-        <span>Build Base · Mar–Apr</span>
-        <span style="color:var(--green);">ACTIVE</span>
-      </div>
-      <div class="tr-phase-pill">
-        <span style="color:var(--muted);">PHASE 2</span>
-        <span style="color:var(--muted);">Performance · May–Jun</span>
-      </div>
-      <div class="tr-phase-pill">
-        <span style="color:var(--muted);">PHASE 3</span>
-        <span style="color:var(--muted);">Peak Form · Jul–Aug</span>
-      </div>
-    </div>
-
-    <!-- RULES footer -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:var(--gap);">
-      <div style="padding:10px;background:var(--panel2);border:1px solid var(--border);text-align:center;">
-        <div style="font-size:1.2rem;">😴</div>
-        <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--accent);margin-top:4px;">REST DAYS</div>
-        <div style="font-size:.65rem;color:var(--muted);margin-top:2px;">Sat–Sun walk &amp; stretch only</div>
-      </div>
-      <div style="padding:10px;background:var(--panel2);border:1px solid var(--border);text-align:center;">
-        <div style="font-size:1.2rem;">📈</div>
-        <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--gold);margin-top:4px;">PROGRESSION</div>
-        <div style="font-size:.65rem;color:var(--muted);margin-top:2px;">+2.5kg compounds every 1–2 wks</div>
-      </div>
-      <div style="padding:10px;background:var(--panel2);border:1px solid var(--border);text-align:center;">
-        <div style="font-size:1.2rem;">🏃</div>
-        <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--green);margin-top:4px;">CARDIO</div>
-        <div style="font-size:.65rem;color:var(--muted);margin-top:2px;">Max 2 extra · not after legs</div>
-      </div>
-    </div>
   </div>
-
 
 </main>
 
