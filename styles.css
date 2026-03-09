@@ -2471,136 +2471,155 @@ input[type=text], input[type=number], input[type=password], textarea { cursor: t
 .nav-item[onclick*="'training'"].active { border-left-color: #22c55e !important; color:#22c55e !important; }
 
 /* ═══════════════════════════════════════════════════════
-   TRAINING TAB — ARROW STYLE
+   TRAINING TAB
 ═══════════════════════════════════════════════════════ */
 
-/* ── Stat tiles grid (like Arrow's progress tiles) ── */
+/* Quick stats */
 .tr-stat-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 .tr-stat-tile {
   background: var(--panel2);
   border: 1px solid var(--border);
-  padding: 14px 10px;
+  padding: 18px 10px;
   text-align: center;
-  border-radius: 2px;
-  transition: border-color .2s;
 }
-.tr-stat-tile:hover { border-color: var(--accent); }
-.tr-stat-icon { font-size: 1.1rem; margin-bottom: 6px; }
-.tr-stat-val  { font-family: var(--font-display); font-size: 1.4rem; color: var(--text); line-height: 1; }
-.tr-stat-label{ font-family: var(--font-mono); font-size: .58rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; }
+.tr-stat-icon  { font-size: 1.2rem; margin-bottom: 8px; }
+.tr-stat-val   { font-family: var(--font-display); font-size: 1.6rem; color: var(--text); line-height: 1; }
+.tr-stat-label { font-family: var(--font-mono); font-size: .58rem; color: var(--muted); margin-top: 6px; letter-spacing: 1px; }
 
-/* ── Weekly progress panel ── */
+/* Weekly panel */
 .tr-week-panel {
   background: var(--panel2);
   border: 1px solid var(--border);
-  padding: 14px 16px;
-  margin-bottom: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
 }
-.tr-week-dots {
-  display: flex;
-  gap: 4px;
-  width: 100%;
+.tr-week-dots { display: flex; gap: 6px; }
+
+/* ── Workout selector — horizontal scroll on mobile ── */
+.wk-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
-/* ── Day scroll — Arrow's day selector ── */
-.tr-day-scroll {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  margin-bottom: 4px;
-  scrollbar-width: none;
-}
-.tr-day-scroll::-webkit-scrollbar { display: none; }
-
-.tr-day-card {
-  flex-shrink: 0;
-  width: 80px;
-  background: var(--panel2);
-  border: 1px solid var(--border2);
-  padding: 10px 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all .15s;
-  position: relative;
-}
-.tr-day-card:hover { border-color: var(--accent); background: rgba(0,229,255,.04); }
-.tr-dc-active { border-color: var(--accent) !important; background: rgba(0,229,255,.07) !important; }
-.tr-dc-today::before {
-  content: '▶';
-  position: absolute;
-  top: 4px; right: 5px;
-  font-size: .45rem;
-  color: var(--accent);
-}
-.tr-off { opacity: .4; cursor: default; }
-.tr-off:hover { border-color: var(--border2) !important; background: var(--panel2) !important; }
-
-.tr-dc-day  { font-family: var(--font-mono); font-size: .6rem; color: var(--muted); margin-bottom: 4px; }
-.tr-dc-name { font-family: var(--font-display); font-size: .7rem; color: var(--text); letter-spacing: .5px; line-height: 1.2; }
-.tr-dc-check { font-size: .6rem; color: var(--green); margin-top: 4px; min-height: 12px; }
-
-/* ── Phase pills (compact) ── */
-.tr-phases-row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: var(--gap);
-}
-.tr-phase-pill {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  font-family: var(--font-mono);
-  font-size: .68rem;
-}
-.tr-ph-active { border-left: 3px solid var(--accent); }
-
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  .wk-selector {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .wk-selector::-webkit-scrollbar { display: none; }
+  .wk-card {
+    min-width: 140px !important;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
   .tr-stat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ── Updated workout chooser cards ── */
-.tr-day-card {
-  flex-shrink: 0;
-  width: 110px;
+.wk-card {
+  position: relative;
   background: var(--panel2);
+  border: 1px solid var(--border);
+  padding: 20px 16px 18px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color .2s, transform .15s, background .2s;
+  user-select: none;
+}
+.wk-card:hover  { border-color: rgba(255,255,255,.2); transform: translateY(-2px); }
+.wk-card:active { transform: translateY(0); }
+
+/* Coloured left accent bar */
+.wk-card-accent {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+}
+.wk-upper-power   .wk-card-accent { background: var(--green); }
+.wk-speed         .wk-card-accent { background: var(--blue); }
+.wk-lower         .wk-card-accent { background: var(--gold); }
+.wk-rest          .wk-card-accent { background: var(--muted); }
+.wk-hypertrophy   .wk-card-accent { background: var(--purple); }
+.wk-endurance     .wk-card-accent { background: var(--accent2); }
+
+/* Active state */
+.wk-upper-power.wk-active   { border-color: var(--green);   background: rgba(45,212,191,.07); }
+.wk-speed.wk-active         { border-color: var(--blue);    background: rgba(56,189,248,.07); }
+.wk-lower.wk-active         { border-color: var(--gold);    background: rgba(251,191,36,.07); }
+.wk-rest.wk-active          { border-color: var(--muted);   background: rgba(82,86,106,.12); }
+.wk-hypertrophy.wk-active   { border-color: var(--purple);  background: rgba(167,139,250,.07); }
+.wk-endurance.wk-active     { border-color: var(--accent2); background: rgba(255,71,87,.07); }
+
+.wk-icon    { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+.wk-name    { font-family: var(--font-display); font-size: .85rem; color: var(--text); letter-spacing: .5px; line-height: 1.3; margin-bottom: 4px; }
+.wk-sub     { font-family: var(--font-mono); font-size: .6rem; color: var(--muted); margin-bottom: 8px; }
+.wk-muscles { font-family: var(--font-mono); font-size: .58rem; color: var(--muted); opacity: .65; line-height: 1.6; }
+
+/* ── Active workout panel ── */
+#activeWorkoutPanel {
+  margin-top: 8px;
+}
+
+/* Exercise card */
+.ex-card {
+  background: var(--bg);
   border: 1px solid var(--border2);
-  padding: 12px 10px;
-  text-align: center;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  transition: border-color .2s;
+}
+.ex-card.ex-done { border-color: rgba(45,212,191,.3); opacity: .7; }
+
+/* Set row */
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.set-row:last-child { border-bottom: none; }
+
+/* Set bubble */
+.set-bubble {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: .7rem;
   cursor: pointer;
   transition: all .15s;
 }
-.tr-day-card:hover { border-color: var(--accent); background: rgba(0,229,255,.04); }
-.tr-dc-active { border-color: var(--accent) !important; background: rgba(0,229,255,.08) !important; box-shadow: 0 0 12px rgba(0,229,255,.1); }
-.tr-dc-icon  { font-size: 1.4rem; margin-bottom: 6px; }
-.tr-dc-name  { font-family: var(--font-display); font-size: .75rem; color: var(--text); letter-spacing: .5px; margin-bottom: 3px; }
-.tr-dc-sub   { font-family: var(--font-mono); font-size: .55rem; color: var(--muted); }
 
-/* set input fields */
+/* Input fields */
 #activeWorkoutPanel input[type="number"],
 #activeWorkoutPanel input[type="text"] {
-  background: var(--bg) !important;
+  background: var(--panel2) !important;
   border: 1px solid var(--border2) !important;
   color: var(--text) !important;
-  padding: 4px 6px;
+  padding: 8px 10px;
   font-family: var(--font-mono);
-  font-size: .7rem;
-  -webkit-appearance: none; 
-  border-radius: 0;
-}
-#activeWorkoutPanel input:focus {
+  font-size: .75rem;
   outline: none;
-  border-color: var(--accent) !important;
+  -webkit-appearance: none;
+  transition: border-color .15s;
 }
+#activeWorkoutPanel input:focus { border-color: var(--accent) !important; }
+#activeWorkoutPanel input::placeholder { color: var(--muted); opacity: .5; }
+
 
 /* ═══════════════════════════════════════════════════════
    SKILLS VAULT
