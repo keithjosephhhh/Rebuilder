@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body onload="checkPersistedSession()">
+<div id="appLoadingBar" style="display:none;position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent));z-index:99999;box-shadow:0 0 8px var(--accent);"></div>
 
 <!-- ══ AUTH SCREEN ══ -->
 <div id="authScreen">
@@ -238,35 +239,68 @@
     <div class="stats-grid">
       <div class="stat-card panel accent-cyan" onclick="switchTab('body',document.querySelector('[data-tab=body]'))">
         <div class="sc-label">BODYWEIGHT</div>
-        <div class="sc-val" id="dashWeight">— kg</div>
+        <div class="sc-val" id="dashWeight" style="color:var(--accent);">— kg</div>
         <div class="sc-sub" id="dashWeightSub">Goal: 55–65 kg</div>
         <div class="bar sm" style="margin-top:6px;"><div class="bar-fill" id="bodyBarDash" style="width:0%"></div></div>
       </div>
       <div class="stat-card panel accent-orange" onclick="switchTab('strength',document.querySelector('[data-tab=strength]'))">
         <div class="sc-label">SQUAT PB</div>
-        <div class="sc-val" id="dashSquat">— kg</div>
-        <div class="sc-sub">Deadlift: <span id="dashDeadlift">—</span></div>
+        <div class="sc-val" id="dashSquat" style="color:var(--accent2);">— kg</div>
+        <div class="sc-sub">Deadlift: <span id="dashDeadlift" style="color:var(--accent2);">—</span></div>
       </div>
       <div class="stat-card panel accent-purple" onclick="switchTab('ml',document.querySelector('[data-tab=ml]'))">
         <div class="sc-label">ML PROGRESS</div>
-        <div class="sc-val" id="dashCurrPct">0%</div>
-        <div class="sc-sub">Projects: <span id="dashProjects">0</span></div>
+        <div class="sc-val" id="dashCurrPct" style="color:var(--purple);">0%</div>
+        <div class="sc-sub">Projects: <span id="dashProjects" style="color:var(--purple);">0</span></div>
       </div>
       <div class="stat-card panel accent-gold" onclick="switchTab('german',document.querySelector('[data-tab=german]'))">
         <div class="sc-label">GERMAN HRS</div>
-        <div class="sc-val" id="dashGermanHours">0.0</div>
-        <div class="sc-sub">This week: <span id="dashGermanWeek">0.0</span> hr</div>
+        <div class="sc-val" id="dashGermanHours" style="color:var(--gold);">0.0</div>
+        <div class="sc-sub">This week: <span id="dashGermanWeek" style="color:var(--gold);">0.0</span> hr</div>
       </div>
       <div class="stat-card panel accent-green" onclick="switchTab('engine',document.querySelector('[data-tab=engine]'))">
         <div class="sc-label">5K PB</div>
-        <div class="sc-val" id="dash5KPB">—:—</div>
-        <div class="sc-sub">Resting HR: <span id="dashRHR">— bpm</span></div>
+        <div class="sc-val" id="dash5KPB" style="color:var(--green);">—:—</div>
+        <div class="sc-sub">Resting HR: <span id="dashRHR" style="color:var(--green);">— bpm</span></div>
       </div>
-      <div class="stat-card panel" onclick="switchTab('missions',document.querySelector('[data-tab=missions]'))">
+      <div class="stat-card panel accent-orange" onclick="switchTab('missions',document.querySelector('[data-tab=missions]'))">
         <div class="sc-label">MISSIONS</div>
-        <div class="sc-val" id="dashMissions" style="color:var(--accent2)">0 active</div>
+        <div class="sc-val" id="dashMissions" style="color:var(--accent2);">0 active</div>
         <div class="sc-sub" id="dashMissionSub">Check for new ones</div>
       </div>
+    </div>
+
+    <!-- TODAY'S NUTRITION — always visible summary -->
+    <div class="panel" style="margin-top:var(--gap);border-left:3px solid var(--accent2);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div class="panel-title" style="margin:0;">🍽 TODAY'S NUTRITION</div>
+        <button class="btn btn-sm" style="font-size:.6rem;padding:3px 10px;" onclick="switchTab('body',document.querySelector('[data-tab=body]'))">LOG →</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+        <div style="text-align:center;padding:10px 6px;background:rgba(255,71,87,.05);border:1px solid rgba(255,71,87,.12);">
+          <div id="dash-cal-today" style="font-family:var(--font-display);font-size:1.4rem;color:var(--accent2);line-height:1;">—</div>
+          <div style="font-family:var(--font-mono);font-size:.55rem;color:var(--muted);margin-top:3px;">CALORIES</div>
+          <div style="font-family:var(--font-mono);font-size:.5rem;color:var(--border2);">2800–3000</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:rgba(45,212,191,.05);border:1px solid rgba(45,212,191,.12);">
+          <div id="dash-prot-today" style="font-family:var(--font-display);font-size:1.4rem;color:var(--green);line-height:1;">—</div>
+          <div style="font-family:var(--font-mono);font-size:.55rem;color:var(--muted);margin-top:3px;">PROTEIN g</div>
+          <div style="font-family:var(--font-mono);font-size:.5rem;color:var(--border2);">80g+ min</div>
+          <div class="bar sm" style="margin-top:5px;"><div class="bar-fill green" id="dash-prot-bar" style="width:0%"></div></div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.12);">
+          <div id="dash-carb-today" style="font-family:var(--font-display);font-size:1.4rem;color:var(--purple);line-height:1;">—</div>
+          <div style="font-family:var(--font-mono);font-size:.55rem;color:var(--muted);margin-top:3px;">CARBS g</div>
+          <div style="font-family:var(--font-mono);font-size:.5rem;color:var(--border2);">300–350g</div>
+        </div>
+        <div style="text-align:center;padding:10px 6px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.12);">
+          <div id="dash-fat-today" style="font-family:var(--font-display);font-size:1.4rem;color:var(--gold);line-height:1;">—</div>
+          <div style="font-family:var(--font-mono);font-size:.55rem;color:var(--muted);margin-top:3px;">FAT g</div>
+          <div style="font-family:var(--font-mono);font-size:.5rem;color:var(--border2);">70–90g</div>
+        </div>
+      </div>
+      <!-- Per-meal mini breakdown -->
+      <div id="dash-meal-breakdown" style="display:none;border-top:1px solid rgba(255,255,255,.04);padding-top:8px;"></div>
     </div>
 
     <!-- Level Timeline -->
@@ -1200,7 +1234,18 @@
         <div class="habit-total-val" id="habitXPLost">0</div>
       </div>
     </div>
-  </div>
+  
+
+    <!-- DB DIAGNOSTICS PANEL -->
+    <div class="panel" style="margin-top:var(--gap);border-left:3px solid var(--accent2);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--accent2);letter-spacing:2px;">🔌 DATABASE DIAGNOSTICS</div>
+        <button onclick="runDiagnostics()" class="btn" style="font-size:.6rem;padding:4px 10px;background:rgba(255,71,87,.1);border-color:rgba(255,71,87,.3);color:var(--accent2);">RUN TEST</button>
+      </div>
+      <div id="diagOutput" style="font-family:var(--font-mono);font-size:.62rem;color:var(--muted);min-height:20px;">Press RUN TEST to check database connection and schema.</div>
+    </div>
+</div>
+
 
   <!-- ═══ MISSIONS ═══ -->
   <div id="tab-missions" class="tab-content">
@@ -1298,7 +1343,7 @@
     </div>
 
     <!-- WEEKLY PROGRESS -->
-    <div class="tr-week-panel">
+    <div class="tr-week-panel" style="margin-bottom:22px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
         <span style="font-family:var(--font-display);font-size:.85rem;letter-spacing:1px;">WEEKLY GOAL</span>
         <span style="font-family:var(--font-mono);font-size:.7rem;color:var(--muted);" id="trWeekLabel">0 / 4 sessions</span>
@@ -1311,7 +1356,7 @@
 
     <!-- WORKOUT SELECTOR — 6 cards, free choice -->
     <div style="margin-bottom:var(--gap);">
-      <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);letter-spacing:2px;margin-bottom:10px;">SELECT TODAY'S WORKOUT</div>
+      <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);letter-spacing:3px;margin-bottom:14px;">SELECT TODAY'S WORKOUT</div>
       <div class="wk-selector" id="trDayScroll">
 
         <div class="wk-card wk-upper-power" onclick="selectTrainingDay(0)">
