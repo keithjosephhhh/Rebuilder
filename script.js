@@ -8,7 +8,7 @@ const HARDCODED_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const KEITH_PASSWORD = 'jesusismyrock';
 
 // ── CONSTANTS ──
-const CAMPAIGN_START = new Date('2026-03-11');
+const CAMPAIGN_START = new Date('2026-03-15');
 const CAMPAIGN_END   = new Date('2026-09-01');
 const CAMPAIGN_DAYS  = 176;
 
@@ -368,7 +368,11 @@ function fmtDate(s) {
 // ── STATE ──
 let state = {
   totalXP: 0, currentLevel: 1,
-  streaks: { train: 0, ml: 0, german: 0 },
+  streaks: {
+    train:  { current: 0, longest: 0, last: null, shielded: false },
+    ml:     { current: 0, longest: 0, last: null, shielded: false },
+    german: { current: 0, longest: 0, last: null, shielded: false },
+  },
   streakShieldsUsed: 0, streakShieldsAvailable: 1, lastShieldMonth: '',
   mlCurrent: { modules: 0, lectures: 0, lecturesPlanned: 21, lectures231n: 0, lectures231nPlanned: 18, projects: 0, commits: 0, dlnlp: 0 },
   germanTotalHours: 0,
@@ -562,7 +566,7 @@ function switchTab(id, el) {
   if (id === 'analytics') setTimeout(buildAllCharts, 50);
   // training tab needs no special chart init
   if (id === 'strength')  setTimeout(() => buildStrengthChart(_strengthChartFilter), 50);
-  if (id === 'body')      setTimeout(buildBodyChart, 50);
+  if (id === 'body')      setTimeout(() => { buildBodyChart(); buildNutritionChart(); }, 50);
   if (id === 'engine')    setTimeout(buildEngineChart, 50);
   if (id === 'german')    setTimeout(buildGermanChart, 50);
   refreshAll();
@@ -745,58 +749,82 @@ async function saveDay() {
 }
 
 function updateStreaks() {
-  // Week = Mon–Sun. Thresholds: Train 4/wk, ML 4/wk, German 5/wk
-  const THRESHOLDS = { train: 4, ml: 4, german: 5 };
+  // ── Daily streak logic ──
+  // Each streak tracks: { current, longest, last (YYYY-MM-DD), shielded }
+  // Rules:
+  //   last == today     → do nothing (already counted)
+  //   last == yesterday → increment current
+  //   last <  yesterday → reset to 1  (missed a day)
+  //   shielded == true  → streak is paused at 0 until next activity
+  // After each update, longest is kept if current beats it.
 
-  function weekBounds(offsetWeeks) {
-    const now = new Date();
-    const istMs = now.getTime() + now.getTimezoneOffset() * 60000 + (5.5 * 3600000);
-    const d = new Date(istMs);
-    const dow = d.getDay();
-    const toMon = dow === 0 ? -6 : 1 - dow;
-    const mon = new Date(d); mon.setDate(d.getDate() + toMon - offsetWeeks * 7);
-    const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
-    return [mon.toISOString().slice(0,10), sun.toISOString().slice(0,10)];
-  }
+  const today = todayKey();
 
-  function daysInWeek(offset, check) {
-    const [ws, we] = weekBounds(offset);
-    return xpHistory.filter(e => e.date >= ws && e.date <= we && check(e)).length;
-  }
+  // yesterday in IST
+  const istMs = Date.now() + new Date().getTimezoneOffset() * 60000 + 5.5 * 3600000;
+  const yest  = new Date(istMs - 86400000).toISOString().slice(0, 10);
 
+  // Ensure streak objects exist with correct shape
+  if (!state.streaks) state.streaks = {};
+  ['train', 'ml', 'german'].forEach(k => {
+    if (!state.streaks[k] || typeof state.streaks[k] !== 'object') {
+      state.streaks[k] = { current: 0, longest: 0, last: null, shielded: false };
+    }
+  });
+
+  // Check functions: did this xpHistory entry count for this streak type?
   const checks = {
-    train:  e => !!(e.gym || e.run),
-    ml:     e => !!(e.deepwork || e.impl),
-    german: e => !!e.germanStudy,
+    train:  e => !!(e && (e.gym  || e.run)),
+    ml:     e => !!(e && (e.deepwork || e.impl)),
+    german: e => !!(e && e.germanStudy),
   };
 
-  // Streak = consecutive past weeks all meeting threshold (current week not counted)
-  // Campaign started Mar 10 2026 — don't count weeks that started before then
-  const CAMPAIGN_START = '2026-03-11';
-  let ts = 0, ms = 0, gs = 0;
-  for (let w = 1; w <= 30; w++) {
-    const [ws] = weekBounds(w);
-    if (ws < CAMPAIGN_START) break; // don't count pre-campaign weeks
-    if (daysInWeek(w, checks.train)  >= THRESHOLDS.train)  ts++; else break;
-  }
-  for (let w = 1; w <= 30; w++) {
-    const [ws] = weekBounds(w);
-    if (ws < CAMPAIGN_START) break;
-    if (daysInWeek(w, checks.ml)     >= THRESHOLDS.ml)     ms++; else break;
-  }
-  for (let w = 1; w <= 30; w++) {
-    const [ws] = weekBounds(w);
-    if (ws < CAMPAIGN_START) break;
-    if (daysInWeek(w, checks.german) >= THRESHOLDS.german) gs++; else break;
-  }
+  ['train', 'ml', 'german'].forEach(key => {
+    const s    = state.streaks[key];
+    const done = checks[key](xpHistory.find(e => e.date === today));
 
-  state.streaks = { train: ts, ml: ms, german: gs };
+    if (!done) return; // nothing logged today for this key — no change
 
-  // Current-week day counts for dot coloring
+    const last = s.last;
+
+    if (last === today) {
+      // Already counted today — do nothing
+      return;
+    }
+
+    if (s.shielded) {
+      // Shield was active — resume: start fresh streak from today
+      s.current  = 1;
+      s.shielded = false;
+      s.last     = today;
+    } else if (last === yest) {
+      // Consecutive day — extend streak
+      s.current += 1;
+      s.last     = today;
+    } else {
+      // Missed one or more days — reset
+      s.current = 1;
+      s.last    = today;
+    }
+
+    // Keep longest
+    if (s.current > s.longest) s.longest = s.current;
+  });
+
+  // weekProgress is still used for dot coloring (how many days this week)
+  const CAMPAIGN_START = '2026-03-15';
+  const istNow   = new Date(istMs);
+  const dow      = istNow.getDay();
+  const toMon    = dow === 0 ? -6 : 1 - dow;
+  const monDate  = new Date(istNow); monDate.setDate(istNow.getDate() + toMon);
+  const weekStart = monDate.toISOString().slice(0, 10);
+  const weekEnd   = new Date(monDate); weekEnd.setDate(monDate.getDate() + 6);
+  const weekEndStr = weekEnd.toISOString().slice(0, 10);
+
   state.weekProgress = {
-    train:  daysInWeek(0, checks.train),
-    ml:     daysInWeek(0, checks.ml),
-    german: daysInWeek(0, checks.german),
+    train:  xpHistory.filter(e => e.date >= weekStart && e.date <= weekEndStr && checks.train(e)).length,
+    ml:     xpHistory.filter(e => e.date >= weekStart && e.date <= weekEndStr && checks.ml(e)).length,
+    german: xpHistory.filter(e => e.date >= weekStart && e.date <= weekEndStr && checks.german(e)).length,
   };
 }
 
@@ -821,11 +849,21 @@ function checkLevelUp() {
 async function useStreakShield() {
   if (!isKeith()) { notify('👁 Guest view', 'var(--muted)'); return; }
   if ((state.streakShieldsAvailable || 0) <= 0) { notify('No shield available this month', 'var(--red)'); return; }
-  if (!confirm('Use your Streak Shield? (1 per month)')) return;
+  if (!confirm('Use your Streak Shield? This protects today — streaks pause at 0 until your next log. (1 per month)')) return;
   state.streakShieldsAvailable--;
   state.streakShieldsUsed = (state.streakShieldsUsed || 0) + 1;
+  // Pause all streaks: set shielded flag, current drops to 0 (protected, not lost)
+  if (!state.streaks) state.streaks = {};
+  ['train', 'ml', 'german'].forEach(k => {
+    if (!state.streaks[k] || typeof state.streaks[k] !== 'object') {
+      state.streaks[k] = { current: 0, longest: 0, last: null, shielded: false };
+    }
+    state.streaks[k].shielded = true;
+    state.streaks[k].current  = 0;
+    // last stays as-is so when they next log, it won't be treated as a miss
+  });
   await saveState();
-  notify('🛡 Streak Shield used!', 'var(--gold)');
+  notify('🛡 Streak Shield used! Log again tomorrow to resume your streak.', 'var(--gold)');
   refreshSections('dashboard');
 }
 
@@ -942,9 +980,21 @@ async function saveNutrition() {
     ['cal','prot','carb','fat'].forEach(f => { const el = document.getElementById('meal-'+m+'-'+f); if(el) el.value=''; });
     const desc = document.getElementById('meal-'+m+'-desc'); if(desc) desc.value='';
   });
+  // Auto-tick XP nutrition checkboxes based on today's totals
+  const protCheck = document.getElementById('xp-protein');
+  const calCheck  = document.getElementById('xp-calories');
+  if (protCheck && totProt >= 80 && !protCheck.checked) {
+    protCheck.checked = true;
+    updateXP();
+  }
+  if (calCheck && totCal >= 2800 && totCal <= 3500 && !calCheck.checked) {
+    calCheck.checked = true;
+    updateXP();
+  }
   notify('🥗 Meals added! Total: ' + totCal + ' kcal / ' + totProt + 'g protein', 'var(--green)');
   updateMealTotals();
   refreshSections('body');
+  buildNutritionChart();
 }
 
 // ── STRENGTH ──
@@ -1207,7 +1257,7 @@ function checkMissions() {
     sm3:  () => te && te.gym && te.run,
     sm6:  () => { const we = xpHistory.filter(e => e.date >= ws); return we.length >= 5 && we.every(e => e.protein); },
     sm9:  () => { const _sm9ist = new Date(new Date().getTime() + new Date().getTimezoneOffset()*60000 + 5.5*3600000); const h = _sm9ist.getHours(); return h >= 23 && te; },
-    sm10: () => (state.streaks?.train || 0) >= 14,
+    sm10: () => { const s = state.streaks?.train; return ((s && typeof s === 'object') ? (s.current||0) : (s||0)) >= 14; },
     sm14: () => te && (te.gym || te.run) && (te.deepwork || te.impl) && te.germanStudy,
     sm15: () => getWeeklyXP() >= 600,
     // ── Strength ──
@@ -1226,7 +1276,7 @@ function checkMissions() {
     sm28: () => _weekSprints(ws) >= 3,
     sm29: () => _lowestRHR() < 55,
     // ── ML ──
-    sm4:  () => (state.streaks?.ml || 0) >= 5,
+    sm4:  () => { const s = state.streaks?.ml; return ((s && typeof s === 'object') ? (s.current||0) : (s||0)) >= 5; },
     sm8:  () => xpHistory.filter(e => e.date >= ws && (e.deepwork || e.impl)).length >= 3,
     sm30: () => _cs229Done() >= 10,
     sm31: () => _cs231nDone() >= 18,
@@ -1279,6 +1329,26 @@ async function claimMission(id) {
   if (state.claimedMissions.includes(id)) { notify('Already claimed', 'var(--muted)'); return; }
   state.claimedMissions.push(id);
   state.totalXP += m.xp;
+
+  // Also add mission XP to today's xpHistory entry so it appears in weekly XP total
+  const today = todayKey();
+  const ws    = getWeekStart();
+  let todayEntry = xpHistory.find(e => e.date === today);
+  if (todayEntry) {
+    // Add on top of existing day entry
+    todayEntry.xp = (todayEntry.xp || 0) + m.xp;
+    todayEntry.missionXP = (todayEntry.missionXP || 0) + m.xp;
+    dbUpsertDay('xp_logs', todayEntry).catch(console.error);
+  } else {
+    // No log today yet — create a minimal entry to carry the mission XP
+    todayEntry = { date: today, xp: m.xp, missionXP: m.xp, dayType: 'prime' };
+    xpHistory.push(todayEntry);
+    dbUpsertDay('xp_logs', todayEntry).catch(console.error);
+  }
+  // Refresh weekly XP history cache
+  if (!state.weeklyXPHistory) state.weeklyXPHistory = {};
+  state.weeklyXPHistory[ws] = getWeeklyXP();
+
   await saveState();
   notify('🏆 CLAIMED: ' + m.title + ' +' + m.xp + ' XP!', 'var(--gold)');
   refreshSections('xp', 'missions', 'dashboard');
@@ -1673,7 +1743,7 @@ function toggleStudyTimeline() {
 }
 
 function renderStudyTimeline() {
-  const CAMPAIGN_START = new Date('2026-03-11');
+  const CAMPAIGN_START = new Date('2026-03-15');
   const today = new Date();
   const daysSinceStart = Math.max(0, Math.floor((today - CAMPAIGN_START) / 86400000));
   const currentWeek = Math.min(24, Math.floor(daysSinceStart / 7) + 1);
@@ -2412,7 +2482,7 @@ function updateTrStats() {
   set('trStatWeekDays', weekDays + ' / 4');
 
   // Current training streak
-  set('trStatStreak', state.streaks?.train || 0);
+  { const s = state.streaks?.train; set('trStatStreak', (s && typeof s === 'object') ? (s.current||0) : (s||0)); }
 
   // Sets completed today in active workout
   const today = todayKey();
@@ -2545,7 +2615,8 @@ function renderDashboard() {
   const cBar = document.getElementById('campaignBar');
   if (cBar) cBar.style.width = Math.min(100, ((state.totalXP || 0) / maxXP) * 100) + '%';
 
-  const totalStreak = (state.streaks?.train || 0) + (state.streaks?.ml || 0) + (state.streaks?.german || 0);
+  const _sc = k => { const s = state.streaks?.[k]; return (s && typeof s === 'object') ? (s.current || 0) : (s || 0); };
+  const totalStreak = _sc('train') + _sc('ml') + _sc('german');
   const bonusXP = Math.floor(totalStreak / 10) * 10;
   set('streakBonusDisplay', bonusXP > 0 ? '+' + bonusXP + ' XP' : '—');
 
@@ -2553,7 +2624,14 @@ function renderDashboard() {
   const weekProgress = state.weekProgress || { train: 0, ml: 0, german: 0 };
 
   ['train','ml','german'].forEach(t => {
-    set(t + 'Streak', state.streaks?.[t] || 0);
+    const sd = state.streaks?.[t];
+    const cur = (sd && typeof sd === 'object') ? (sd.current || 0) : (sd || 0);
+    const lng = (sd && typeof sd === 'object') ? (sd.longest || 0) : 0;
+    const shielded = sd?.shielded || false;
+    set(t + 'Streak', shielded ? '🛡' : cur);
+    // Update longest streak sub-label if element exists
+    const lngEl = document.getElementById(t + 'StreakLongest');
+    if (lngEl) lngEl.textContent = 'BEST: ' + lng;
     const dc = document.getElementById(t + 'Dots');
     if (!dc) return;
     dc.innerHTML = '';
@@ -2588,7 +2666,7 @@ function renderDashboard() {
       dot.className = 'day-dot';
       dot.title = key;
 
-      const campaignStart = '2026-03-11';
+      const campaignStart = '2026-03-15';
       const isPreCampaign = key < campaignStart;
 
       if (isFuture || isPreCampaign) {
@@ -3471,6 +3549,7 @@ function buildAllCharts() {
   buildDayTypeChart();
   buildEngineAnalyticsChart();
   buildBodyChart();
+  buildNutritionChart();
   buildStrengthChart(_strengthChartFilter);
   buildEngineChart();
   buildGermanChart();
@@ -3545,6 +3624,157 @@ function buildBodyChart() {
       ]
     },
     options: { ...CHART_OPTS, scales: { ...CHART_OPTS.scales, y: { ...CHART_OPTS.scales.y, min: 50, max: 70 } } }
+  });
+}
+
+// Nutrition Calorie & Macro Trend Chart (Body tab)
+let _nutrChartFilter = 'cals';
+
+function filterNutrChart(mode, el) {
+  _nutrChartFilter = mode;
+  document.querySelectorAll('#tab-body .cf-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  buildNutritionChart();
+}
+
+function buildNutritionChart() {
+  destroyChart('nutrition');
+  const ctx = document.getElementById('chartNutrition');
+  if (!ctx) return;
+
+  // Get last 21 days that have nutrition data
+  const data = [...bodyHistory]
+    .filter(e => e.cals || e.prot || e.carb || e.fat)
+    .sort((a, b) => (a.date || '').localeCompare(b.date || ''))
+    .slice(-21);
+
+  if (!data.length) return;
+
+  const labels = data.map(e => fmtDate(e.date || e._logged_at));
+  const f = _nutrChartFilter;
+
+  // Today's macro summary pills
+  const todayKey_ = todayKey();
+  const todayEntry = bodyHistory.find(e => (e.date || (e._logged_at||'').slice(0,10)) === todayKey_);
+  const summaryEl = document.getElementById('nutrChartTodaySummary');
+  if (summaryEl && todayEntry) {
+    const items = [
+      { label: 'Calories', val: todayEntry.cals, unit: 'kcal', target: '2800–3000', color: 'var(--accent2)',
+        ok: todayEntry.cals >= 2800 && todayEntry.cals <= 3000 },
+      { label: 'Protein',  val: todayEntry.prot, unit: 'g',    target: '80g+',      color: 'var(--green)',
+        ok: todayEntry.prot >= 80 },
+      { label: 'Carbs',    val: todayEntry.carb, unit: 'g',    target: '300–350g',  color: 'var(--purple)',
+        ok: todayEntry.carb >= 300 && todayEntry.carb <= 350 },
+      { label: 'Fat',      val: todayEntry.fat,  unit: 'g',    target: '70–90g',    color: 'var(--gold)',
+        ok: todayEntry.fat >= 70 && todayEntry.fat <= 90 },
+    ];
+    summaryEl.innerHTML = items.map(it => `
+      <div style="flex:1;min-width:80px;text-align:center;padding:8px 6px;
+        background:${it.ok ? `rgba(45,212,191,.07)` : `rgba(255,255,255,.03)`};
+        border:1px solid ${it.ok ? `rgba(45,212,191,.2)` : `rgba(255,255,255,.06)`};">
+        <div style="font-family:var(--font-display);font-size:1.1rem;color:${it.ok ? 'var(--green)' : it.color};">
+          ${it.val != null ? it.val : '—'}
+        </div>
+        <div style="font-family:var(--font-mono);font-size:.55rem;color:var(--muted);">${it.label.toUpperCase()}</div>
+        <div style="font-family:var(--font-mono);font-size:.5rem;color:var(--border2);">${it.target}</div>
+        ${it.val != null ? `<div style="font-size:.65rem;margin-top:2px;">${it.ok ? '✓' : '▷'}</div>` : ''}
+      </div>`).join('');
+  } else if (summaryEl) {
+    summaryEl.innerHTML = '<div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);">No nutrition logged today yet</div>';
+  }
+
+  let datasets = [];
+
+  if (f === 'cals' || f === 'all') {
+    datasets.push({
+      label: 'Calories (kcal)',
+      data: data.map(e => e.cals || null),
+      borderColor: '#ff4757',
+      backgroundColor: f === 'cals' ? 'rgba(255,71,87,.1)' : 'rgba(255,71,87,.05)',
+      tension: .35, pointRadius: 4, pointBackgroundColor: '#ff4757', fill: f === 'cals',
+      yAxisID: f === 'all' ? 'y1' : 'y',
+    });
+  }
+  if (f === 'prot' || f === 'all') {
+    datasets.push({
+      label: 'Protein (g)',
+      data: data.map(e => e.prot || null),
+      borderColor: '#2dd4bf',
+      backgroundColor: f === 'prot' ? 'rgba(45,212,191,.1)' : 'rgba(45,212,191,.05)',
+      tension: .35, pointRadius: 4, pointBackgroundColor: '#2dd4bf', fill: f === 'prot',
+      yAxisID: 'y',
+    });
+  }
+  if (f === 'carb' || f === 'all') {
+    datasets.push({
+      label: 'Carbs (g)',
+      data: data.map(e => e.carb || null),
+      borderColor: '#a78bfa',
+      backgroundColor: f === 'carb' ? 'rgba(167,139,250,.1)' : 'rgba(167,139,250,.05)',
+      tension: .35, pointRadius: 4, pointBackgroundColor: '#a78bfa', fill: f === 'carb',
+      yAxisID: 'y',
+    });
+  }
+  if (f === 'fat' || f === 'all') {
+    datasets.push({
+      label: 'Fat (g)',
+      data: data.map(e => e.fat || null),
+      borderColor: '#fbbf24',
+      backgroundColor: f === 'fat' ? 'rgba(251,191,36,.1)' : 'rgba(251,191,36,.05)',
+      tension: .35, pointRadius: 4, pointBackgroundColor: '#fbbf24', fill: f === 'fat',
+      yAxisID: 'y',
+    });
+  }
+
+  // Target reference lines (only in single-metric views)
+  const targets = {
+    cals: { val: 2900, color: 'rgba(255,71,87,.35)',   label: 'Target 2900' },
+    prot: { val: 80,   color: 'rgba(45,212,191,.35)',  label: 'Target 80g' },
+    carb: { val: 325,  color: 'rgba(167,139,250,.35)', label: 'Target 325g' },
+    fat:  { val: 80,   color: 'rgba(251,191,36,.35)',  label: 'Target 80g' },
+  };
+  if (f !== 'all' && targets[f]) {
+    datasets.push({
+      label: targets[f].label,
+      data: data.map(() => targets[f].val),
+      borderColor: targets[f].color,
+      borderDash: [5, 5],
+      pointRadius: 0,
+      fill: false,
+      tension: 0,
+      yAxisID: 'y',
+    });
+  }
+
+  // Dual y-axis for "all" view (calories on right, macros on left)
+  const scalesConfig = f === 'all' ? {
+    x:  { ...CHART_OPTS.scales.x },
+    y:  { ...CHART_OPTS.scales.y, position: 'left',  title: { display: true, text: 'g', color: '#4a4e62', font: { size: 9 } } },
+    y1: { ...CHART_OPTS.scales.y, position: 'right', grid: { drawOnChartArea: false },
+          title: { display: true, text: 'kcal', color: '#4a4e62', font: { size: 9 } } },
+  } : { ...CHART_OPTS.scales };
+
+  charts['nutrition'] = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      ...CHART_OPTS,
+      scales: scalesConfig,
+      plugins: {
+        ...CHART_OPTS.plugins,
+        tooltip: {
+          ...CHART_OPTS.plugins.tooltip,
+          callbacks: {
+            label: ctx => {
+              const v = ctx.parsed.y;
+              if (v == null) return null;
+              const u = ctx.dataset.label?.includes('kcal') || ctx.dataset.label?.includes('alorie') ? ' kcal' : 'g';
+              return ` ${ctx.dataset.label}: ${v}${u}`;
+            }
+          }
+        }
+      }
+    }
   });
 }
 
