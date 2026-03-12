@@ -207,23 +207,26 @@
           <div class="streak-card">
             <div class="streak-num" id="trainStreak" style="color:var(--accent2)">0</div>
             <div class="streak-label">🏋️ TRAINING</div>
+            <div id="trainStreakLongest" style="font-family:var(--font-mono);font-size:.52rem;color:var(--muted);margin-bottom:3px;">BEST: 0</div>
             <div class="streak-dots" id="trainDots"></div>
-              <div class="streak-week-prog" id="trainWeekProg"></div>
-            <div class="streak-target">TARGET: 4 DAYS/WK</div>
+            <div class="streak-week-prog" id="trainWeekProg"></div>
+            <div class="streak-target">DAYS/WK THIS WEEK</div>
           </div>
           <div class="streak-card">
             <div class="streak-num" id="mlStreak" style="color:var(--purple)">0</div>
             <div class="streak-label">🧠 ML STUDY</div>
+            <div id="mlStreakLongest" style="font-family:var(--font-mono);font-size:.52rem;color:var(--muted);margin-bottom:3px;">BEST: 0</div>
             <div class="streak-dots" id="mlDots"></div>
-              <div class="streak-week-prog" id="mlWeekProg"></div>
-            <div class="streak-target">TARGET: 4 DAYS/WK</div>
+            <div class="streak-week-prog" id="mlWeekProg"></div>
+            <div class="streak-target">DAYS/WK THIS WEEK</div>
           </div>
           <div class="streak-card">
             <div class="streak-num" id="germanStreak" style="color:var(--gold)">0</div>
             <div class="streak-label">🇩🇪 GERMAN</div>
+            <div id="germanStreakLongest" style="font-family:var(--font-mono);font-size:.52rem;color:var(--muted);margin-bottom:3px;">BEST: 0</div>
             <div class="streak-dots" id="germanDots"></div>
-              <div class="streak-week-prog" id="germanWeekProg"></div>
-            <div class="streak-target">TARGET: 5 DAYS/WK</div>
+            <div class="streak-week-prog" id="germanWeekProg"></div>
+            <div class="streak-target">DAYS/WK THIS WEEK</div>
           </div>
         </div>
 
@@ -476,6 +479,23 @@
     <div class="panel" style="margin-top:var(--gap);">
       <div class="panel-title">📈 WEIGHT TREND</div>
       <div class="chart-container"><canvas id="chartWeightBody"></canvas></div>
+    </div>
+
+    <!-- Calorie & Macro Trend Chart -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <div class="panel-title" style="margin:0;">🔥 CALORIE & MACRO TREND</div>
+        <div style="display:flex;gap:6px;">
+          <button class="cf-btn active" onclick="filterNutrChart('cals',this)">Calories</button>
+          <button class="cf-btn" onclick="filterNutrChart('prot',this)">Protein</button>
+          <button class="cf-btn" onclick="filterNutrChart('carb',this)">Carbs</button>
+          <button class="cf-btn" onclick="filterNutrChart('fat',this)">Fat</button>
+          <button class="cf-btn" onclick="filterNutrChart('all',this)">All</button>
+        </div>
+      </div>
+      <!-- Today's macro summary bar -->
+      <div id="nutrChartTodaySummary" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;"></div>
+      <div class="chart-container"><canvas id="chartNutrition"></canvas></div>
     </div>
 
     <!-- Nutrition History Feed -->
