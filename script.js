@@ -9,8 +9,8 @@ const KEITH_PASSWORD = 'jesusismyrock';
 
 // ── CONSTANTS ──
 const CAMPAIGN_START = new Date('2026-03-16');
-const CAMPAIGN_END   = new Date('2026-09-15');
-const CAMPAIGN_DAYS  = 183;
+const CAMPAIGN_END   = new Date('2026-09-01');
+const CAMPAIGN_DAYS  = 176;
 
 const LEVELS = [
   {num:1,  name:"Awakened",             rank:"—",   weeks:"1–2",   color:"#6b7280",  desc:"You've just started the journey"},
@@ -812,7 +812,7 @@ function updateStreaks() {
   });
 
   // weekProgress is still used for dot coloring (how many days this week)
-  const CAMPAIGN_START = '2026-03-15';
+  const CAMPAIGN_START = '2026-03-16';
   const istNow   = new Date(istMs);
   const dow      = istNow.getDay();
   const toMon    = dow === 0 ? -6 : 1 - dow;
@@ -1743,7 +1743,7 @@ function toggleStudyTimeline() {
 }
 
 function renderStudyTimeline() {
-  const CAMPAIGN_START = new Date('2026-03-15');
+  const CAMPAIGN_START = new Date('2026-03-16');
   const today = new Date();
   const daysSinceStart = Math.max(0, Math.floor((today - CAMPAIGN_START) / 86400000));
   const currentWeek = Math.min(24, Math.floor(daysSinceStart / 7) + 1);
@@ -2666,7 +2666,7 @@ function renderDashboard() {
       dot.className = 'day-dot';
       dot.title = key;
 
-      const campaignStart = '2026-03-15';
+      const campaignStart = '2026-03-16';
       const isPreCampaign = key < campaignStart;
 
       if (isFuture || isPreCampaign) {
