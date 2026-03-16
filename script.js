@@ -8,9 +8,9 @@ const HARDCODED_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const KEITH_PASSWORD = 'jesusismyrock';
 
 // ── CONSTANTS ──
-const CAMPAIGN_START = new Date('2026-03-15');
-const CAMPAIGN_END   = new Date('2026-09-01');
-const CAMPAIGN_DAYS  = 176;
+const CAMPAIGN_START = new Date('2026-03-16');
+const CAMPAIGN_END   = new Date('2026-09-15');
+const CAMPAIGN_DAYS  = 183;
 
 const LEVELS = [
   {num:1,  name:"Awakened",             rank:"—",   weeks:"1–2",   color:"#6b7280",  desc:"You've just started the journey"},
