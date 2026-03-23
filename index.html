@@ -18,7 +18,7 @@
   <div class="auth-box">
     <div class="auth-logo">◈</div>
     <div class="auth-title">REBUILDER</div>
-    <div class="auth-sub">CAMPAIGN · 9 MAR 2026 → 1 SEP 2026</div>
+    <div class="auth-sub">CAMPAIGN · 23 MAR 2026 → 1 SEP 2026</div>
     <div class="auth-verse">"I can do all things through Christ who strengthens me." — Phil 4:13</div>
     <div class="auth-btns">
       <button class="auth-btn keith" onclick="showPWPrompt()">⚡ ENTER AS KEITH</button>
@@ -29,70 +29,99 @@
       </div>
       <button class="auth-btn guest" onclick="loginGuest()">👁 VIEW AS GUEST</button>
     </div>
-    <div class="auth-badge">176 DAYS · 9 PILLARS · 1 GOAL</div>
+    <div class="auth-badge">170 DAYS · 9 PILLARS · 1 GOAL</div>
   </div>
 </div>
 
 <!-- ══ SIDEBAR NAV ══ -->
 <nav class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <span class="sl-diamond">◈</span>
-    <span class="sl-text">REBUILDER</span>
-  </div>
-  <div class="sidebar-user" id="sidebarUser">⚡ KEITH</div>
-
-  <div class="sidebar-section">CORE</div>
-  <div class="nav-item active" onclick="switchTab('dashboard',this)" data-tab="dashboard">
-    <span class="nav-icon">⚔</span><span class="nav-label">Dashboard</span>
-  </div>
-  <div class="nav-item" onclick="switchTab('daily',this)" data-tab="daily">
-    <span class="nav-icon">📊</span><span class="nav-label">Daily XP</span>
+  <!-- Brand -->
+  <div class="sb-brand" onclick="switchTab('dashboard',document.querySelector('[data-tab=dashboard]'))">
+    <div class="sb-brand-mark">◈</div>
+    <div class="sb-brand-text">
+      <div class="sb-brand-title">REBUILDER</div>
+      <div class="sb-brand-sub" id="sidebarUser">⚡ KEITH</div>
+    </div>
   </div>
 
-  <div class="sidebar-section">BODY</div>
-  <div class="nav-item" onclick="switchTab('body',this)" data-tab="body">
-    <span class="nav-icon">💪</span><span class="nav-label">Body & Nutrition</span>
-  </div>
-  <div class="nav-item" onclick="switchTab('strength',this)" data-tab="strength">
-    <span class="nav-icon">🏋️</span><span class="nav-label">Strength</span>
-  </div>
-  <div class="nav-item" onclick="switchTab('engine',this)" data-tab="engine">
-    <span class="nav-icon">🏃</span><span class="nav-label">Cardio Engine</span>
+  <!-- Campaign mini bar -->
+  <div class="sb-campaign">
+    <div class="sb-camp-row">
+      <span id="sb-day-num" class="sb-camp-day">DAY —</span>
+      <span id="sb-camp-pct" class="sb-camp-pct">0%</span>
+    </div>
+    <div class="sb-camp-bar"><div class="sb-camp-fill" id="sbCampFill" style="width:0%"></div></div>
   </div>
 
-  <div class="sidebar-section">TRAINING</div>
-  <div class="nav-item" onclick="switchTab('training',this)" data-tab="training">
-    <span class="nav-icon">📋</span><span class="nav-label">Training Plan</span>
+  <!-- Nav groups -->
+  <div class="sb-nav">
+    <div class="sb-group-label">CORE</div>
+    <button class="sb-item active" onclick="switchTab('dashboard',this)" data-tab="dashboard">
+      <span class="sb-item-icon">⚔</span><span class="sb-item-label">Dashboard</span>
+      <span class="sb-item-dot"></span>
+    </button>
+    <button class="sb-item" onclick="switchTab('daily',this)" data-tab="daily">
+      <span class="sb-item-icon">⚡</span><span class="sb-item-label">Daily XP</span>
+      <span class="sb-item-dot"></span>
+    </button>
+
+    <div class="sb-group-label">BODY</div>
+    <button class="sb-item" onclick="switchTab('body',this)" data-tab="body">
+      <span class="sb-item-icon">🥗</span><span class="sb-item-label">Body & Nutrition</span>
+      <span class="sb-item-dot"></span>
+    </button>
+    <button class="sb-item" onclick="switchTab('strength',this)" data-tab="strength">
+      <span class="sb-item-icon">🏋️</span><span class="sb-item-label">Strength Lab</span>
+      <span class="sb-item-dot"></span>
+    </button>
+    <button class="sb-item" onclick="switchTab('engine',this)" data-tab="engine">
+      <span class="sb-item-icon">🏃</span><span class="sb-item-label">Cardio Engine</span>
+      <span class="sb-item-dot"></span>
+    </button>
+    <button class="sb-item" onclick="switchTab('training',this)" data-tab="training">
+      <span class="sb-item-icon">📋</span><span class="sb-item-label">Training Plan</span>
+      <span class="sb-item-dot"></span>
+    </button>
+
+    <div class="sb-group-label">MIND</div>
+    <button class="sb-item" onclick="switchTab('ml',this)" data-tab="ml">
+      <span class="sb-item-icon">🧠</span><span class="sb-item-label">AI Engineer Path</span>
+      <span class="sb-item-dot"></span>
+    </button>
+    <button class="sb-item" onclick="switchTab('german',this)" data-tab="german">
+      <span class="sb-item-icon">🇩🇪</span><span class="sb-item-label">German Campaign</span>
+      <span class="sb-item-dot"></span>
+    </button>
+
+    <div class="sb-group-label">INTEL</div>
+    <button class="sb-item" onclick="switchTab('analytics',this)" data-tab="analytics">
+      <span class="sb-item-icon">📈</span><span class="sb-item-label">Analytics</span>
+      <span class="sb-item-dot"></span>
+    </button>
+    <button class="sb-item" onclick="switchTab('missions',this)" data-tab="missions">
+      <span class="sb-item-icon">🎯</span><span class="sb-item-label">Missions</span>
+      <span class="sb-item-dot"></span>
+    </button>
+    <button class="sb-item" onclick="switchTab('rewards',this)" data-tab="rewards">
+      <span class="sb-item-icon">🏆</span><span class="sb-item-label">Reward Vault</span>
+      <span class="sb-item-dot"></span>
+    </button>
   </div>
 
-  <div class="sidebar-section">MIND</div>
-  <div class="nav-item" onclick="switchTab('ml',this)" data-tab="ml">
-    <span class="nav-icon">🧠</span><span class="nav-label">ML / CS</span>
-  </div>
-  <div class="nav-item" onclick="switchTab('german',this)" data-tab="german">
-    <span class="nav-icon">🇩🇪</span><span class="nav-label">German</span>
-  </div>
-
-  <div class="sidebar-section">INTEL</div>
-  <div class="nav-item" onclick="switchTab('analytics',this)" data-tab="analytics">
-    <span class="nav-icon">📈</span><span class="nav-label">Analytics</span>
-  </div>
-  <div class="nav-item" onclick="switchTab('missions',this)" data-tab="missions">
-    <span class="nav-icon">🎯</span><span class="nav-label">Missions</span>
-  </div>
-  <div class="nav-item" onclick="switchTab('rewards',this)" data-tab="rewards">
-    <span class="nav-icon">🏆</span><span class="nav-label">Rewards</span>
-  </div>
-
-  <div class="sidebar-bottom">
-    <button class="logout-btn" id="logoutBtn" onclick="logOut()" style="display:none;">⏻ LOG OUT</button>
+  <div class="sb-bottom">
+    <button class="sb-logout" id="logoutBtn" onclick="logOut()" style="display:none;">⏻ LOG OUT</button>
   </div>
 </nav>
 
 <!-- ══ MOBILE TOPBAR ══ -->
 <div class="mobile-topbar">
-  <button class="hamburger" id="hamburger" onclick="toggleSidebar()">☰</button>
-  <div class="mobile-title">REBUILDER</div>
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="mobile-brand">
+    <span class="mobile-mark">◈</span>
+    <span class="mobile-title">REBUILDER</span>
+  </div>
   <div class="mobile-user" id="mobileUser">⚡</div>
 </div>
 
@@ -130,9 +159,12 @@
 
   <!-- ═══ DASHBOARD ═══ -->
   <div id="tab-dashboard" class="tab-content active">
-    <div class="page-header">
-      <h1 class="page-title">COMMAND CENTER</h1>
-      <div id="userBadge" class="user-badge">⚡ KEITH</div>
+    <div class="tab-hero" style="--th-color:var(--accent)">
+      <div class="th-eyebrow">COMMAND CENTER</div>
+      <div class="th-title">THE REBUILDER</div>
+      <div class="th-sub">176-day campaign · Track everything · Become unstoppable</div>
+      <div class="th-bar"><div class="th-bar-fill" style="background:var(--accent)"></div></div>
+      <div id="userBadge" class="user-badge" style="position:absolute;top:20px;right:20px;">⚡ KEITH</div>
     </div>
 
     <!-- Monthly Wrapped Button -->
@@ -347,7 +379,7 @@
         <div class="xp-item"><label><input type="checkbox" id="xp-mobility" onchange="updateXP()"><span>Mobility Work</span></label><span class="xp-val">+5</span></div>
       </div>
       <div class="xp-cat">
-        <div class="xp-cat-title" style="color:var(--purple)">🧠 ML STUDY</div>
+        <div class="xp-cat-title" style="color:var(--purple)">🧠 AI STUDY</div>
         <div class="xp-item"><label><input type="checkbox" id="xp-deepwork" onchange="updateXP()"><span>90 Min Deep Work</span></label><span class="xp-val">+25</span></div>
         <div class="xp-item"><label><input type="checkbox" id="xp-impl" onchange="updateXP()"><span>Implementation</span></label><span class="xp-val">+10</span></div>
       </div>
@@ -389,12 +421,14 @@
       <div id="recentActivityFeed"></div>
     </div>
   </div>
-
   <!-- ═══ BODY ═══ -->
   <div id="tab-body" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">BODY & NUTRITION</h1>
-      <div class="mono muted" style="font-size:.7rem;">"Whether you eat or drink, do it all for the glory of God." — 1 Cor 10:31</div>
+    <div class="tab-hero" style="--th-color:var(--green)">
+      <div class="th-eyebrow">BODY & NUTRITION</div>
+      <div class="th-title">LEAN BULK</div>
+      <div class="th-sub">Target: 2800–3000 kcal · 80g+ protein · +0.3–0.5 kg/wk</div>
+      <div class="th-bar"><div class="th-bar-fill" style="background:var(--green)"></div></div>
+      
     </div>
 
     <!-- NUTRITION LOG — TOP -->
@@ -469,10 +503,58 @@
       <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-top:8px;padding:8px;background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.15);">
         ⚠ Gain limit: <strong style="color:var(--accent2);">+0.3–0.5 kg/week max</strong> · Protein min 80g/day · Only filled meals will be saved
       </div>
-      <div class="save-bar">
-        <small>Only filled meals are saved — blanks are preserved</small>
-        <button class="btn btn-sm" onclick="saveNutrition()">LOG MEALS ⚡</button>
+      <div class="save-bar" style="flex-wrap:wrap;gap:10px;align-items:center;">
+        <label style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.62rem;color:var(--muted);cursor:pointer;">
+          <input type="checkbox" id="nutr-mode-replace" style="accent-color:var(--accent2);width:13px;height:13px;">
+          REPLACE MODE <span style="color:var(--accent2);">(overwrite existing)</span>
+        </label>
+        <button class="btn btn-sm" onclick="saveNutrition()">SAVE MEALS ⚡</button>
       </div>
+    </div>
+
+    <!-- Body Stats — visible first, above history -->
+    <div class="panel" style="margin-top:var(--gap);border-left:3px solid var(--accent);">
+      <div class="panel-title" style="cursor:pointer;" onclick="toggleBodyStats()">
+        📏 BODY STATS &amp; MEASUREMENTS
+        <span id="bodyStatsToggleArrow" style="margin-left:auto;color:var(--muted);font-size:.8rem;">▼ EXPAND</span>
+      </div>
+      <div id="bodyStatsSection" style="display:none;">
+        <div class="stats-mini-grid" style="margin-bottom:12px;">
+          <div><div class="stat-label">BODYWEIGHT</div><div class="med-num bw-current" id="bwCurrent" style="color:var(--accent)">—</div></div>
+          <div><div class="stat-label">PULL-UP MAX</div><div class="med-num" id="dashPullup" style="color:var(--accent)">—</div></div>
+          <div><div class="stat-label">WAIST</div><div class="med-num" id="dashWaist" style="color:var(--accent)">—</div></div>
+          <div><div class="stat-label">SHOULDERS</div><div class="med-num" id="dashShoulders" style="color:var(--accent)">—</div></div>
+          <div><div class="stat-label">GAIN/WK</div><div class="med-num" id="dashGainWk" style="color:var(--green)">—</div></div>
+          <div><div class="stat-label">PROGRESS</div><div class="med-num" id="bwPct" style="color:var(--gold)">—</div></div>
+        </div>
+        <div class="bar" style="margin-bottom:16px;"><div class="bar-fill" id="bwBar" style="width:0%"></div></div>
+        <div class="divider"></div>
+        <div class="body-grid" style="margin-top:12px;">
+          <div class="f">
+            <label>Log Today's Weight (kg)</label>
+            <div style="display:flex;gap:8px;">
+              <input type="number" id="inp-weight" step="0.1" placeholder="e.g. 63.5" style="flex:1;">
+              <button class="btn btn-sm" onclick="saveBodyWeight()">LOG</button>
+            </div>
+          </div>
+          <div class="f">
+            <label>Weekly Measurements</label>
+            <div class="input-grid">
+              <div class="f"><label>Waist (cm)</label><input type="number" id="inp-waist" step="0.5" placeholder="78"></div>
+              <div class="f"><label>Shoulders (cm)</label><input type="number" id="inp-shoulders" step="0.5" placeholder="112"></div>
+              <div class="f"><label>Pull-up Max</label><input type="number" id="inp-pullup" step="1" placeholder="10"></div>
+            </div>
+            <div style="margin-top:8px;"><button class="btn btn-sm" onclick="saveWeeklyMeasurements()">SAVE MEASUREMENTS</button></div>
+          </div>
+        </div>
+        <div id="bodyStatsHistoryFeed" style="margin-top:12px;"></div>
+      </div>
+    </div>
+
+    <!-- Nutrition History Feed — scrollable -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">🍽 NUTRITION HISTORY</div>
+      <div id="bodyHistoryFeed" style="max-height:420px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;padding-right:4px;"></div>
     </div>
 
     <!-- Weight Progress Chart -->
@@ -493,65 +575,20 @@
           <button class="cf-btn" onclick="filterNutrChart('all',this)">All</button>
         </div>
       </div>
-      <!-- Today's macro summary bar -->
       <div id="nutrChartTodaySummary" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;"></div>
       <div class="chart-container"><canvas id="chartNutrition"></canvas></div>
     </div>
 
-    <!-- Nutrition History Feed -->
-    <div class="panel" style="margin-top:var(--gap);">
-      <div class="panel-title">🍽 NUTRITION HISTORY</div>
-      <div id="bodyHistoryFeed"></div>
-    </div>
-
-    <!-- Body Stats — collapsible section like strength PB cards -->
-    <div class="panel" style="margin-top:var(--gap);">
-      <div class="panel-title" style="cursor:pointer;" onclick="toggleBodyStats()">
-        📏 BODY STATS &amp; MEASUREMENTS
-        <span id="bodyStatsToggleArrow" style="margin-left:auto;color:var(--muted);font-size:.8rem;">▼ EXPAND</span>
-      </div>
-      <div id="bodyStatsSection" style="display:none;">
-        <!-- Stats display row -->
-        <div class="stats-mini-grid" style="margin-bottom:12px;">
-          <div><div class="stat-label">BODYWEIGHT</div><div class="med-num bw-current" id="bwCurrent" style="color:var(--accent)">—</div></div>
-          <div><div class="stat-label">PULL-UP MAX</div><div class="med-num" id="dashPullup" style="color:var(--accent)">—</div></div>
-          <div><div class="stat-label">WAIST</div><div class="med-num" id="dashWaist" style="color:var(--accent)">—</div></div>
-          <div><div class="stat-label">SHOULDERS</div><div class="med-num" id="dashShoulders" style="color:var(--accent)">—</div></div>
-          <div><div class="stat-label">GAIN/WK</div><div class="med-num" id="dashGainWk" style="color:var(--green)">—</div></div>
-          <div><div class="stat-label">PROGRESS</div><div class="med-num" id="bwPct" style="color:var(--gold)">—</div></div>
-        </div>
-        <div class="bar" style="margin-bottom:16px;"><div class="bar-fill" id="bwBar" style="width:0%"></div></div>
-        <div class="divider"></div>
-        <!-- Log weight -->
-        <div class="body-grid" style="margin-top:12px;">
-          <div class="f">
-            <label>Log Today's Weight (kg)</label>
-            <div style="display:flex;gap:8px;">
-              <input type="number" id="inp-weight" step="0.1" placeholder="e.g. 63.5" style="flex:1;">
-              <button class="btn btn-sm" onclick="saveBodyWeight()">LOG</button>
-            </div>
-          </div>
-          <div class="f">
-            <label>Weekly Measurements</label>
-            <div class="input-grid">
-              <div class="f"><label>Waist (cm)</label><input type="number" id="inp-waist" step="0.5" placeholder="78"></div>
-              <div class="f"><label>Shoulders (cm)</label><input type="number" id="inp-shoulders" step="0.5" placeholder="112"></div>
-              <div class="f"><label>Pull-up Max</label><input type="number" id="inp-pullup" step="1" placeholder="10"></div>
-            </div>
-            <div style="margin-top:8px;"><button class="btn btn-sm" onclick="saveWeeklyMeasurements()">SAVE MEASUREMENTS</button></div>
-          </div>
-        </div>
-        <!-- Body history with weight + measurements (clickable like PB cards) -->
-        <div id="bodyStatsHistoryFeed" style="margin-top:12px;"></div>
-      </div>
-    </div>
   </div>
 
   <!-- ═══ STRENGTH ═══ -->
   <div id="tab-strength" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">STRENGTH LAB</h1>
-      <div class="mono muted" style="font-size:.7rem;">Click any PB card to view full history</div>
+    <div class="tab-hero" style="--th-color:var(--accent2)">
+      <div class="th-eyebrow">STRENGTH LAB</div>
+      <div class="th-title">IRON PROTOCOL</div>
+      <div class="th-sub">Squat · Deadlift · Bench · Pull-ups · Row</div>
+      <div class="th-bar"><div class="th-bar-fill" style="background:var(--accent2)"></div></div>
+      
     </div>
 
     <!-- PB Cards - clickable -->
@@ -627,13 +664,22 @@
       <div class="f" style="margin-top:10px;"><label>Session Notes</label><input type="text" id="inp-strength-notes" placeholder="e.g. Felt strong, new PR attempt…"></div>
       <div class="save-bar"><button class="btn btn-orange" onclick="saveStrength()">LOG STRENGTH ⚡</button></div>
     </div>
+
+    <!-- Strength History Feed -->
+    <div class="panel" style="margin-top:var(--gap);">
+      <div class="panel-title">🏋️ SESSION HISTORY</div>
+      <div id="strengthHistoryFeed"></div>
+    </div>
   </div>
 
   <!-- ═══ ENGINE (CARDIO) ═══ -->
   <div id="tab-engine" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">CARDIO ENGINE</h1>
-      <div class="mono muted" style="font-size:.7rem;">"Do you not know that your body is a temple?" — 1 Cor 6:19</div>
+    <div class="tab-hero" style="--th-color:var(--orange)">
+      <div class="th-eyebrow">CARDIO ENGINE</div>
+      <div class="th-title">BUILD THE BASE</div>
+      <div class="th-sub">VO₂ Max · 5K Target · Sub-22 · Resting HR &lt;55</div>
+      <div class="th-bar"><div class="th-bar-fill" style="background:var(--orange)"></div></div>
+      
     </div>
 
     <div class="engine-pb-grid">
@@ -687,398 +733,493 @@
 
   <!-- ═══ ML ═══ -->
   <div id="tab-ml" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">ML / CS STUDY</h1>
-      <div class="mono muted" style="font-size:.7rem;">"Commit your work to the Lord, and your plans will be established." — Prov 16:3</div>
-    </div>
 
-    <div class="ml-stats-row">
-      <div class="ml-stat-card panel accent-purple">
-        <div class="stat-label">CS229</div>
-        <div class="ml-big" id="ml-lec-pct">0%</div>
-        <div class="xp-row"><span><span id="ml-lec-done">0</span>/<span id="ml-lec-plan">21</span> lectures</span></div>
-        <div class="bar purple"><div class="bar-fill" id="lecturesBar" style="width:0%"></div></div>
+    <!-- ═══ HERO HEADER ═══ -->
+    <div class="aie-hero">
+      <div class="aie-hero-bg"></div>
+      <div class="aie-hero-content">
+        <div class="aie-eyebrow">176-DAY CAMPAIGN · AI ENGINEER PATH</div>
+        <h1 class="aie-title">BUILD.<br>SHIP.<br>REPEAT.</h1>
+        <div class="aie-subtitle">6 months · 24 weeks · 5 projects · 1 career</div>
       </div>
-      <div class="ml-stat-card panel accent-purple">
-        <div class="stat-label">CS231N</div>
-        <div class="ml-big" id="ml-231n-pct">0%</div>
-        <div class="xp-row"><span><span id="ml-231n-done">0</span>/<span id="ml-231n-plan">18</span> lectures</span></div>
-        <div class="bar purple"><div class="bar-fill" id="lectures231nBar" style="width:0%"></div></div>
-      </div>
-      <div class="ml-stat-card panel accent-purple">
-        <div class="stat-label">PROJECTS</div>
-        <div class="ml-big" id="ml-proj-show" style="color:var(--accent2)">0</div>
-        <div class="xp-row"><span>Target: 10+</span></div>
-      </div>
-      <div class="ml-stat-card panel accent-purple">
-        <div class="stat-label">COMMITS/WK</div>
-        <div class="ml-big" id="ml-com-show" style="color:var(--green)">0</div>
-        <div class="xp-row"><span>Target: 5+/wk</span></div>
-      </div>
-    </div>
-
-    <!-- ML Log Form -->
-    <div class="panel accent-purple" style="margin-top:var(--gap);">
-      <div class="panel-title">🧠 UPDATE PROGRESS</div>
-      <div class="input-grid">
-        <div class="f"><label>CS229 Lectures Done</label><input type="number" id="inp-lectures" step="1" placeholder="0" min="0"></div>
-        <div class="f"><label>CS229 Total</label><input type="number" id="inp-lectures-planned" step="1" value="21"></div>
-        <div class="f"><label>CS231N Done</label><input type="number" id="inp-231n" step="1" placeholder="0" min="0"></div>
-        <div class="f"><label>CS231N Total</label><input type="number" id="inp-231n-planned" step="1" value="18"></div>
-        <div class="f"><label>Python Modules</label><input type="number" id="inp-modules" step="1" placeholder="0"></div>
-        <div class="f"><label>Projects Built</label><input type="number" id="inp-projects" step="1" placeholder="0"></div>
-        <div class="f"><label>GitHub Commits/Wk</label><input type="number" id="inp-commits" step="1" placeholder="0"></div>
-        <div class="f"><label>DL/NLP Resources</label><input type="number" id="inp-dlnlp" step="1" placeholder="0"></div>
-      </div>
-      <div class="save-bar"><button class="btn btn-purple" onclick="saveML()">UPDATE ML ⚡</button></div>
-    </div>
-
-    <!-- Curriculum -->
-    <div class="panel" style="margin-top:var(--gap);">
-      <div class="panel-title" style="cursor:pointer;user-select:none;" onclick="toggleStudyTimeline()">
-        🗓️ 24-WEEK STUDY PLAN
-        <span id="studyTimelineArrow" style="margin-left:auto;color:var(--muted);font-size:.75rem;">▼</span>
-      </div>
-      <div id="studyTimelineBody" style="display:none;margin:12px 0 20px;">
-        <div class="study-timeline">
-
-          <div class="stl-block" id="stl-1">
-            <div class="stl-weeks">WEEKS 1–4</div>
-            <div class="stl-connector"></div>
-            <div class="stl-content">
-              <div class="stl-title" style="color:var(--accent);">CS229 + Classical ML</div>
-              <div class="stl-tags">
-                <span class="stl-tag">Linear Regression</span>
-                <span class="stl-tag">SVM</span>
-                <span class="stl-tag">Trees</span>
-                <span class="stl-tag">Scikit-learn</span>
-                <span class="stl-tag">Feature Eng.</span>
-              </div>
-            </div>
-            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-1" style="background:var(--accent);"></div></div>
-          </div>
-
-          <div class="stl-block" id="stl-2">
-            <div class="stl-weeks">WEEKS 5–8</div>
-            <div class="stl-connector"></div>
-            <div class="stl-content">
-              <div class="stl-title" style="color:var(--blue);">CS231n + Computer Vision</div>
-              <div class="stl-tags">
-                <span class="stl-tag">CNNs</span>
-                <span class="stl-tag">PyTorch</span>
-                <span class="stl-tag">Training Loops</span>
-                <span class="stl-tag">Vision Models</span>
-              </div>
-            </div>
-            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-2" style="background:var(--blue);"></div></div>
-          </div>
-
-          <div class="stl-block" id="stl-3">
-            <div class="stl-weeks">WEEKS 9–12</div>
-            <div class="stl-connector"></div>
-            <div class="stl-content">
-              <div class="stl-title" style="color:var(--purple);">Transformers</div>
-              <div class="stl-tags">
-                <span class="stl-tag">Attention</span>
-                <span class="stl-tag">HuggingFace</span>
-                <span class="stl-tag">Fine-tuning</span>
-                <span class="stl-tag">Tokenizers</span>
-              </div>
-            </div>
-            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-3" style="background:var(--purple);"></div></div>
-          </div>
-
-          <div class="stl-block" id="stl-4">
-            <div class="stl-weeks">WEEKS 13–16</div>
-            <div class="stl-connector"></div>
-            <div class="stl-content">
-              <div class="stl-title" style="color:var(--gold);">RAG System</div>
-              <div class="stl-tags">
-                <span class="stl-tag">Embeddings</span>
-                <span class="stl-tag">Vector DBs</span>
-                <span class="stl-tag">LangChain</span>
-                <span class="stl-tag">Semantic Search</span>
-              </div>
-            </div>
-            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-4" style="background:var(--gold);"></div></div>
-          </div>
-
-          <div class="stl-block" id="stl-5">
-            <div class="stl-weeks">WEEKS 17–20</div>
-            <div class="stl-connector"></div>
-            <div class="stl-content">
-              <div class="stl-title" style="color:var(--green);">ML Engineering + Deployment</div>
-              <div class="stl-tags">
-                <span class="stl-tag">Docker</span>
-                <span class="stl-tag">FastAPI</span>
-                <span class="stl-tag">MLflow</span>
-                <span class="stl-tag">CI/CD</span>
-                <span class="stl-tag">Cloud</span>
-              </div>
-            </div>
-            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-5" style="background:var(--green);"></div></div>
-          </div>
-
-          <div class="stl-block" id="stl-6">
-            <div class="stl-weeks">WEEKS 21–24</div>
-            <div class="stl-connector"></div>
-            <div class="stl-content">
-              <div class="stl-title" style="color:var(--accent2);">Final Project + Polishing</div>
-              <div class="stl-tags">
-                <span class="stl-tag">Full Pipeline</span>
-                <span class="stl-tag">Portfolio</span>
-                <span class="stl-tag">Ship It</span>
-              </div>
-            </div>
-            <div class="stl-progress-wrap"><div class="stl-progress-bar" id="stl-bar-6" style="background:var(--accent2);"></div></div>
-          </div>
-
+      <div class="aie-hero-stats">
+        <div class="aie-hstat">
+          <div class="aie-hstat-val" id="aie-weeks-done">0</div>
+          <div class="aie-hstat-label">WEEKS<br>DONE</div>
+        </div>
+        <div class="aie-hstat-div"></div>
+        <div class="aie-hstat">
+          <div class="aie-hstat-val" id="aie-overall-pct" style="color:var(--purple)">0%</div>
+          <div class="aie-hstat-label">OVERALL<br>PROGRESS</div>
+        </div>
+        <div class="aie-hstat-div"></div>
+        <div class="aie-hstat">
+          <div class="aie-hstat-val" id="aie-projects-done" style="color:var(--gold)">0<span style="font-size:1rem;opacity:.5;">/5</span></div>
+          <div class="aie-hstat-label">PROJECTS<br>SHIPPED</div>
+        </div>
+        <div class="aie-hstat-div"></div>
+        <div class="aie-hstat">
+          <div class="aie-hstat-val" id="aie-commits" style="color:var(--green)">0</div>
+          <div class="aie-hstat-label">COMMITS<br>THIS WK</div>
         </div>
       </div>
-
-      <div class="panel-title">📚 CURRICULUM TRACKER</div>
-      <div class="curr-track">
-        <div class="curr-hdr" onclick="toggleTrack('track-cs229')">
-          <div style="width:8px;height:8px;background:var(--accent);flex-shrink:0;"></div>
-          <div class="track-label" style="color:var(--accent);">CS229 — MACHINE LEARNING</div>
-          <div class="mini-bar"><div class="mini-bar-fill" id="bar-track-cs229" style="width:0%"></div></div>
-          <div class="track-count" id="count-track-cs229">0/21</div>
-          <div class="curr-tog" id="tog-track-cs229">▼</div>
+      <!-- master progress bar -->
+      <div class="aie-master-bar-wrap">
+        <div class="aie-master-bar-track">
+          <div class="aie-master-bar-fill" id="aie-master-fill" style="width:0%"></div>
+          <div class="aie-master-bar-glow" id="aie-master-glow" style="left:0%"></div>
         </div>
-        <div class="curr-body" id="track-cs229">
-          <div class="curr-item"><input type="checkbox" id="cs-1" onchange="saveCurriculum()"><label for="cs-1">Lec 1: Introduction & Linear Regression</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-2" onchange="saveCurriculum()"><label for="cs-2">Lec 2: Linear Regression & Gradient Descent</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-3" onchange="saveCurriculum()"><label for="cs-3">Lec 3: Locally Weighted & Logistic Regression</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-4" onchange="saveCurriculum()"><label for="cs-4">Lec 4: Perceptron & Generalized Linear Models</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-5" onchange="saveCurriculum()"><label for="cs-5">Lec 5: Gaussian Discriminant Analysis (GDA)</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-6" onchange="saveCurriculum()"><label for="cs-6">Lec 6: Naive Bayes & Support Vector Machines</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-7" onchange="saveCurriculum()"><label for="cs-7">Lec 7: Kernels</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-8" onchange="saveCurriculum()"><label for="cs-8">Lec 8: Data Splits, Models & Cross-Validation</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-9" onchange="saveCurriculum()"><label for="cs-9">Lec 9: Approx/Estimation Error & ERM</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-10" onchange="saveCurriculum()"><label for="cs-10">Lec 10: Decision Trees & Ensemble Methods</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-11" onchange="saveCurriculum()"><label for="cs-11">Lec 11: Introduction to Neural Networks</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-12" onchange="saveCurriculum()"><label for="cs-12">Lec 12: Backprop & Improving Neural Networks</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-13" onchange="saveCurriculum()"><label for="cs-13">Lec 13: Debugging ML Models / Error Analysis</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-14" onchange="saveCurriculum()"><label for="cs-14">Lec 14: Expectation-Maximization (EM)</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-15" onchange="saveCurriculum()"><label for="cs-15">Lec 15: EM & Factor Analysis</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-16" onchange="saveCurriculum()"><label for="cs-16">Lec 16: Independent Component Analysis (ICA)</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-17" onchange="saveCurriculum()"><label for="cs-17">Lec 17: MDPs & Value / Policy Iteration</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-18" onchange="saveCurriculum()"><label for="cs-18">Lec 18: Continuous State MDPs</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-19" onchange="saveCurriculum()"><label for="cs-19">Lec 19: Reward Model & Monte Carlo Tree Search</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-20" onchange="saveCurriculum()"><label for="cs-20">Lec 20: RL Debugging + Safety</label></div>
-          <div class="curr-item"><input type="checkbox" id="cs-21" onchange="saveCurriculum()"><label for="cs-21">Lec 21: Calibration + Practical Tips</label></div>
-        </div>
-      </div>
-      <div class="curr-track">
-        <div class="curr-hdr" onclick="toggleTrack('track-cs231n')">
-          <div style="width:8px;height:8px;background:var(--blue);flex-shrink:0;"></div>
-          <div class="track-label" style="color:var(--blue);">CS231N — DEEP LEARNING FOR VISION</div>
-          <div class="mini-bar"><div class="mini-bar-fill" id="bar-track-cs231n" style="width:0%;background:var(--blue)"></div></div>
-          <div class="track-count" id="count-track-cs231n">0/18</div>
-          <div class="curr-tog" id="tog-track-cs231n">▼</div>
-        </div>
-        <div class="curr-body" id="track-cs231n">
-          <div class="curr-item"><input type="checkbox" id="n231-1" onchange="saveCurriculum()"><label for="n231-1">Lec 1: Intro to CNNs for Visual Recognition</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-2" onchange="saveCurriculum()"><label for="n231-2">Lec 2: Image Classification Pipelines</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-3" onchange="saveCurriculum()"><label for="n231-3">Lec 3: Loss Functions & Optimization</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-4" onchange="saveCurriculum()"><label for="n231-4">Lec 4: Introduction to Neural Networks</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-5" onchange="saveCurriculum()"><label for="n231-5">Lec 5: Convolutional Neural Networks</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-6" onchange="saveCurriculum()"><label for="n231-6">Lec 6: Training Neural Networks I</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-7" onchange="saveCurriculum()"><label for="n231-7">Lec 7: Training Neural Networks II</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-8" onchange="saveCurriculum()"><label for="n231-8">Lec 8: Deep Learning Software & Frameworks</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-9" onchange="saveCurriculum()"><label for="n231-9">Lec 9: CNN Architectures (AlexNet, VGG, ResNet)</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-10" onchange="saveCurriculum()"><label for="n231-10">Lec 10: Recurrent Neural Networks</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-11" onchange="saveCurriculum()"><label for="n231-11">Lec 11: Detection and Segmentation</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-12" onchange="saveCurriculum()"><label for="n231-12">Lec 12: Visualizing and Understanding CNNs</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-13" onchange="saveCurriculum()"><label for="n231-13">Lec 13: Generative Models (VAE, GAN)</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-14" onchange="saveCurriculum()"><label for="n231-14">Lec 14: Deep Reinforcement Learning</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-15" onchange="saveCurriculum()"><label for="n231-15">Lec 15: Efficient Methods & Hardware</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-16" onchange="saveCurriculum()"><label for="n231-16">Lec 16: Adversarial Examples & Robustness</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-17" onchange="saveCurriculum()"><label for="n231-17">Lec 17: Human-Centered AI Considerations</label></div>
-          <div class="curr-item"><input type="checkbox" id="n231-18" onchange="saveCurriculum()"><label for="n231-18">Lec 18: Vision + Language (CLIP, DALL-E, etc.)</label></div>
-        </div>
-      </div>
-      <div class="curr-track">
-        <div class="curr-hdr" onclick="toggleTrack('track-dl')">
-          <div style="width:8px;height:8px;background:var(--purple);flex-shrink:0;"></div>
-          <div class="track-label" style="color:var(--purple);">DEEP LEARNING</div>
-          <div class="mini-bar"><div class="mini-bar-fill" id="bar-track-dl" style="width:0%;background:var(--purple)"></div></div>
-          <div class="track-count" id="count-track-dl">0/10</div>
-          <div class="curr-tog" id="tog-track-dl">▼</div>
-        </div>
-        <div class="curr-body" id="track-dl">
-          <div class="curr-item"><input type="checkbox" id="dl-1" onchange="saveCurriculum()"><label for="dl-1">Backpropagation: math from scratch</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-2" onchange="saveCurriculum()"><label for="dl-2">PyTorch fundamentals: tensors, autograd, nn.Module</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-3" onchange="saveCurriculum()"><label for="dl-3">CNNs: architecture, pooling, conv layers</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-4" onchange="saveCurriculum()"><label for="dl-4">RNNs / LSTMs: sequence modelling</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-5" onchange="saveCurriculum()"><label for="dl-5">Attention mechanism: math + implementation</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-6" onchange="saveCurriculum()"><label for="dl-6">Batch norm, dropout, regularisation</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-7" onchange="saveCurriculum()"><label for="dl-7">Training loops, optimisers, schedulers</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-8" onchange="saveCurriculum()"><label for="dl-8">fast.ai Part 1</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-9" onchange="saveCurriculum()"><label for="dl-9">PROJECT: Image classifier deployed</label></div>
-          <div class="curr-item"><input type="checkbox" id="dl-10" onchange="saveCurriculum()"><label for="dl-10">PROJECT: Train NN on custom dataset</label></div>
-        </div>
-      </div>
-      <div class="curr-track">
-        <div class="curr-hdr" onclick="toggleTrack('track-nlp')">
-          <div style="width:8px;height:8px;background:var(--accent2);flex-shrink:0;"></div>
-          <div class="track-label" style="color:var(--accent2);">NLP / LLMs</div>
-          <div class="mini-bar"><div class="mini-bar-fill" id="bar-track-nlp" style="width:0%;background:var(--accent2)"></div></div>
-          <div class="track-count" id="count-track-nlp">0/10</div>
-          <div class="curr-tog" id="tog-track-nlp">▼</div>
-        </div>
-        <div class="curr-body" id="track-nlp">
-          <div class="curr-item"><input type="checkbox" id="nlp-1" onchange="saveCurriculum()"><label for="nlp-1">Word embeddings: Word2Vec, GloVe</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-2" onchange="saveCurriculum()"><label for="nlp-2">Transformer: "Attention Is All You Need"</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-3" onchange="saveCurriculum()"><label for="nlp-3">HuggingFace: fine-tuning BERT/RoBERTa</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-4" onchange="saveCurriculum()"><label for="nlp-4">Tokenisation: BPE, WordPiece</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-5" onchange="saveCurriculum()"><label for="nlp-5">GPT architecture: autoregressive LM</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-6" onchange="saveCurriculum()"><label for="nlp-6">Prompt engineering + in-context learning</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-7" onchange="saveCurriculum()"><label for="nlp-7">RAG implementation</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-8" onchange="saveCurriculum()"><label for="nlp-8">LangChain / LlamaIndex</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-9" onchange="saveCurriculum()"><label for="nlp-9">PROJECT: Fine-tune small LLM</label></div>
-          <div class="curr-item"><input type="checkbox" id="nlp-10" onchange="saveCurriculum()"><label for="nlp-10">PROJECT: Build + deploy NLP app</label></div>
+        <div class="aie-master-bar-labels">
+          <span>START</span><span>WK 6</span><span>WK 12</span><span>WK 18</span><span>FINISH</span>
         </div>
       </div>
     </div>
 
-    <!-- ═══ SKILLS VAULT — hidden reference panel ═══ -->
-    <div class="panel" style="margin-top:var(--gap);border-color:rgba(167,139,250,.2);">
-      <div class="panel-title" style="cursor:pointer;user-select:none;" onclick="toggleSkillsVault()">
-        🔐 SKILLS VAULT
-        <span style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-left:8px;">— tap to reveal</span>
-        <span id="skillsVaultArrow" style="margin-left:auto;color:var(--muted);font-size:.75rem;">▼</span>
+    <!-- ═══ QUICK LOG ═══ -->
+    <div class="aie-quick-log">
+      <div class="aie-ql-title">⚡ LOG UPDATE</div>
+      <div class="aie-ql-fields">
+        <div class="aie-ql-field">
+          <label>CURRENT WEEK</label>
+          <input type="number" id="inp-current-week" min="1" max="24" placeholder="1">
+        </div>
+        <div class="aie-ql-field">
+          <label>PROJECTS SHIPPED</label>
+          <input type="number" id="inp-projects" min="0" placeholder="0">
+        </div>
+        <div class="aie-ql-field">
+          <label>COMMITS / WK</label>
+          <input type="number" id="inp-commits" min="0" placeholder="0">
+        </div>
+        <button class="aie-ql-btn" onclick="saveML()">SAVE ⚡</button>
       </div>
-      <div id="skillsVaultBody" style="display:none;margin-top:12px;">
+    </div>
 
-        <!-- 5 Systems Roadmap -->
-        <div style="margin-bottom:16px;">
-          <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--purple);letter-spacing:2px;margin-bottom:10px;">THE 5 SYSTEMS — ML ENGINEER ROADMAP</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <div class="skills-system-card" style="border-left-color:var(--accent);">
-              <div class="ssc-num" style="color:var(--accent);">01</div>
-              <div class="ssc-body">
-                <div class="ssc-name">ML FOUNDATIONS</div>
-                <div class="ssc-goal">Understand models</div>
-                <div class="ssc-covers">CS229 · Scikit-learn · Feature Engineering · Hyperparameter Tuning · Model Evaluation</div>
-                <div class="ssc-project">👉 Classic ML pipeline</div>
-              </div>
+    <!-- ═══ 6-MONTH ROADMAP GRID ═══ -->
+    <div class="aie-section-label">THE ROADMAP</div>
+    <div class="aie-months-grid">
+
+      <!-- MONTH 1 -->
+      <div class="aie-month-card" id="aie-m1" data-month="1">
+        <div class="aie-mc-accent" style="background:var(--accent)"></div>
+        <div class="aie-mc-header">
+          <div class="aie-mc-num">01</div>
+          <div class="aie-mc-meta">
+            <div class="aie-mc-title">PRODUCTION PYTHON</div>
+            <div class="aie-mc-sub">Weeks 1–4 · Real code, not notebooks</div>
+          </div>
+          <div class="aie-mc-pct" id="aie-m1-pct" style="color:var(--accent)">0%</div>
+        </div>
+        <div class="aie-mc-bar"><div class="aie-mc-bar-fill" id="aie-m1-bar" style="background:var(--accent)"></div></div>
+        <div class="aie-mc-weeks">
+          <div class="aie-week-row" id="aie-m1w1-row" onclick="toggleWeekCheck('m1w1')">
+            <div class="aie-wk-check" id="aie-chk-m1w1"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 1 · FOUNDATIONS</div>
+              <div class="aie-wk-title">Python structure, venvs, Git, type hints</div>
+              <div class="aie-wk-output">📦 CLI text summarizer tool</div>
             </div>
-            <div class="skills-system-card" style="border-left-color:var(--blue);">
-              <div class="ssc-num" style="color:var(--blue);">02</div>
-              <div class="ssc-body">
-                <div class="ssc-name">DEEP LEARNING / VISION</div>
-                <div class="ssc-goal">Neural networks</div>
-                <div class="ssc-covers">CS231n · CNNs · PyTorch · Training loops</div>
-                <div class="ssc-project">👉 Computer vision project</div>
-              </div>
+          </div>
+          <div class="aie-week-row" id="aie-m1w2-row" onclick="toggleWeekCheck('m1w2')">
+            <div class="aie-wk-check" id="aie-chk-m1w2"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 2 · FASTAPI</div>
+              <div class="aie-wk-title">FastAPI basics, REST, Pydantic</div>
+              <div class="aie-wk-output">📦 Text summarization API (/summarize + /health)</div>
             </div>
-            <div class="skills-system-card" style="border-left-color:var(--purple);">
-              <div class="ssc-num" style="color:var(--purple);">03</div>
-              <div class="ssc-body">
-                <div class="ssc-name">NLP / TRANSFORMERS</div>
-                <div class="ssc-goal">Modern language models</div>
-                <div class="ssc-covers">HuggingFace · Tokenizers · Fine-tuning Transformers</div>
-                <div class="ssc-project">👉 Transformer NLP project</div>
-              </div>
+          </div>
+          <div class="aie-week-row" id="aie-m1w3-row" onclick="toggleWeekCheck('m1w3')">
+            <div class="aie-wk-check" id="aie-chk-m1w3"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 3 · ASYNC</div>
+              <div class="aie-wk-title">Async Python, background tasks, logging</div>
+              <div class="aie-wk-output">📦 Production-ready API with error handling</div>
             </div>
-            <div class="skills-system-card" style="border-left-color:var(--gold);">
-              <div class="ssc-num" style="color:var(--gold);">04</div>
-              <div class="ssc-body">
-                <div class="ssc-name">LLM APPLICATIONS</div>
-                <div class="ssc-goal">AI product building</div>
-                <div class="ssc-covers">RAG · Embeddings · Vector Databases · LLM Pipelines</div>
-                <div class="ssc-project">👉 LLM application</div>
-              </div>
-            </div>
-            <div class="skills-system-card" style="border-left-color:var(--green);">
-              <div class="ssc-num" style="color:var(--green);">05</div>
-              <div class="ssc-body">
-                <div class="ssc-name">ML ENGINEERING / MLOps</div>
-                <div class="ssc-goal">Production systems</div>
-                <div class="ssc-covers">Docker · FastAPI · CI/CD · MLflow · Model Versioning · Cloud Basics</div>
-                <div class="ssc-project">👉 Deployed ML system</div>
-              </div>
+          </div>
+          <div class="aie-week-row" id="aie-m1w4-row" onclick="toggleWeekCheck('m1w4')">
+            <div class="aie-wk-check" id="aie-chk-m1w4"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 4 · DOCKER</div>
+              <div class="aie-wk-title">Docker, containerization</div>
+              <div class="aie-wk-output">🚀 Deployable containerized AI API</div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div style="border-top:1px solid var(--border);padding-top:14px;">
-          <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--purple);letter-spacing:2px;margin-bottom:10px;">FULL SKILL CHECKLIST — ML ENGINEER</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;" id="skillChecklistGrid">
-
-            <div class="skill-category">
-              <div class="skill-cat-title" style="color:var(--accent);">⚙️ CORE ENGINEERING</div>
-              <div class="skill-item"><input type="checkbox" id="sk-docker" onchange="saveSkills()"><label for="sk-docker">Docker</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-git" onchange="saveSkills()"><label for="sk-git">Git</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-fastapi" onchange="saveSkills()"><label for="sk-fastapi">FastAPI</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-deploy" onchange="saveSkills()"><label for="sk-deploy">Model Deployment</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-cloud" onchange="saveSkills()"><label for="sk-cloud">Cloud Basics (AWS/GCP)</label></div>
-            </div>
-
-            <div class="skill-category">
-              <div class="skill-cat-title" style="color:var(--accent);">🧠 ML & DATA</div>
-              <div class="skill-item"><input type="checkbox" id="sk-sklearn" onchange="saveSkills()"><label for="sk-sklearn">Scikit-learn</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-feateng" onchange="saveSkills()"><label for="sk-feateng">Feature Engineering</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-hyperparam" onchange="saveSkills()"><label for="sk-hyperparam">Hyperparameter Tuning</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-eval" onchange="saveSkills()"><label for="sk-eval">Model Evaluation</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-mlflow" onchange="saveSkills()"><label for="sk-mlflow">Experiment Tracking (MLflow)</label></div>
-            </div>
-
-            <div class="skill-category">
-              <div class="skill-cat-title" style="color:var(--purple);">🤗 NLP / LLM</div>
-              <div class="skill-item"><input type="checkbox" id="sk-hf" onchange="saveSkills()"><label for="sk-hf">HuggingFace Transformers</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-tok" onchange="saveSkills()"><label for="sk-tok">Tokenizers</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-finetune" onchange="saveSkills()"><label for="sk-finetune">Fine-tuning Transformers</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-rag" onchange="saveSkills()"><label for="sk-rag">RAG</label></div>
-            </div>
-
-            <div class="skill-category">
-              <div class="skill-cat-title" style="color:var(--gold);">🗄️ DATA & DB</div>
-              <div class="skill-item"><input type="checkbox" id="sk-sql" onchange="saveSkills()"><label for="sk-sql">Advanced SQL</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-etl" onchange="saveSkills()"><label for="sk-etl">Data Pipelines / ETL</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-vecdb" onchange="saveSkills()"><label for="sk-vecdb">Vector DBs (FAISS/Pinecone)</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-embed" onchange="saveSkills()"><label for="sk-embed">Embeddings & Semantic Search</label></div>
-            </div>
-
-            <div class="skill-category">
-              <div class="skill-cat-title" style="color:var(--green);">🔧 MLOps</div>
-              <div class="skill-item"><input type="checkbox" id="sk-modver" onchange="saveSkills()"><label for="sk-modver">Model Versioning</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-cicd" onchange="saveSkills()"><label for="sk-cicd">CI/CD for ML</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-dvc" onchange="saveSkills()"><label for="sk-dvc">Data Versioning (DVC)</label></div>
-            </div>
-
-            <div class="skill-category">
-              <div class="skill-cat-title" style="color:var(--orange);">🔌 BACKEND & AI</div>
-              <div class="skill-item"><input type="checkbox" id="sk-restapi" onchange="saveSkills()"><label for="sk-restapi">REST APIs for ML</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-asyncapi" onchange="saveSkills()"><label for="sk-asyncapi">Async APIs (FastAPI adv.)</label></div>
-              <div class="skill-item"><input type="checkbox" id="sk-llmpipe" onchange="saveSkills()"><label for="sk-llmpipe">LLM App Pipelines</label></div>
-            </div>
-
+      <!-- MONTH 2 -->
+      <div class="aie-month-card" id="aie-m2" data-month="2">
+        <div class="aie-mc-accent" style="background:var(--blue)"></div>
+        <div class="aie-mc-header">
+          <div class="aie-mc-num" style="color:var(--blue)">02</div>
+          <div class="aie-mc-meta">
+            <div class="aie-mc-title">LLM FUNDAMENTALS</div>
+            <div class="aie-mc-sub">Weeks 5–8 · Understand LLMs in practice</div>
           </div>
-          <!-- Skills progress bar -->
-          <div style="margin-top:12px;">
-            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-bottom:4px;">
-              <span>SKILLS UNLOCKED</span><span id="skillsProgressLabel">0 / 26</span>
+          <div class="aie-mc-pct" id="aie-m2-pct" style="color:var(--blue)">0%</div>
+        </div>
+        <div class="aie-mc-bar"><div class="aie-mc-bar-fill" id="aie-m2-bar" style="background:var(--blue)"></div></div>
+        <div class="aie-mc-weeks">
+          <div class="aie-week-row" id="aie-m2w1-row" onclick="toggleWeekCheck('m2w1')">
+            <div class="aie-wk-check" id="aie-chk-m2w1"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 5 · TRANSFORMERS</div>
+              <div class="aie-wk-title">Transformers, tokenization, embeddings</div>
+              <div class="aie-wk-output">📓 Embeddings + similarity search notebook</div>
             </div>
-            <div class="bar"><div class="bar-fill purple" id="skillsProgressBar" style="width:0%;background:var(--purple);"></div></div>
+          </div>
+          <div class="aie-week-row" id="aie-m2w2-row" onclick="toggleWeekCheck('m2w2')">
+            <div class="aie-wk-check" id="aie-chk-m2w2"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 6 · PROMPTING</div>
+              <div class="aie-wk-title">Prompt engineering, structured output, LLM params</div>
+              <div class="aie-wk-output">📓 Prompt evaluation notebook</div>
+            </div>
+          </div>
+          <div class="aie-week-row" id="aie-m2w3-row" onclick="toggleWeekCheck('m2w3')">
+            <div class="aie-wk-check" id="aie-chk-m2w3"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 7 · INFERENCE</div>
+              <div class="aie-wk-title">HuggingFace pipelines, inference</div>
+              <div class="aie-wk-output">📦 LLM API wrapper</div>
+            </div>
+          </div>
+          <div class="aie-week-row" id="aie-m2w4-row" onclick="toggleWeekCheck('m2w4')">
+            <div class="aie-wk-check" id="aie-chk-m2w4"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 8 · EVALUATION</div>
+              <div class="aie-wk-title">LLM evaluation, hallucination issues</div>
+              <div class="aie-wk-output">🧪 LLM testing + benchmarking scripts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MONTH 3 -->
+      <div class="aie-month-card" id="aie-m3" data-month="3">
+        <div class="aie-mc-accent" style="background:var(--purple)"></div>
+        <div class="aie-mc-header">
+          <div class="aie-mc-num" style="color:var(--purple)">03</div>
+          <div class="aie-mc-meta">
+            <div class="aie-mc-title">RAG SYSTEMS</div>
+            <div class="aie-mc-sub">Weeks 9–12 · First serious AI system</div>
+          </div>
+          <div class="aie-mc-pct" id="aie-m3-pct" style="color:var(--purple)">0%</div>
+        </div>
+        <div class="aie-mc-bar"><div class="aie-mc-bar-fill" id="aie-m3-bar" style="background:var(--purple)"></div></div>
+        <div class="aie-mc-weeks">
+          <div class="aie-week-row" id="aie-m3w1-row" onclick="toggleWeekCheck('m3w1')">
+            <div class="aie-wk-check" id="aie-chk-m3w1"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 9 · VECTORS</div>
+              <div class="aie-wk-title">Embeddings, vector search — FAISS</div>
+              <div class="aie-wk-output">🔍 Embedding search system</div>
+            </div>
+          </div>
+          <div class="aie-week-row" id="aie-m3w2-row" onclick="toggleWeekCheck('m3w2')">
+            <div class="aie-wk-check" id="aie-chk-m3w2"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 10 · INDEXING</div>
+              <div class="aie-wk-title">Document chunking, indexing strategies</div>
+              <div class="aie-wk-output">🔍 Document ingestion pipeline</div>
+            </div>
+          </div>
+          <div class="aie-week-row" id="aie-m3w3-row" onclick="toggleWeekCheck('m3w3')">
+            <div class="aie-wk-check" id="aie-chk-m3w3"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 11 · RAG ARCH</div>
+              <div class="aie-wk-title">RAG architecture, context injection</div>
+              <div class="aie-wk-output">🔍 Basic RAG prototype</div>
+            </div>
+          </div>
+          <div class="aie-week-row aie-project-week" id="aie-m3w4-row" onclick="toggleWeekCheck('m3w4')">
+            <div class="aie-wk-check" id="aie-chk-m3w4"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag aie-proj-tag">★ WK 12 · PROJECT</div>
+              <div class="aie-wk-title">AI Document Assistant</div>
+              <div class="aie-wk-output">🚀 LangChain + FAISS + FastAPI · Upload PDF → Ask questions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MONTH 4 -->
+      <div class="aie-month-card" id="aie-m4" data-month="4">
+        <div class="aie-mc-accent" style="background:var(--gold)"></div>
+        <div class="aie-mc-header">
+          <div class="aie-mc-num" style="color:var(--gold)">04</div>
+          <div class="aie-mc-meta">
+            <div class="aie-mc-title">AI APPLICATIONS</div>
+            <div class="aie-mc-sub">Weeks 13–16 · Build real AI tools</div>
+          </div>
+          <div class="aie-mc-pct" id="aie-m4-pct" style="color:var(--gold)">0%</div>
+        </div>
+        <div class="aie-mc-bar"><div class="aie-mc-bar-fill" id="aie-m4-bar" style="background:var(--gold)"></div></div>
+        <div class="aie-mc-weeks">
+          <div class="aie-week-row" id="aie-m4w1-row" onclick="toggleWeekCheck('m4w1')">
+            <div class="aie-wk-check" id="aie-chk-m4w1"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 13 · LANGCHAIN</div>
+              <div class="aie-wk-title">LangChain chains</div>
+              <div class="aie-wk-output">📦 Simple LLM chain project</div>
+            </div>
+          </div>
+          <div class="aie-week-row" id="aie-m4w2-row" onclick="toggleWeekCheck('m4w2')">
+            <div class="aie-wk-check" id="aie-chk-m4w2"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 14 · AGENTS</div>
+              <div class="aie-wk-title">Agents, tool usage</div>
+              <div class="aie-wk-output">📦 AI agent prototype</div>
+            </div>
+          </div>
+          <div class="aie-week-row aie-project-week" id="aie-m4w3-row" onclick="toggleWeekCheck('m4w3')">
+            <div class="aie-wk-check" id="aie-chk-m4w3"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag aie-proj-tag">★ WK 15 · PROJECT</div>
+              <div class="aie-wk-title">AI Code Assistant</div>
+              <div class="aie-wk-output">🚀 Explain code · Detect bugs · Suggest improvements</div>
+            </div>
+          </div>
+          <div class="aie-week-row aie-project-week" id="aie-m4w4-row" onclick="toggleWeekCheck('m4w4')">
+            <div class="aie-wk-check" id="aie-chk-m4w4"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag aie-proj-tag">★ WK 16 · PROJECT</div>
+              <div class="aie-wk-title">AI Data Analyst</div>
+              <div class="aie-wk-output">🚀 Upload CSV → AI analyzes dataset</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MONTH 5 -->
+      <div class="aie-month-card" id="aie-m5" data-month="5">
+        <div class="aie-mc-accent" style="background:var(--green)"></div>
+        <div class="aie-mc-header">
+          <div class="aie-mc-num" style="color:var(--green)">05</div>
+          <div class="aie-mc-meta">
+            <div class="aie-mc-title">MULTIMODAL + PRODUCTION</div>
+            <div class="aie-mc-sub">Weeks 17–20 · See, deploy, monitor</div>
+          </div>
+          <div class="aie-mc-pct" id="aie-m5-pct" style="color:var(--green)">0%</div>
+        </div>
+        <div class="aie-mc-bar"><div class="aie-mc-bar-fill" id="aie-m5-bar" style="background:var(--green)"></div></div>
+        <div class="aie-mc-weeks">
+          <div class="aie-week-row" id="aie-m5w1-row" onclick="toggleWeekCheck('m5w1')">
+            <div class="aie-wk-check" id="aie-chk-m5w1"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 17 · VISION</div>
+              <div class="aie-wk-title">Multimodal models, vision-language models</div>
+              <div class="aie-wk-output">🖼 Image Q&amp;A demo</div>
+            </div>
+          </div>
+          <div class="aie-week-row aie-project-week" id="aie-m5w2-row" onclick="toggleWeekCheck('m5w2')">
+            <div class="aie-wk-check" id="aie-chk-m5w2"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag aie-proj-tag">★ WK 18 · PROJECT</div>
+              <div class="aie-wk-title">Multimodal AI App</div>
+              <div class="aie-wk-output">🚀 Upload image → ask questions → AI answers</div>
+            </div>
+          </div>
+          <div class="aie-week-row" id="aie-m5w3-row" onclick="toggleWeekCheck('m5w3')">
+            <div class="aie-wk-check" id="aie-chk-m5w3"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 19 · MLFLOW</div>
+              <div class="aie-wk-title">MLflow, experiment tracking</div>
+              <div class="aie-wk-output">🧪 Experiment pipeline</div>
+            </div>
+          </div>
+          <div class="aie-week-row aie-project-week" id="aie-m5w4-row" onclick="toggleWeekCheck('m5w4')">
+            <div class="aie-wk-check" id="aie-chk-m5w4"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag aie-proj-tag">★ WK 20 · PROJECT</div>
+              <div class="aie-wk-title">Production AI API</div>
+              <div class="aie-wk-output">🚀 Docker + API + Logging + Monitoring</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MONTH 6 -->
+      <div class="aie-month-card" id="aie-m6" data-month="6">
+        <div class="aie-mc-accent" style="background:var(--accent2)"></div>
+        <div class="aie-mc-header">
+          <div class="aie-mc-num" style="color:var(--accent2)">06</div>
+          <div class="aie-mc-meta">
+            <div class="aie-mc-title">PORTFOLIO &amp; SYSTEMS</div>
+            <div class="aie-mc-sub">Weeks 21–24 · Make it hireable</div>
+          </div>
+          <div class="aie-mc-pct" id="aie-m6-pct" style="color:var(--accent2)">0%</div>
+        </div>
+        <div class="aie-mc-bar"><div class="aie-mc-bar-fill" id="aie-m6-bar" style="background:var(--accent2)"></div></div>
+        <div class="aie-mc-weeks">
+          <div class="aie-week-row" id="aie-m6w1-row" onclick="toggleWeekCheck('m6w1')">
+            <div class="aie-wk-check" id="aie-chk-m6w1"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 21 · SQL</div>
+              <div class="aie-wk-title">SQL basics, data pipelines</div>
+              <div class="aie-wk-output">🗄 ETL pipeline</div>
+            </div>
+          </div>
+          <div class="aie-week-row" id="aie-m6w2-row" onclick="toggleWeekCheck('m6w2')">
+            <div class="aie-wk-check" id="aie-chk-m6w2"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 22 · AIRFLOW</div>
+              <div class="aie-wk-title">Airflow basics, orchestration</div>
+              <div class="aie-wk-output">🗄 Scheduled AI pipeline</div>
+            </div>
+          </div>
+          <div class="aie-week-row aie-project-week" id="aie-m6w3-row" onclick="toggleWeekCheck('m6w3')">
+            <div class="aie-wk-check" id="aie-chk-m6w3"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag aie-proj-tag">★ WK 23 · PROJECT</div>
+              <div class="aie-wk-title">Full AI System</div>
+              <div class="aie-wk-output">🚀 RAG research assistant — end to end</div>
+            </div>
+          </div>
+          <div class="aie-week-row" id="aie-m6w4-row" onclick="toggleWeekCheck('m6w4')">
+            <div class="aie-wk-check" id="aie-chk-m6w4"></div>
+            <div class="aie-wk-body">
+              <div class="aie-wk-tag">WK 24 · POLISH</div>
+              <div class="aie-wk-title">Docs, demo videos, READMEs, architecture diagrams</div>
+              <div class="aie-wk-output">✅ Portfolio ready to ship</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end aie-months-grid -->
+
+    <!-- ═══ FINAL 5 PROJECTS ═══ -->
+    <div class="aie-section-label">FINAL PORTFOLIO</div>
+    <div class="aie-portfolio-strip">
+      <div class="aie-port-item" id="aie-port-1" onclick="togglePortfolio('port-1', this)">
+        <div class="aie-port-num">1</div>
+        <div class="aie-port-body">
+          <div class="aie-port-name">AI DOCUMENT ASSISTANT</div>
+          <div class="aie-port-tech">RAG · LangChain · FAISS · FastAPI</div>
+        </div>
+        <div class="aie-port-wk">WK 12</div>
+        <div class="aie-port-check" id="aie-portchk-1">○</div>
+        <input type="checkbox" id="port-1" onchange="saveCurriculum()" style="display:none">
+      </div>
+      <div class="aie-port-item" id="aie-port-2" onclick="togglePortfolio('port-2', this)">
+        <div class="aie-port-num">2</div>
+        <div class="aie-port-body">
+          <div class="aie-port-name">AI CODE ASSISTANT</div>
+          <div class="aie-port-tech">LLM Agents · Tool Use · LangChain</div>
+        </div>
+        <div class="aie-port-wk">WK 15</div>
+        <div class="aie-port-check" id="aie-portchk-2">○</div>
+        <input type="checkbox" id="port-2" onchange="saveCurriculum()" style="display:none">
+      </div>
+      <div class="aie-port-item" id="aie-port-3" onclick="togglePortfolio('port-3', this)">
+        <div class="aie-port-num">3</div>
+        <div class="aie-port-body">
+          <div class="aie-port-name">AI DATA ANALYST</div>
+          <div class="aie-port-tech">Pandas · LLM · CSV Analysis</div>
+        </div>
+        <div class="aie-port-wk">WK 16</div>
+        <div class="aie-port-check" id="aie-portchk-3">○</div>
+        <input type="checkbox" id="port-3" onchange="saveCurriculum()" style="display:none">
+      </div>
+      <div class="aie-port-item" id="aie-port-4" onclick="togglePortfolio('port-4', this)">
+        <div class="aie-port-num">4</div>
+        <div class="aie-port-body">
+          <div class="aie-port-name">MULTIMODAL AI APP</div>
+          <div class="aie-port-tech">Vision-Language · Image Q&A</div>
+        </div>
+        <div class="aie-port-wk">WK 18</div>
+        <div class="aie-port-check" id="aie-portchk-4">○</div>
+        <input type="checkbox" id="port-4" onchange="saveCurriculum()" style="display:none">
+      </div>
+      <div class="aie-port-item" id="aie-port-5" onclick="togglePortfolio('port-5', this)">
+        <div class="aie-port-num">5</div>
+        <div class="aie-port-body">
+          <div class="aie-port-name">PRODUCTION AI SYSTEM</div>
+          <div class="aie-port-tech">Docker · FastAPI · MLflow · Logging</div>
+        </div>
+        <div class="aie-port-wk">WK 20</div>
+        <div class="aie-port-check" id="aie-portchk-5">○</div>
+        <input type="checkbox" id="port-5" onchange="saveCurriculum()" style="display:none">
+      </div>
+    </div>
+
+    <!-- ═══ SKILLS VAULT ═══ -->
+    <div class="aie-vault-wrap">
+      <div class="aie-vault-header" onclick="toggleSkillsVault()">
+        <span class="aie-vault-icon">🔐</span>
+        <span class="aie-vault-title">SKILLS VAULT</span>
+        <div class="aie-vault-prog">
+          <div class="aie-vault-prog-bar"><div class="aie-vault-prog-fill" id="skillsProgressBar" style="width:0%"></div></div>
+          <span id="skillsProgressLabel" style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);">0 / 24</span>
+        </div>
+        <span id="skillsVaultArrow" style="color:var(--muted);font-size:.75rem;margin-left:8px;">▼</span>
+      </div>
+      <div id="skillsVaultBody" style="display:none;padding:16px 0 4px;">
+        <div class="aie-skills-grid">
+          <div class="aie-skill-cat">
+            <div class="aie-skill-cat-title" style="color:var(--accent)">⚙️ CORE ENGINEERING</div>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-docker" onchange="saveSkills()"><span>Docker</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-git" onchange="saveSkills()"><span>Git</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-fastapi" onchange="saveSkills()"><span>FastAPI</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-deploy" onchange="saveSkills()"><span>Model Deployment</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-cloud" onchange="saveSkills()"><span>Cloud Basics</span></label>
+          </div>
+          <div class="aie-skill-cat">
+            <div class="aie-skill-cat-title" style="color:var(--blue)">🧠 LLM & DATA</div>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-sklearn" onchange="saveSkills()"><span>HuggingFace Pipelines</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-feateng" onchange="saveSkills()"><span>Prompt Engineering</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-hyperparam" onchange="saveSkills()"><span>LLM Evaluation</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-eval" onchange="saveSkills()"><span>Embeddings & Search</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-mlflow" onchange="saveSkills()"><span>MLflow Tracking</span></label>
+          </div>
+          <div class="aie-skill-cat">
+            <div class="aie-skill-cat-title" style="color:var(--purple)">🤗 NLP / LLM</div>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-hf" onchange="saveSkills()"><span>HuggingFace Transformers</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-tok" onchange="saveSkills()"><span>Tokenizers</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-finetune" onchange="saveSkills()"><span>Fine-tuning LLMs</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-rag" onchange="saveSkills()"><span>RAG Systems</span></label>
+          </div>
+          <div class="aie-skill-cat">
+            <div class="aie-skill-cat-title" style="color:var(--gold)">🗄️ DATA & DB</div>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-sql" onchange="saveSkills()"><span>Advanced SQL</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-etl" onchange="saveSkills()"><span>Data Pipelines / ETL</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-vecdb" onchange="saveSkills()"><span>Vector DBs (FAISS)</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-embed" onchange="saveSkills()"><span>Semantic Search</span></label>
+          </div>
+          <div class="aie-skill-cat">
+            <div class="aie-skill-cat-title" style="color:var(--green)">🔧 MLOps</div>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-modver" onchange="saveSkills()"><span>Model Versioning</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-cicd" onchange="saveSkills()"><span>CI/CD for ML</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-dvc" onchange="saveSkills()"><span>Data Versioning (DVC)</span></label>
+          </div>
+          <div class="aie-skill-cat">
+            <div class="aie-skill-cat-title" style="color:var(--orange)">🔌 BACKEND & AI</div>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-restapi" onchange="saveSkills()"><span>REST APIs for ML</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-asyncapi" onchange="saveSkills()"><span>Async APIs (FastAPI adv.)</span></label>
+            <label class="aie-skill-item"><input type="checkbox" id="sk-llmpipe" onchange="saveSkills()"><span>LLM App Pipelines</span></label>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ML History Feed -->
+    <!-- ═══ ML LOG HISTORY ═══ -->
     <div class="panel" style="margin-top:var(--gap);">
       <div class="panel-title">ML LOG HISTORY</div>
       <div id="mlHistoryFeed"></div>
     </div>
-  </div>
 
-  <!-- ═══ GERMAN ═══ -->
+  </div><!-- end tab-ml -->
+
+
+    <!-- ═══ GERMAN ═══ -->
   <div id="tab-german" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">GERMAN CAMPAIGN</h1>
-      <div class="mono muted" style="font-size:.7rem;">A2 → B1 → B2 · Target: 20hr/week · 5 days/week</div>
+    <div class="tab-hero" style="--th-color:var(--gold)">
+      <div class="th-eyebrow">GERMAN CAMPAIGN</div>
+      <div class="th-title">SPRECHEN SIE DEUTSCH</div>
+      <div class="th-sub">A2 → B1 → B2 · 20hr/week · 5 days/week</div>
+      <div class="th-bar"><div class="th-bar-fill" style="background:var(--gold)"></div></div>
+      <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;"><span class="th-stat"><span id="german-total-hours-th">0</span> total hrs</span><span class="th-stat"><span id="german-weekly-show-th">0</span> / 20hr this week</span></div>
     </div>
 
     <div class="german-hero">
@@ -1181,9 +1322,11 @@
 
   <!-- ═══ ANALYTICS ═══ -->
   <div id="tab-analytics" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">ANALYTICS & INTEL</h1>
-      <div class="mono muted" style="font-size:.7rem;">Deep performance analysis across all pillars</div>
+    <div class="tab-hero" style="--th-color:var(--blue)">
+      <div class="th-eyebrow">ANALYTICS & INTEL</div>
+      <div class="th-title">DEEP SCAN</div>
+      <div class="th-sub">XP pace · Consistency · Projections · All-pillar history</div>
+      <div class="th-bar"><div class="th-bar-fill" style="background:var(--blue)"></div></div>
     </div>
 
     <!-- Summary row -->
@@ -1269,40 +1412,55 @@
 
   <!-- ═══ MISSIONS ═══ -->
   <div id="tab-missions" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">SECRET MISSIONS</h1>
-      <div class="mono muted" style="font-size:.7rem;">Complete objectives for bonus XP · Progress tracked automatically</div>
+
+    <!-- Missions hero header -->
+    <div class="ms-hero">
+      <div class="ms-hero-bg"></div>
+      <div class="ms-hero-inner">
+        <div class="ms-hero-eyebrow">CAMPAIGN INTEL</div>
+        <div class="ms-hero-title">SECRET MISSIONS</div>
+        <div class="ms-hero-sub">Complete hidden objectives · Claim bonus XP · Unlock glory</div>
+        <!-- Stat pills -->
+        <div class="ms-stat-row">
+          <div class="ms-stat">
+            <div class="ms-stat-val" id="msb-total">0</div>
+            <div class="ms-stat-lbl">TOTAL</div>
+          </div>
+          <div class="ms-stat-div"></div>
+          <div class="ms-stat">
+            <div class="ms-stat-val" id="msb-claimed" style="color:var(--green)">0</div>
+            <div class="ms-stat-lbl">CLAIMED</div>
+          </div>
+          <div class="ms-stat-div"></div>
+          <div class="ms-stat">
+            <div class="ms-stat-val" id="msb-ready" style="color:var(--gold)">0</div>
+            <div class="ms-stat-lbl">CLAIMABLE</div>
+          </div>
+          <div class="ms-stat-div"></div>
+          <div class="ms-stat">
+            <div class="ms-stat-val" id="msb-xp" style="color:var(--accent)">0</div>
+            <div class="ms-stat-lbl">BONUS XP</div>
+          </div>
+        </div>
+        <!-- XP bar -->
+        <div class="ms-xp-bar-wrap">
+          <div class="ms-xp-bar-track">
+            <div class="ms-xp-bar-fill" id="msb-xp-bar" style="width:0%"></div>
+          </div>
+          <div class="ms-xp-bar-lbl" id="msb-xp-pct">0% of mission XP claimed</div>
+        </div>
+      </div>
     </div>
 
-    <!-- Mission Stats Bar -->
-    <div class="mission-stats-bar">
-      <div class="msb-item">
-        <div class="msb-val" id="msb-total">0</div>
-        <div class="msb-label">TOTAL</div>
-      </div>
-      <div class="msb-item">
-        <div class="msb-val" id="msb-claimed" style="color:var(--green)">0</div>
-        <div class="msb-label">CLAIMED</div>
-      </div>
-      <div class="msb-item">
-        <div class="msb-val" id="msb-ready" style="color:var(--gold)">0</div>
-        <div class="msb-label">CLAIMABLE</div>
-      </div>
-      <div class="msb-item">
-        <div class="msb-val" id="msb-xp" style="color:var(--accent)">0</div>
-        <div class="msb-label">BONUS XP</div>
-      </div>
-    </div>
-
-    <!-- Category Filter -->
-    <div class="mission-filters">
-      <button class="mf-btn active" onclick="filterMissions('all',this)">ALL</button>
-      <button class="mf-btn" onclick="filterMissions('campaign',this)">⚔ CAMPAIGN</button>
-      <button class="mf-btn" onclick="filterMissions('strength',this)">🏋️ STRENGTH</button>
-      <button class="mf-btn" onclick="filterMissions('cardio',this)">🏃 CARDIO</button>
-      <button class="mf-btn" onclick="filterMissions('ml',this)">🧠 ML</button>
-      <button class="mf-btn" onclick="filterMissions('german',this)">🇩🇪 GERMAN</button>
-      <button class="mf-btn" onclick="filterMissions('nutrition',this)">🥗 NUTRITION</button>
+    <!-- Filter bar -->
+    <div class="ms-filter-bar">
+      <button class="msf-btn active" onclick="filterMissions('all',this)">ALL</button>
+      <button class="msf-btn" onclick="filterMissions('campaign',this)">⚔</button>
+      <button class="msf-btn" onclick="filterMissions('strength',this)">🏋️</button>
+      <button class="msf-btn" onclick="filterMissions('cardio',this)">🏃</button>
+      <button class="msf-btn" onclick="filterMissions('ml',this)">🧠</button>
+      <button class="msf-btn" onclick="filterMissions('german',this)">🇩🇪</button>
+      <button class="msf-btn" onclick="filterMissions('nutrition',this)">🥗</button>
     </div>
 
     <div id="missionsGrid"></div>
@@ -1310,32 +1468,93 @@
 
   <!-- ═══ REWARDS ═══ -->
   <div id="tab-rewards" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">REWARD VAULT</h1>
-      <div class="mono muted" style="font-size:.7rem;">"Well done, good and faithful servant." — Matt 25:23</div>
+    <div class="tab-hero" style="--th-color:var(--gold)">
+      <div class="th-eyebrow">REWARD VAULT</div>
+      <div class="th-title">THE VAULT</div>
+      <div class="th-sub">"Well done, good and faithful servant." — Matt 25:23</div>
+      <div class="th-bar"><div class="th-bar-fill" style="background:var(--gold)"></div></div>
+      
     </div>
 
-    <div class="reward-tier-title" style="color:var(--accent);">📓 WEEKLY REWARDS — Hit your weekly targets</div>
-    <div class="reward-grid" id="rewardGridWeekly"></div>
+    <!-- Vault header bar -->
+    <div class="rv-vault-header">
+      <div class="rv-vault-glow"></div>
+      <div style="position:relative;z-index:1;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px;">
+          <div>
+            <div style="font-family:var(--font-display);font-size:1.5rem;letter-spacing:3px;color:var(--gold);">THE VAULT</div>
+            <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);margin-top:2px;">Every rep, every hour, every word — it all pays.</div>
+          </div>
+          <div style="text-align:right;">
+            <div id="rewardVaultPct" style="font-family:var(--font-display);font-size:2rem;color:var(--gold);line-height:1;">0%</div>
+            <div id="rewardVaultClaimed" style="font-family:var(--font-mono);font-size:.55rem;color:var(--muted);">0 / 0 claimed</div>
+          </div>
+        </div>
+        <div style="height:3px;background:rgba(255,255,255,.06);">
+          <div id="rewardVaultBar" style="height:100%;background:linear-gradient(90deg,var(--gold),var(--accent));width:0%;transition:width .6s ease;box-shadow:0 0 8px var(--gold);"></div>
+        </div>
+      </div>
+    </div>
 
-    <div class="reward-tier-title" style="color:var(--blue);margin-top:20px;">⚡ BI-WEEKLY REWARDS — Level Up (every 2 weeks)</div>
-    <div class="reward-grid" id="rewardGridBiweekly"></div>
+    <!-- WEEKLY -->
+    <div class="rv-section">
+      <div class="rv-section-hdr">
+        <div class="rv-section-dot" style="background:var(--accent);box-shadow:0 0 8px var(--accent);"></div>
+        <span style="color:var(--accent);">WEEKLY</span>
+        <span class="rv-section-rule">Hit 500 XP in a week to unlock the next reward</span>
+      </div>
+      <div class="reward-grid" id="rewardGridWeekly"></div>
+    </div>
 
-    <div class="reward-tier-title" style="color:var(--gold);margin-top:20px;">🏅 MONTHLY REWARDS — Serious progress only</div>
-    <div class="reward-grid" id="rewardGridMonthly"></div>
+    <!-- LEVEL UP -->
+    <div class="rv-section">
+      <div class="rv-section-hdr">
+        <div class="rv-section-dot" style="background:var(--blue);box-shadow:0 0 8px var(--blue);"></div>
+        <span style="color:var(--blue);">LEVEL UP</span>
+        <span class="rv-section-rule">Every rank earned unlocks the next reward</span>
+      </div>
+      <div class="reward-grid" id="rewardGridBiweekly"></div>
+    </div>
 
-    <div class="reward-tier-title" style="color:var(--accent2);margin-top:20px;">🎯 PERFORMANCE REWARDS — Goal-triggered</div>
-    <div class="reward-grid" id="rewardGridPerformance"></div>
+    <!-- MONTHLY -->
+    <div class="rv-section">
+      <div class="rv-section-hdr">
+        <div class="rv-section-dot" style="background:var(--gold);box-shadow:0 0 8px var(--gold);"></div>
+        <span style="color:var(--gold);">MONTHLY</span>
+        <span class="rv-section-rule">Complete a month of the campaign to claim</span>
+      </div>
+      <div class="reward-grid" id="rewardGridMonthly"></div>
+    </div>
 
-    <div class="reward-tier-title" style="color:var(--purple);margin-top:20px;">🏷️ IDENTITY REWARDS — Always earnable</div>
-    <div class="reward-grid" id="rewardGridIdentity"></div>
+    <!-- PERFORMANCE -->
+    <div class="rv-section">
+      <div class="rv-section-hdr">
+        <div class="rv-section-dot" style="background:var(--accent2);box-shadow:0 0 8px var(--accent2);"></div>
+        <span style="color:var(--accent2);">MILESTONE</span>
+        <span class="rv-section-rule">Specific goals unlock these permanently</span>
+      </div>
+      <div class="reward-grid" id="rewardGridPerformance"></div>
+    </div>
+
+    <!-- IDENTITY -->
+    <div class="rv-section">
+      <div class="rv-section-hdr">
+        <div class="rv-section-dot" style="background:var(--purple);box-shadow:0 0 8px var(--purple);"></div>
+        <span style="color:var(--purple);">IDENTITY</span>
+        <span class="rv-section-rule">Always available — earn by doing</span>
+      </div>
+      <div class="reward-grid" id="rewardGridIdentity"></div>
+    </div>
   </div>
 
   <!-- ═══ TRAINING PLAN ═══ -->
   <div id="tab-training" class="tab-content">
-    <div class="page-header">
-      <h1 class="page-title">TRAINING</h1>
-      <div class="mono muted" style="font-size:.7rem;">Choose your workout — no fixed days</div>
+    <div class="tab-hero" style="--th-color:var(--green)">
+      <div class="th-eyebrow">TRAINING PLAN</div>
+      <div class="th-title">SELECT MISSION</div>
+      <div class="th-sub">6 workouts · No fixed days · Free choice</div>
+      <div class="th-bar"><div class="th-bar-fill" style="background:var(--green)"></div></div>
+      <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;"><span class="th-stat" id="trStatSetsToday">— sets today</span><span class="th-stat" id="th-streak">🔥 — day streak</span><span class="th-stat" id="th-weekdays">📅 — / 4 this week</span></div>
     </div>
 
     <!-- QUICK STATS ROW -->
@@ -1357,7 +1576,7 @@
       </div>
       <div class="tr-stat-tile">
         <div class="tr-stat-icon">⚡</div>
-        <div class="tr-stat-val" id="trStatSetsToday">—</div>
+        <div class="tr-stat-val" id="trStatSetsTodayOld">—</div>
         <div class="tr-stat-label">Sets Done</div>
       </div>
     </div>
@@ -1375,8 +1594,8 @@
     </div>
 
     <!-- WORKOUT SELECTOR — 6 cards, free choice -->
-    <div style="margin-bottom:var(--gap);">
-      <div style="font-family:var(--font-mono);font-size:.6rem;color:var(--muted);letter-spacing:3px;margin-bottom:14px;">SELECT TODAY'S WORKOUT</div>
+    <div class="tr-select-label">SELECT TODAY'S WORKOUT</div>
+    <div style="margin-bottom:8px;">
       <div class="wk-selector" id="trDayScroll">
 
         <div class="wk-card wk-upper-power" onclick="selectTrainingDay(0)">
@@ -1482,6 +1701,28 @@
     </div>
   </div>
 </div>
+
+<!-- ══ BOTTOM NAV (mobile) ══ -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bn-item active" onclick="switchTab('dashboard',this)" data-tab="dashboard">
+    <span class="bn-icon">⚔</span><span class="bn-label">Home</span>
+  </button>
+  <button class="bn-item" onclick="switchTab('daily',this)" data-tab="daily">
+    <span class="bn-icon">⚡</span><span class="bn-label">XP</span>
+  </button>
+  <button class="bn-item" onclick="switchTab('training',this)" data-tab="training">
+    <span class="bn-icon">🏋️</span><span class="bn-label">Train</span>
+  </button>
+  <button class="bn-item" onclick="switchTab('body',this)" data-tab="body">
+    <span class="bn-icon">🥗</span><span class="bn-label">Body</span>
+  </button>
+  <button class="bn-item" onclick="switchTab('ml',this)" data-tab="ml">
+    <span class="bn-icon">🧠</span><span class="bn-label">AI</span>
+  </button>
+  <button class="bn-item" onclick="toggleSidebar()">
+    <span class="bn-icon">☰</span><span class="bn-label">More</span>
+  </button>
+</nav>
 
 <script src="script.js"></script>
 <!-- ═══ MORNING NOTE FLASH MODAL ═══ -->
