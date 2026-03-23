@@ -8,7 +8,7 @@ const HARDCODED_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const KEITH_PASSWORD = 'jesusismyrock';
 
 // ── CONSTANTS ──
-const CAMPAIGN_START = new Date('2026-03-16');
+const CAMPAIGN_START = new Date('2026-03-23');
 const CAMPAIGN_END   = new Date('2026-09-01');
 const CAMPAIGN_DAYS  = 176;
 
@@ -29,58 +29,106 @@ const LEVELS = [
 ];
 
 const WEEKLY_REWARDS = [
-  {icon:"📓", name:"New Notebook",          req:"Hit weekly target", desc:"Buy a notebook for ideas or planning"},
-  {icon:"💻", name:"UI Side Project Hour",  req:"Hit weekly target", desc:"1 hour improving your web app UI for fun"},
-  {icon:"🚶", name:"Evening Walk",          req:"Hit weekly target", desc:"Take a long evening walk somewhere nice"},
-  {icon:"🖊️", name:"Quality Pen",           req:"Hit weekly target", desc:"Buy a high-quality pen"},
-  {icon:"📊", name:"Print Progress Stats",  req:"Hit weekly target", desc:"Print your stats and review them properly"},
-  {icon:"🧹", name:"Workspace Reset",       req:"Hit weekly target", desc:"Rearrange or deep-clean your workspace"},
-  {icon:"⚽", name:"New Football Drill",    req:"Hit weekly target", desc:"Try a new football drill or training style"},
-  {icon:"🧠", name:"ML Reading Hour",       req:"Hit weekly target", desc:"1 hour reading about AI/ML outside curriculum"},
-  {icon:"🏟️", name:"Casual Football",      req:"Hit weekly target", desc:"Train football casually with friends"},
-  {icon:"🖱️", name:"Small Desk Upgrade",   req:"Hit weekly target", desc:"Mousepad, cable organizer, or stand"},
+  { icon:"🃏", name:"Match Attax Pack",       price:"₹99",   tier:"weekly", color:"#38bdf8",
+    desc:"Buy one Match Attax pack — you earned a small treat for locking in this week." },
+  { icon:"☕", name:"Good Coffee",             price:"₹150",  tier:"weekly", color:"#fb923c",
+    desc:"Go get a proper coffee or chai from a café you like. One quality sit-down session." },
+  { icon:"🍕", name:"Cheat Meal",             price:"₹300",  tier:"weekly", color:"#ff4757",
+    desc:"You hit your macros all week. One guilt-free meal — order whatever you want." },
+  { icon:"🖊️", name:"Quality Pen",           price:"₹200",  tier:"weekly", color:"#a78bfa",
+    desc:"Pick up a Uni-ball or Parker pen. You'll feel every word you write." },
+  { icon:"📓", name:"New Notebook",           price:"₹150",  tier:"weekly", color:"#2dd4bf",
+    desc:"A fresh notebook — for ideas, plans, or German vocabulary. A reward you'll actually use." },
+  { icon:"🎮", name:"2hr Gaming Session",     price:"free",  tier:"weekly", color:"#fbbf24",
+    desc:"Two guilt-free hours of gaming. Zero shame. You grinded the week, you earned the break." },
+  { icon:"📦", name:"3 Attax Packs",         price:"₹297",  tier:"weekly", color:"#38bdf8",
+    desc:"Three Match Attax packs for a big week. Tear them all open at once." },
+  { icon:"🍜", name:"Restaurant Lunch",       price:"₹400",  tier:"weekly", color:"#f59e0b",
+    desc:"Sit down somewhere nice for lunch. Biryani, pasta, whatever you're feeling. Solo meal." },
+  { icon:"🧴", name:"Grooming Upgrade",       price:"₹350",  tier:"weekly", color:"#818cf8",
+    desc:"New body wash, deodorant, or skincare. Small upgrade, big feel." },
+  { icon:"🖱️", name:"Desk Micro-Upgrade",   price:"₹500",  tier:"weekly", color:"#22c55e",
+    desc:"Mousepad, cable clip, small organiser. One thing that makes your setup feel tighter." },
+  { icon:"🎧", name:"Playlist Session",       price:"free",  tier:"weekly", color:"#c026d3",
+    desc:"Build a new playlist for training. 1 hour dedicated to finding bangers. Guilt-free." },
+  { icon:"⚽", name:"Football Training",      price:"free",  tier:"weekly", color:"#00e5ff",
+    desc:"Head out for football with anyone — or solo juggling and drills. No pressure, just play." },
+  { icon:"🃏", name:"5 Attax Packs",         price:"₹495",  tier:"weekly", color:"#38bdf8",
+    desc:"Five packs for a truly locked-in week. Best reward in the weekly tier." },
 ];
 
 const BIWEEKLY_REWARDS = [
-  {icon:"👕", name:"Gym T-Shirt or Shorts", req:"Level up (every 2 weeks)", desc:"Buy a new gym t-shirt or training shorts"},
-  {icon:"🇩🇪", name:"German Learning Book", req:"Level up",                  desc:"German reader or grammar book"},
-  {icon:"📘", name:"ML / Programming Book", req:"Level up",                  desc:"Technical book of your choice"},
-  {icon:"🖥️", name:"Desk Setup Upgrade",   req:"Level up",                  desc:"Upgrade something on your desk"},
-  {icon:"🍽️", name:"Good Restaurant Meal", req:"Level up",                  desc:"Go eat a proper meal somewhere good"},
-  {icon:"✂️", name:"Haircut",              req:"Level up",                  desc:"Get a fresh cut"},
-  {icon:"🍵", name:"Water Bottle / Thermos",req:"Level up",                 desc:"Buy a nice bottle or thermos"},
-  {icon:"⚽", name:"New Football",          req:"Level up",                  desc:"Buy a new football"},
-  {icon:"📋", name:"Whiteboard",           req:"Level up",                  desc:"A whiteboard for planning and ideas"},
-  {icon:"💡", name:"Study Lamp Upgrade",   req:"Level up",                  desc:"Better desk lighting"},
+  { icon:"👕", name:"Gym Kit",               price:"₹800–1200", tier:"biweekly", color:"#ff4757",
+    desc:"New gym t-shirt or training shorts. Decathlon. You level up, your gym kit levels up too." },
+  { icon:"📗", name:"German Book",           price:"₹600–900",  tier:"biweekly", color:"#fbbf24",
+    desc:"Schritte Plus, Langenscheidt, or any German reader you're eyeing. Invest in the language." },
+  { icon:"📘", name:"Tech/ML Book",          price:"₹800–1500", tier:"biweekly", color:"#818cf8",
+    desc:"Hands-On ML, Python Cookbook, Clean Code — one book you'll actually read." },
+  { icon:"✂️", name:"Fresh Haircut",        price:"₹300–600",  tier:"biweekly", color:"#00e5ff",
+    desc:"Go get a proper cut. You're levelling up — look the part." },
+  { icon:"🍽️", name:"Nice Dinner Out",       price:"₹800–1200", tier:"biweekly", color:"#fb923c",
+    desc:"Sit-down dinner at a restaurant you wouldn't normally go to. Celebrate the level." },
+  { icon:"🍵", name:"Thermos / Bottle",      price:"₹500–800",  tier:"biweekly", color:"#2dd4bf",
+    desc:"A quality insulated bottle or thermos. Hydration is part of the campaign." },
+  { icon:"⚽", name:"New Football",          price:"₹600–1000", tier:"biweekly", color:"#22c55e",
+    desc:"A fresh Nivia or Cosco ball. For drills, juggling, or just having it around." },
+  { icon:"🖥️", name:"Desk Upgrade",         price:"₹800–1500", tier:"biweekly", color:"#38bdf8",
+    desc:"Lamp, stand, cable organizer, or anything that makes your workspace more locked in." },
+  { icon:"💡", name:"Study Lamp",           price:"₹600–1200", tier:"biweekly", color:"#f59e0b",
+    desc:"A proper desk lamp for deep work nights. Eye strain is the enemy of the grind." },
+  { icon:"🛁", name:"Spa Day / Self-care",   price:"₹500–1000", tier:"biweekly", color:"#c026d3",
+    desc:"Massage, grooming, or a full self-care day. Recover like a professional." },
 ];
 
 const MONTHLY_REWARDS = [
-  {icon:"👟", name:"Training Shoes",        req:"Month 1 — hit most targets",  desc:"Buy a new pair of running or training shoes"},
-  {icon:"🎧", name:"Headphone Upgrade",     req:"Month 2 — hit most targets",  desc:"Upgrade your headphones"},
-  {icon:"⌨️", name:"Coding Setup Upgrade", req:"Month 3 — hit most targets",  desc:"Something in your coding environment"},
-  {icon:"🗺️", name:"One-Day Trip",          req:"Month 4 — hit most targets",  desc:"Take a one-day trip somewhere interesting"},
-  {icon:"🧥", name:"Quality Jacket/Hoodie", req:"Month 5 — hit most targets", desc:"A high-quality jacket or hoodie"},
-  {icon:"🏋️", name:"Weighted Vest / Gear",  req:"Month 6 — hit most targets", desc:"Weighted vest or new training equipment"},
+  { icon:"👟", name:"Running Shoes",           price:"₹3000–6000",  tier:"monthly", color:"#00e5ff",  month:1,
+    desc:"New pair of running or training shoes. Nike, Puma, Asics — whatever fits your training. Month 1 delivered." },
+  { icon:"🎧", name:"Headphone Upgrade",       price:"₹2000–5000",  tier:"monthly", color:"#818cf8",  month:2,
+    desc:"Upgrade your listening experience. JBL, Boat, or Sony. For deep work, gym, and German podcasts." },
+  { icon:"⌨️", name:"Dev Setup Upgrade",      price:"₹3000–8000",  tier:"monthly", color:"#38bdf8",  month:3,
+    desc:"Keyboard, mouse, monitor stand, or anything that levels up your coding environment." },
+  { icon:"🗺️", name:"One-Day Trip",            price:"free",         tier:"monthly", color:"#fbbf24",  month:4,
+    desc:"Go somewhere you've never been for a full day. Nearby city, nature spot, anywhere. Earned it." },
+  { icon:"🧥", name:"Quality Jacket / Hoodie", price:"₹2500–5000",  tier:"monthly", color:"#fb923c",  month:5,
+    desc:"A proper quality jacket or hoodie. Something you'll wear for years. Month 5 is no joke." },
+  { icon:"🏋️", name:"Weighted Vest",           price:"₹2500–5000",  tier:"monthly", color:"#ff4757",  month:6,
+    desc:"You finished 6 months. A weighted vest for the next campaign. You built the base — now load it." },
 ];
 
 const PERFORMANCE_REWARDS = [
-  {icon:"🦺", name:"Weighted Vest",         req:"15 pull-ups achieved",          goal:"pullup15"},
-  {icon:"👟", name:"Running Shoes",          req:"5K under 23 minutes",           goal:"sub23_5k"},
-  {icon:"📸", name:"Transformation Photos",  req:"Reach 62 kg bodyweight",        goal:"weight62"},
-  {icon:"🚀", name:"Publish ML Project",     req:"First ML project shipped",      goal:"ml_shipped"},
-  {icon:"🍽️", name:"Restaurant Celebration", req:"B1 German grammar complete",   goal:"b1_done"},
-  {icon:"🏷️", name:"Rename Level Title",    req:"30-day log streak",             goal:"streak30"},
-  {icon:"🛠️", name:"Workspace Upgrade",     req:"4 weeks perfect consistency",   goal:"4wk_perfect"},
+  { icon:"🎽", name:"Retro Barca Jersey",   price:"₹2500–5000",  goal:"pullup15",   color:"#a50044",
+    desc:"A retro Barcelona jersey — the kind you frame or wear on match days. Unlocked when you hit 15 pull-ups." },
+  { icon:"👟", name:"Training Shoes",        price:"₹4000–8000",  goal:"sub23_5k",   color:"#00e5ff",
+    desc:"Top-tier running shoes when you break 23 minutes on a 5K. You run like that, you deserve the kicks." },
+  { icon:"📸", name:"Pro Progress Photos",  price:"₹500–1500",   goal:"weight62",   color:"#fbbf24",
+    desc:"Book a proper photoshoot or print your transformation photos. Reach 62kg and make it official." },
+  { icon:"🚀", name:"Developer Merch",       price:"₹1500–3000",  goal:"ml_shipped", color:"#818cf8",
+    desc:"Ship your first real ML project. Reward: a hoodie or shirt from your favourite dev brand." },
+  { icon:"🇩🇪", name:"German Experience",   price:"₹1000–3000",  goal:"b1_done",    color:"#ffd700",
+    desc:"B1 grammar done. Reward: a German film night, German café, or authentic German meal out." },
+  { icon:"🏆", name:"Framed Stats Print",   price:"₹500–1500",   goal:"streak30",   color:"#ff4757",
+    desc:"30-day streak. Print your stats, frame them. Hang them where you train." },
+  { icon:"🪑", name:"Chair / Desk Upgrade", price:"₹5000–12000", goal:"4wk_perfect", color:"#22c55e",
+    desc:"4 perfect weeks straight — consistency at that level earns you a proper ergonomic chair or desk." },
+  { icon:"🌍", name:"Weekend Trip",          price:"₹3000–8000",  goal:"streak30",   color:"#fb923c",
+    desc:"Hit a 30-day log streak: take a weekend trip somewhere you've been wanting to go. You earned it." },
 ];
 
 const IDENTITY_REWARDS = [
-  {icon:"🏷️", name:"Rename Character Level", desc:"Customise your level title in the tracker"},
-  {icon:"🎖️", name:"Custom Dashboard Badge", desc:"Add a custom badge to your dashboard"},
-  {icon:"📌", name:"Print Progress Chart",    desc:"Print a chart and pin it on your wall"},
-  {icon:"📱", name:"Phone Wallpaper Update",  desc:"Change your wallpaper to your future self"},
-  {icon:"📝", name:"Monthly Reflection",      desc:"Write a short reflection on what improved"},
-  {icon:"🎥", name:"Progress Video",          desc:"Record a short video talking about progress"},
-  {icon:"📷", name:"Before vs Now Snapshot",  desc:"Create a comparison snapshot"},
+  { icon:"🏷️", name:"Rename Your Rank",      color:"#fbbf24",
+    desc:"Pick a custom title for your current level. Show it on your dashboard. You named it, you own it." },
+  { icon:"🎖️", name:"Custom Badge",           color:"#00e5ff",
+    desc:"Design or pick a badge for your dashboard header. Symbols of the grind." },
+  { icon:"📌", name:"Pin Your Stats",          color:"#818cf8",
+    desc:"Print your progress chart — XP, streaks, lifts, German hours. Pin it above your desk." },
+  { icon:"📱", name:"New Wallpaper",           color:"#22c55e",
+    desc:"Change your phone and laptop wallpaper to something that represents who you're becoming." },
+  { icon:"📝", name:"Monthly Reflection",      color:"#fb923c",
+    desc:"Write a proper reflection: what worked, what broke, what you'll do differently. Keep it. Read it later." },
+  { icon:"🎥", name:"Progress Video",          color:"#ff4757",
+    desc:"Record a 1-min video talking about your progress. Your future self will watch it one day." },
+  { icon:"📷", name:"Before / After Photo",    color:"#38bdf8",
+    desc:"Take a progress photo. Same pose, same light. The difference compounds faster than you think." },
 ];
 
 // SECRET MISSIONS
@@ -112,13 +160,13 @@ const SECRET_MISSIONS = [
   {id:'sm28', emoji:'🚀', title:'SPRINT MACHINE',     desc:'Log sprint intervals 3 sessions in a single week',             xp:35,  type:'weekly',  secret:true,  category:'cardio'},
   {id:'sm29', emoji:'❤️', title:'RESTING BEAST',      desc:'Log a resting heart rate below 55 bpm',                        xp:40,  type:'one-off', secret:true,  category:'cardio'},
 
-  // ── ML / LEARNING ──
-  {id:'sm4',  emoji:'🧠', title:'ML MARATHON',        desc:'Log ML deep work 5 consecutive active days',                    xp:50,  type:'streak',  secret:true,  category:'ml'},
-  {id:'sm8',  emoji:'📚', title:'LECTURE SPRINT',     desc:'Complete 3 CS229 lectures in a single week',                   xp:40,  type:'weekly',  secret:true,  category:'ml'},
-  {id:'sm30', emoji:'🔬', title:'CS229 HALFWAY',      desc:'Complete 10+ CS229 lectures — halfway through the gauntlet',   xp:55,  type:'one-off', secret:false, category:'ml'},
-  {id:'sm31', emoji:'👁️', title:'CS231N COMPLETE',    desc:'Finish all 18 CS231N lectures — vision conquered',             xp:80,  type:'one-off', secret:false, category:'ml'},
-  {id:'sm32', emoji:'🚢', title:'SHIP IT',            desc:'Complete and deploy your first ML project to production',       xp:70,  type:'one-off', secret:false, category:'ml'},
-  {id:'sm33', emoji:'🔥', title:'COMMIT STREAK',      desc:'Hit 5+ GitHub commits in a single week',                       xp:30,  type:'weekly',  secret:true,  category:'ml'},
+  // ── AI ENGINEER PATH ──
+  {id:'sm4',  emoji:'🧠', title:'DEEP WORK STREAK',   desc:'Log ML deep work 5 consecutive active days — no gaps, no excuses', xp:50,  type:'streak',  secret:true,  category:'ml'},
+  {id:'sm8',  emoji:'⚡', title:'WEEK LOCKED IN',     desc:'Log deep work AND implementation in the same week (3+ days)',       xp:40,  type:'weekly',  secret:true,  category:'ml'},
+  {id:'sm30', emoji:'🔬', title:'MONTH 1 DONE',       desc:'Complete all 4 weeks of Month 1 — Production Python + APIs',        xp:55,  type:'one-off', secret:false, category:'ml'},
+  {id:'sm31', emoji:'🚢', title:'FIRST PROJECT',      desc:'Ship your first real AI project to production',                     xp:80,  type:'one-off', secret:false, category:'ml'},
+  {id:'sm32', emoji:'🤖', title:'RAG BUILDER',        desc:'Complete and ship the AI Document Assistant (Month 3 project)',     xp:70,  type:'one-off', secret:false, category:'ml'},
+  {id:'sm33', emoji:'🔥', title:'COMMIT MACHINE',     desc:'Hit 5+ GitHub commits in a single week — code every day',          xp:30,  type:'weekly',  secret:true,  category:'ml'},
 
   // ── GERMAN ──
   {id:'sm5',  emoji:'🇩🇪', title:'GERMAN BINGE',      desc:'Log 4+ German hours in a single day — immersion mode',          xp:30,  type:'daily',   secret:true,  category:'german'},
@@ -541,6 +589,14 @@ function updateHeader() {
   if (pctEl) pctEl.textContent = pct + '%';
   const todayLabel = document.getElementById('todayDateLabel');
   if (todayLabel) todayLabel.textContent = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  // Sidebar mini campaign bar
+  const sbDay  = document.getElementById('sb-day-num');
+  const sbPct  = document.getElementById('sb-camp-pct');
+  const sbFill = document.getElementById('sbCampFill');
+  if (sbDay)  sbDay.textContent  = 'DAY ' + clampedDay;
+  if (sbPct)  sbPct.textContent  = pct + '%';
+  if (sbFill) sbFill.style.width = pct + '%';
 }
 
 // ── NAVIGATION ──
@@ -554,7 +610,7 @@ function switchTab(id, el) {
     setTimeout(renderTodayWorkout, 50);
   }
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sb-item, .nav-item, .bn-item').forEach(t => t.classList.remove('active'));
   const tab = document.getElementById('tab-' + id);
   if (tab) tab.classList.add('active');
   if (el) el.classList.add('active');
@@ -697,6 +753,26 @@ function calcXP() {
   return Object.keys(XP_MAP).reduce((s, id) => s + (document.getElementById(id)?.checked ? XP_MAP[id] : 0), 0);
 }
 
+// Toggle a dxp-row checkbox and update visual state
+function toggleDXP(cbId, rowEl) {
+  const cb = document.getElementById(cbId);
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  if (rowEl) rowEl.classList.toggle('dxp-checked', cb.checked);
+  updateXP();
+}
+
+// Sync all dxp-row visual states from actual checkbox values
+function syncDXPRows() {
+  const IDS = ['xp-gym','xp-run','xp-mobility','xp-deepwork','xp-impl','xp-german-daily','xp-protein','xp-water','xp-calories'];
+  IDS.forEach(id => {
+    const cb = document.getElementById(id);
+    // Find the row by looking for the div with onclick containing this id
+    const row = document.querySelector(`.dxp-row[onclick*="${id}"]`);
+    if (cb && row) row.classList.toggle('dxp-checked', cb.checked);
+  });
+}
+
 function updateXP() {
   const xp = calcXP();
   const el = document.getElementById('todayXP');
@@ -730,9 +806,13 @@ async function saveDay() {
     calories: document.getElementById('xp-calories').checked,
   };
   const idx = xpHistory.findIndex(e => e.date === today);
+  // Preserve any missionXP that was already earned today — don't clobber it
+  const existingMissionXP = (idx >= 0) ? (xpHistory[idx].missionXP || 0) : 0;
+  entry.xp += existingMissionXP;
+  if (existingMissionXP) entry.missionXP = existingMissionXP;
   if (idx >= 0) { state.totalXP -= xpHistory[idx].xp; xpHistory[idx] = { ...xpHistory[idx], ...entry }; }
   else xpHistory.push(entry);
-  state.totalXP += xp;
+  state.totalXP += entry.xp;
   if (!state.dayTypeHistory) state.dayTypeHistory = {};
   state.dayTypeHistory[today] = currentDayType;
   const ws = getWeekStart();
@@ -742,7 +822,7 @@ async function saveDay() {
   checkLevelUp();
   checkMissionProgress(entry);
   // Update UI immediately, save to DB in background
-  notify('⚡ +' + xp + ' XP logged', 'var(--accent)');
+  notify('⚡ +' + entry.xp + ' XP logged', 'var(--accent)');
   refreshSections('xp', 'dashboard');
   // Fire DB writes without awaiting — non-blocking
   Promise.all([dbUpsertDay('xp_logs', entry), saveState()]).catch(console.error);
@@ -812,7 +892,7 @@ function updateStreaks() {
   });
 
   // weekProgress is still used for dot coloring (how many days this week)
-  const CAMPAIGN_START = '2026-03-16';
+  const CAMPAIGN_START = '2026-03-23';
   const istNow   = new Date(istMs);
   const dow      = istNow.getDay();
   const toMon    = dow === 0 ? -6 : 1 - dow;
@@ -934,12 +1014,12 @@ async function saveNutrition() {
   let existing = bodyHistory.find(e => e.date === today);
   const prevMeals = existing?.meals || {};
 
-  // ADDITIVE: new entries ADD to existing meal slots (not overwrite)
-  // To overwrite a meal, delete the day entry first from history
+  // Mode: ADD (default) or REPLACE (toggle in UI)
+  const replaceMode = document.getElementById('nutr-mode-replace')?.checked;
   function mergeMeal(key, filled, newData, prev) {
-    if (!filled) return prev || null;
-    if (!prev) return newData;
-    // ADD calories/macros on top of existing meal slot
+    if (!filled) return prev || null; // slot not touched this save — keep existing
+    if (!prev || replaceMode) return newData; // no existing OR replace mode — overwrite
+    // ADD mode: add new macros on top of existing
     return {
       desc: newData.desc || prev.desc,
       cal:  (prev.cal  || 0) + (newData.cal  || 0),
@@ -985,12 +1065,11 @@ async function saveNutrition() {
   const calCheck  = document.getElementById('xp-calories');
   if (protCheck && totProt >= 80 && !protCheck.checked) {
     protCheck.checked = true;
-    updateXP();
   }
   if (calCheck && totCal >= 2800 && totCal <= 3500 && !calCheck.checked) {
     calCheck.checked = true;
-    updateXP();
   }
+  updateXP();   // covers both, also calls syncDXPRows
   notify('🥗 Meals added! Total: ' + totCal + ' kcal / ' + totProt + 'g protein', 'var(--green)');
   updateMealTotals();
   refreshSections('body');
@@ -1063,65 +1142,209 @@ async function saveEngine() {
 // ── ML ──
 async function saveML() {
   if (!isKeith()) { notify('👁 Guest view', 'var(--muted)'); return; }
+  const projects = parseInt(document.getElementById('inp-projects')?.value) || state.mlCurrent.projects || 0;
+  const commits  = parseInt(document.getElementById('inp-commits')?.value)  || state.mlCurrent.commits  || 0;
+  const week     = parseInt(document.getElementById('inp-current-week')?.value) || state.mlCurrent.week || 1;
   state.mlCurrent = {
-    modules:             parseInt(document.getElementById('inp-modules').value)           || state.mlCurrent.modules,
-    lectures:            parseInt(document.getElementById('inp-lectures').value)          || state.mlCurrent.lectures,
-    lecturesPlanned:     parseInt(document.getElementById('inp-lectures-planned').value)  || 21,
-    lectures231n:        parseInt(document.getElementById('inp-231n').value)              || state.mlCurrent.lectures231n || 0,
-    lectures231nPlanned: parseInt(document.getElementById('inp-231n-planned').value)      || 18,
-    projects:            parseInt(document.getElementById('inp-projects').value)          || state.mlCurrent.projects,
-    commits:             parseInt(document.getElementById('inp-commits').value)           || state.mlCurrent.commits,
-    dlnlp:               parseInt(document.getElementById('inp-dlnlp').value)             || state.mlCurrent.dlnlp,
+    ...state.mlCurrent,
+    projects,
+    commits,
+    week: Math.min(24, Math.max(1, week)),
   };
   const entry = { date: todayKey(), ...state.mlCurrent };
   mlHistory.push(entry);
   await dbUpsertDay('ml_logs', entry);
   await saveState();
-  notify('🧠 ML progress updated!', 'var(--purple)');
+  notify('🧠 Progress updated! Week ' + state.mlCurrent.week + ' · ' + projects + ' projects', 'var(--purple)');
   refreshSections('ml', 'missions');
 }
 
 async function saveCurriculum() {
-  const items = document.querySelectorAll('.curr-item input[type=checkbox]');
-  const curr = {};
-  items.forEach(cb => {
+  if (!state.curriculum) state.curriculum = {};
+  const curr = state.curriculum;
+  // Scan any legacy .curr-item checkboxes
+  document.querySelectorAll('.curr-item input[type=checkbox]').forEach(cb => {
     curr[cb.id] = cb.checked;
     const l = cb.nextElementSibling;
-    if (l) l.classList.toggle('done', cb.checked);
+    if (l && l.tagName === 'LABEL') l.classList.toggle('done', cb.checked);
   });
+  // Sync portfolio checkboxes (hidden inputs that DO exist)
+  ['port-1','port-2','port-3','port-4','port-5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) curr[id] = el.checked;
+  });
+  // state.curriculum already has week values written by toggleWeekCheck directly
   state.curriculum = curr;
   await dbUpsertState('curriculum', curr);
   updateCurriculumBars();
 }
 
 function applyCurriculum() {
-  Object.entries(state.curriculum).forEach(([id, v]) => {
+  const curr = state.curriculum || {};
+  // Apply to any legacy .curr-item checkboxes that exist in DOM
+  Object.entries(curr).forEach(([id, v]) => {
     const el = document.getElementById(id);
-    if (el) { el.checked = v; const l = el.nextElementSibling; if (l) l.classList.toggle('done', v); }
+    if (!el) return;
+    el.checked = !!v;
+    const l = el.nextElementSibling;
+    if (l && l.tagName === 'LABEL') l.classList.toggle('done', !!v);
   });
   updateCurriculumBars();
+  syncAllAIEStates();
 }
 
 function updateCurriculumBars() {
-  const tracks = {
-    'track-cs229':  ['cs-1','cs-2','cs-3','cs-4','cs-5','cs-6','cs-7','cs-8','cs-9','cs-10','cs-11','cs-12','cs-13','cs-14','cs-15','cs-16','cs-17','cs-18','cs-19','cs-20','cs-21'],
-    'track-cs231n': ['n231-1','n231-2','n231-3','n231-4','n231-5','n231-6','n231-7','n231-8','n231-9','n231-10','n231-11','n231-12','n231-13','n231-14','n231-15','n231-16','n231-17','n231-18'],
-    'track-dl':     ['dl-1','dl-2','dl-3','dl-4','dl-5','dl-6','dl-7','dl-8','dl-9','dl-10'],
-    'track-nlp':    ['nlp-1','nlp-2','nlp-3','nlp-4','nlp-5','nlp-6','nlp-7','nlp-8','nlp-9','nlp-10'],
+  // Month tracks — 4 weeks each
+  const MONTH_TRACKS = {
+    'track-m1': ['m1w1','m1w2','m1w3','m1w4'],
+    'track-m2': ['m2w1','m2w2','m2w3','m2w4'],
+    'track-m3': ['m3w1','m3w2','m3w3','m3w4'],
+    'track-m4': ['m4w1','m4w2','m4w3','m4w4'],
+    'track-m5': ['m5w1','m5w2','m5w3','m5w4'],
+    'track-m6': ['m6w1','m6w2','m6w3','m6w4'],
   };
-  let td = 0, ta = 0;
-  Object.entries(tracks).forEach(([id, items]) => {
+  // Portfolio projects
+  const PORT_IDS = ['port-1','port-2','port-3','port-4','port-5'];
+
+  let totalDone = 0, totalItems = 0;
+
+  // Determine current month from mlCurrent.week
+  const currentWeek = state.mlCurrent?.week || 1;
+  const currentMonth = Math.ceil(currentWeek / 4);
+
+  Object.entries(MONTH_TRACKS).forEach(([id, items], idx) => {
     const done = items.filter(x => document.getElementById(x)?.checked).length;
-    td += done; ta += items.length;
-    const pct = (done / items.length) * 100;
-    const bar = document.getElementById('bar-' + id);
+    totalDone  += done;
+    totalItems += items.length;
+    const pct  = Math.round((done / items.length) * 100);
+    const bar  = document.getElementById('bar-' + id);
     const count = document.getElementById('count-' + id);
-    if (bar)   bar.style.width  = pct + '%';
+    if (bar)   bar.style.width   = pct + '%';
     if (count) count.textContent = done + '/' + items.length;
   });
-  const op = ta ? Math.round((td / ta) * 100) : 0;
+
+  // Portfolio bar
+  const portDone = PORT_IDS.filter(x => document.getElementById(x)?.checked).length;
+  const portBar  = document.getElementById('portfolioBar');
+  const portLbl  = document.getElementById('portfolioDoneLabel');
+  if (portBar) portBar.style.width   = Math.round((portDone / 5) * 100) + '%';
+  if (portLbl) portLbl.textContent   = portDone + ' / 5';
+
+  // Overall progress
+  const overallPct = totalItems ? Math.round((totalDone / totalItems) * 100) : 0;
+  const overallBar = document.getElementById('overallCurrBar');
+  const overallEl  = document.getElementById('ml-overall-pct');
+  const weeksDoneEl = document.getElementById('ml-weeks-done');
+  if (overallBar) overallBar.style.width = overallPct + '%';
+  if (overallEl)  overallEl.textContent  = overallPct + '%';
+  if (weeksDoneEl) weeksDoneEl.textContent = totalDone;
+
+  // Month progress
+  const monthTrackId = 'track-m' + currentMonth;
+  const monthItems   = MONTH_TRACKS[monthTrackId] || [];
+  const monthDone    = monthItems.filter(x => document.getElementById(x)?.checked).length;
+  const monthPct     = monthItems.length ? Math.round((monthDone / monthItems.length) * 100) : 0;
+  const monthBar     = document.getElementById('monthCurrBar');
+  const monthPctEl   = document.getElementById('ml-month-pct');
+  const monthLbl     = document.getElementById('ml-month-label');
+  if (monthBar)   monthBar.style.width   = monthPct + '%';
+  if (monthPctEl) monthPctEl.textContent = monthPct + '%';
+  if (monthLbl)   monthLbl.textContent   = 'Month ' + currentMonth + ' · Week ' + currentWeek;
+
+  // Dashboard tile
   const dp = document.getElementById('dashCurrPct');
-  if (dp) dp.textContent = op + '%';
+  if (dp) dp.textContent = overallPct + '%';
+
+  // ── Sync aie-* month card bars + percentages ──
+  const M_COLORS = ['var(--accent)','var(--blue)','var(--purple)','var(--gold)','var(--green)','var(--accent2)'];
+  Object.entries(MONTH_TRACKS).forEach(([id, items], idx) => {
+    const mNum = idx + 1;
+    const done = items.filter(x => document.getElementById(x)?.checked).length;
+    const pct  = Math.round((done / items.length) * 100);
+    const bar  = document.getElementById('aie-m' + mNum + '-bar');
+    const pctEl = document.getElementById('aie-m' + mNum + '-pct');
+    if (bar)   bar.style.width   = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+  });
+
+  // aie hero stats
+  const aieWkDone  = document.getElementById('aie-weeks-done');
+  const aieOvPct   = document.getElementById('aie-overall-pct');
+  const aieProjDone = document.getElementById('aie-projects-done');
+  const aieCommits  = document.getElementById('aie-commits');
+  const aieMasterFill = document.getElementById('aie-master-fill');
+  const aieMasterGlow = document.getElementById('aie-master-glow');
+  if (aieWkDone)   aieWkDone.textContent   = totalDone;
+  if (aieOvPct)    aieOvPct.textContent    = overallPct + '%';
+  if (aieProjDone) {
+    const proj = state.mlCurrent?.projects || 0;
+    aieProjDone.innerHTML = proj + '<span style="font-size:1rem;opacity:.5;">/5</span>';
+  }
+  if (aieCommits)  aieCommits.textContent  = state.mlCurrent?.commits || 0;
+  if (aieMasterFill) aieMasterFill.style.width = overallPct + '%';
+  if (aieMasterGlow) aieMasterGlow.style.left  = overallPct + '%';
+
+  syncAllAIEStates();
+}
+
+// ── ML TAB INTERACTIVITY ──
+
+function toggleWeekCheck(weekId) {
+  if (!isKeith()) { notify('👁 Guest view', 'var(--muted)'); return; }
+  // Toggle directly in state.curriculum (hidden DOM checkboxes may not exist)
+  if (!state.curriculum) state.curriculum = {};
+  const newVal = !state.curriculum[weekId];
+  state.curriculum[weekId] = newVal;
+  // Also update DOM checkbox if it exists
+  const cb = document.getElementById(weekId);
+  if (cb) cb.checked = newVal;
+  // Update visual + persist
+  syncAIEWeekRow(weekId, newVal);
+  updateCurriculumBars();
+  dbUpsertState('curriculum', state.curriculum).catch(console.error);
+}
+
+function syncAIEWeekRow(weekId, checked) {
+  const chk = document.getElementById('aie-chk-' + weekId);
+  const row = document.getElementById('aie-' + weekId + '-row');
+  if (chk) {
+    chk.classList.toggle('aie-wk-checked', checked);
+    chk.textContent = checked ? '✓' : '';
+  }
+  if (row) row.classList.toggle('aie-week-done', checked);
+}
+
+function togglePortfolio(portId, elRow) {
+  if (!isKeith()) { notify('👁 Guest view', 'var(--muted)'); return; }
+  const cb  = document.getElementById(portId);
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  saveCurriculum();
+  const num = portId.replace('port-', '');
+  const chk = document.getElementById('aie-portchk-' + num);
+  if (chk) chk.textContent = cb.checked ? '✓' : '○';
+  if (elRow) elRow.classList.toggle('aie-port-done', cb.checked);
+}
+
+function syncAllAIEStates() {
+  const curr = state.curriculum || {};
+  // Sync all week check visuals from state (DOM checkboxes may not exist)
+  const ALL = ['m1w1','m1w2','m1w3','m1w4','m2w1','m2w2','m2w3','m2w4',
+    'm3w1','m3w2','m3w3','m3w4','m4w1','m4w2','m4w3','m4w4',
+    'm5w1','m5w2','m5w3','m5w4','m6w1','m6w2','m6w3','m6w4'];
+  ALL.forEach(wid => syncAIEWeekRow(wid, !!curr[wid]));
+  // Portfolio
+  [1,2,3,4,5].forEach(n => {
+    const id  = 'port-' + n;
+    const checked = !!curr[id];
+    const chk = document.getElementById('aie-portchk-' + n);
+    const row = document.getElementById('aie-port-' + n);
+    // Also sync hidden checkbox if present
+    const cb  = document.getElementById(id);
+    if (cb) cb.checked = checked;
+    if (chk) chk.textContent = checked ? '✓' : '○';
+    if (row) row.classList.toggle('aie-port-done', checked);
+  });
 }
 
 function toggleTrack(id) {
@@ -1215,8 +1438,16 @@ function _weekSprints(ws)  { return engineHistory.filter(e => e.date >= ws && e.
 function _weekCommits(ws)  { return mlHistory.filter(e => e.date >= ws).reduce((s,e) => s + (e.commits||0), 0); }
 function _totalSpeak()     { return germanHistory.reduce((s,e) => s + (e.min||0), 0); }
 function _weekPodcasts(ws) { return germanHistory.filter(e => e.date >= ws && e.method === 'podcast').length; }
-function _cs229Done()      { if (!state.curriculum) return 0; return ['cs-1','cs-2','cs-3','cs-4','cs-5','cs-6','cs-7','cs-8','cs-9','cs-10','cs-11','cs-12','cs-13','cs-14','cs-15','cs-16','cs-17','cs-18','cs-19','cs-20','cs-21'].filter(k => state.curriculum[k]).length; }
-function _cs231nDone()     { if (!state.curriculum) return 0; return ['n231-1','n231-2','n231-3','n231-4','n231-5','n231-6','n231-7','n231-8','n231-9','n231-10','n231-11','n231-12','n231-13','n231-14','n231-15','n231-16','n231-17','n231-18'].filter(k => state.curriculum[k]).length; }
+
+function _cs229Done()  { return _weeksDone(); } // legacy compat — now counts total weeks done
+function _cs231nDone() { return (state.mlCurrent?.projects || 0); } // legacy compat — maps to projects
+function _weeksDone()  {
+  const ALL_WEEKS = ['m1w1','m1w2','m1w3','m1w4','m2w1','m2w2','m2w3','m2w4',
+    'm3w1','m3w2','m3w3','m3w4','m4w1','m4w2','m4w3','m4w4',
+    'm5w1','m5w2','m5w3','m5w4','m6w1','m6w2','m6w3','m6w4'];
+  if (!state.curriculum) return 0;
+  return ALL_WEEKS.filter(k => state.curriculum[k]).length;
+}
 function _weekStrSessions(ws) { return strengthHistory.filter(e => e.date >= ws).length; }
 function _consecutiveStrWeeks() {
   let streak = 0;
@@ -1277,10 +1508,10 @@ function checkMissions() {
     sm29: () => _lowestRHR() < 55,
     // ── ML ──
     sm4:  () => { const s = state.streaks?.ml; return ((s && typeof s === 'object') ? (s.current||0) : (s||0)) >= 5; },
-    sm8:  () => xpHistory.filter(e => e.date >= ws && (e.deepwork || e.impl)).length >= 3,
-    sm30: () => _cs229Done() >= 10,
-    sm31: () => _cs231nDone() >= 18,
-    sm32: () => (state.mlCurrent?.projects || 0) >= 1,
+    sm8:  () => { const wE = xpHistory.filter(e=>e.date>=ws); return wE.filter(e=>e.deepwork).length >= 1 && wE.filter(e=>e.impl).length >= 1 && (wE.filter(e=>e.deepwork||e.impl).length >= 3); },
+    sm30: () => { const ALL=['m1w1','m1w2','m1w3','m1w4']; return ALL.every(k => state.curriculum && state.curriculum[k]); },
+    sm31: () => (state.mlCurrent?.projects || 0) >= 1,
+    sm32: () => (state.claimedMissions||[]).includes('sm31') && (state.mlCurrent?.week||1) >= 12,
     sm33: () => _weekCommits(ws) >= 5,
     // ── German ──
     sm5:  () => germanHistory.filter(e => e.date === today).reduce((s,e) => s + (e.hours||0), 0) >= 4,
@@ -1416,21 +1647,21 @@ function renderMissions() {
           </div>`;
       }
       if (m.id === 'sm30' && !isCompleted) {
-        const done = _cs229Done();
-        const pct  = Math.min(100, Math.round((done / 10) * 100));
+        const wks = ['m1w1','m1w2','m1w3','m1w4'].filter(k=>state.curriculum&&state.curriculum[k]).length;
+        const pct = Math.round((wks / 4) * 100);
         progressBar = `
           <div class="mc-prog-wrap">
             <div class="mc-prog-bar"><div class="mc-prog-fill" style="width:${pct}%;background:var(--blue)"></div></div>
-            <div class="mc-prog-label">${done} / 10 lectures · ${pct}%</div>
+            <div class="mc-prog-label">${wks} / 4 Month 1 weeks done · ${pct}%</div>
           </div>`;
       }
       if (m.id === 'sm31' && !isCompleted) {
-        const done = _cs231nDone();
-        const pct  = Math.min(100, Math.round((done / 18) * 100));
+        const proj = state.mlCurrent?.projects || 0;
+        const pct  = proj >= 1 ? 100 : 0;
         progressBar = `
           <div class="mc-prog-wrap">
             <div class="mc-prog-bar"><div class="mc-prog-fill" style="width:${pct}%;background:var(--blue)"></div></div>
-            <div class="mc-prog-label">${done} / 18 lectures · ${pct}%</div>
+            <div class="mc-prog-label">${proj >= 1 ? '1' : '0'} / 1 project shipped · ${pct}%</div>
           </div>`;
       }
       if (m.id === 'sm10' && !isCompleted) {
@@ -1494,55 +1725,94 @@ function renderMissions() {
   setMSB('msb-claimed', claimed.length);
   setMSB('msb-ready',   activeMissions);
   setMSB('msb-xp',      totalXPFromMissions);
+  // Mission XP bar
+  const maxMissionXP = SECRET_MISSIONS.reduce((s,m) => s + m.xp, 0);
+  const mxpPct = maxMissionXP ? Math.round((totalXPFromMissions / maxMissionXP) * 100) : 0;
+  const mxpBar = document.getElementById('msb-xp-bar');
+  const mxpLbl = document.getElementById('msb-xp-pct');
+  if (mxpBar) mxpBar.style.width = mxpPct + '%';
+  if (mxpLbl) mxpLbl.textContent = totalXPFromMissions + ' / ' + maxMissionXP + ' XP · ' + mxpPct + '% of all mission XP claimed';
 }
 
 // ── REWARDS ──
 function renderRewards() {
-  function badge(r, key, unlocked, claimed) {
-    return `<div class="reward-badge ${claimed?'claimed':unlocked?'unlocked':''}">
-      <div class="r-icon">${r.icon}</div>
-      <div class="r-name">${r.name}</div>
-      <div class="r-req">${r.desc||r.req||''}</div>
-      <div class="r-status" style="color:${claimed?'var(--green)':unlocked?'var(--gold)':'var(--border2)'}">
-        ${claimed?'✓ CLAIMED':unlocked?'UNLOCKED':'🔒 LOCKED'}
+  const weeks500      = Object.values(state.weeklyXPHistory||{}).filter(xp => xp >= 500).length;
+  const levelsGained  = Math.max(0, (state.currentLevel||1) - 1);
+  const now           = new Date();
+  const monthsElapsed = (now.getFullYear()-2026)*12 + now.getMonth() - 2;
+  const claimed       = state.claimedRewards || [];
+
+  // ── Total progress bar ──
+  const totalRewards  = WEEKLY_REWARDS.length + BIWEEKLY_REWARDS.length + MONTHLY_REWARDS.length
+                        + PERFORMANCE_REWARDS.length + IDENTITY_REWARDS.length;
+  const totalClaimed  = claimed.length;
+  const pct           = totalRewards ? Math.round((totalClaimed / totalRewards) * 100) : 0;
+  const vaultBar  = document.getElementById('rewardVaultBar');
+  const vaultPct  = document.getElementById('rewardVaultPct');
+  const vaultCnt  = document.getElementById('rewardVaultClaimed');
+  if (vaultBar) vaultBar.style.width = pct + '%';
+  if (vaultPct) vaultPct.textContent = pct + '%';
+  if (vaultCnt) vaultCnt.textContent = totalClaimed + ' / ' + totalRewards + ' claimed';
+
+  // ── Card builder ──
+  function card(r, key, unlocked, isClaimed, num) {
+    const tierLabel = { weekly:'WEEKLY', biweekly:'LEVEL UP', monthly:'MONTHLY', performance:'MILESTONE', identity:'IDENTITY' };
+    const tierColor = { weekly:'var(--accent)', biweekly:'var(--blue)', monthly:'var(--gold)',
+                        performance:'var(--accent2)', identity:'var(--purple)' };
+    const tc = r.color || tierColor[r.tier] || 'var(--muted)';
+    const tl = tierLabel[r.tier] || 'REWARD';
+
+    const stateClass = isClaimed ? 'rv-claimed' : unlocked ? 'rv-unlocked' : 'rv-locked';
+
+    return `<div class="rv-card ${stateClass}" style="--rc:${tc};">
+      <div class="rv-shine"></div>
+      <div class="rv-top">
+        <span class="rv-tier-badge" style="color:${tc};border-color:${tc}30;background:${tc}10;">${tl}</span>
+        ${r.price ? `<span class="rv-price">${r.price}</span>` : ''}
+        ${isClaimed ? `<span class="rv-claimed-badge">✓ DONE</span>` : ''}
       </div>
-      ${unlocked&&!claimed?`<button class="claim-btn" onclick="claimReward('${key}','${r.name}')">CLAIM ⚡</button>`:''}
+      <div class="rv-icon">${unlocked && !isClaimed ? r.icon : isClaimed ? '✅' : '🔒'}</div>
+      <div class="rv-name" style="color:${unlocked || isClaimed ? 'var(--text)' : 'var(--muted)'};">${r.name}</div>
+      <div class="rv-desc">${unlocked || isClaimed ? r.desc : 'Keep grinding — this reward is waiting.'}</div>
+      ${unlocked && !isClaimed
+        ? `<button class="rv-claim-btn" style="border-color:${tc};color:${tc};" onclick="claimReward('${key}','${r.name}')">
+             CLAIM ⚡
+           </button>`
+        : isClaimed
+          ? `<div class="rv-claimed-txt">Reward collected</div>`
+          : `<div class="rv-locked-hint">
+               ${r.tier === 'weekly'  ? `${Math.max(0, num - weeks500 + 1)} week${Math.max(0, num - weeks500 + 1) !== 1 ? 's' : ''} away` :
+                 r.tier === 'biweekly' ? `${Math.max(0, num - levelsGained + 1)} level${Math.max(0, num - levelsGained + 1) !== 1 ? 's' : ''} away` :
+                 r.tier === 'monthly'  ? 'Complete the month' :
+                 'Hit the milestone'}
+             </div>`
+      }
     </div>`;
   }
 
-  const weeks500 = Object.values(state.weeklyXPHistory||{}).filter(xp=>xp>=500).length;
+  // ── Render sections ──
   const wg = document.getElementById('rewardGridWeekly');
-  if (wg) wg.innerHTML = WEEKLY_REWARDS.map((r,i) => badge(r,'w'+i, weeks500>i, (state.claimedRewards||[]).includes('w'+i))).join('');
+  if (wg) wg.innerHTML = WEEKLY_REWARDS.map((r,i) =>
+    card(r, 'w'+i, weeks500 > i, claimed.includes('w'+i), i)).join('');
 
   const bwg = document.getElementById('rewardGridBiweekly');
-  if (bwg) {
-    const levelsGained = Math.max(0, (state.currentLevel||1) - 1);
-    bwg.innerHTML = BIWEEKLY_REWARDS.map((r,i) => badge(r,'bw'+i, levelsGained>i, (state.claimedRewards||[]).includes('bw'+i))).join('');
-  }
+  if (bwg) bwg.innerHTML = BIWEEKLY_REWARDS.map((r,i) =>
+    card(r, 'bw'+i, levelsGained > i, claimed.includes('bw'+i), i)).join('');
 
   const mg = document.getElementById('rewardGridMonthly');
-  if (mg) {
-    const now = new Date();
-    const monthsElapsed = (now.getFullYear()-2026)*12 + now.getMonth() - 2; // March 2026 = month 0
-    mg.innerHTML = MONTHLY_REWARDS.map((r,i) => badge(r,'m'+i, monthsElapsed>i, (state.claimedRewards||[]).includes('m'+i))).join('');
-  }
+  if (mg) mg.innerHTML = MONTHLY_REWARDS.map((r,i) =>
+    card(r, 'm'+i, monthsElapsed > i, claimed.includes('m'+i), i)).join('');
 
   const pg = document.getElementById('rewardGridPerformance');
-  if (pg) {
-    pg.innerHTML = PERFORMANCE_REWARDS.map((r,i) => {
-      const claimed = (state.claimedRewards||[]).includes('p'+i);
-      const unlocked = (state.performanceRewards||[]).includes(r.goal);
-      return badge(r,'p'+i, unlocked, claimed);
-    }).join('');
-  }
+  if (pg) pg.innerHTML = PERFORMANCE_REWARDS.map((r,i) => {
+    const isCl   = claimed.includes('p'+i);
+    const unlock = (state.performanceRewards||[]).includes(r.goal);
+    return card(r, 'p'+i, unlock, isCl, i);
+  }).join('');
 
   const ig = document.getElementById('rewardGridIdentity');
-  if (ig) {
-    ig.innerHTML = IDENTITY_REWARDS.map((r,i) => {
-      const claimed = (state.claimedRewards||[]).includes('id'+i);
-      return badge(r,'id'+i, true, claimed); // always unlocked — earn by doing
-    }).join('');
-  }
+  if (ig) ig.innerHTML = IDENTITY_REWARDS.map((r,i) =>
+    card(r, 'id'+i, true, claimed.includes('id'+i), i)).join('');
 }
 
 async function claimReward(key, name) {
@@ -1743,7 +2013,7 @@ function toggleStudyTimeline() {
 }
 
 function renderStudyTimeline() {
-  const CAMPAIGN_START = new Date('2026-03-16');
+  const CAMPAIGN_START = new Date('2026-03-23');
   const today = new Date();
   const daysSinceStart = Math.max(0, Math.floor((today - CAMPAIGN_START) / 86400000));
   const currentWeek = Math.min(24, Math.floor(daysSinceStart / 7) + 1);
@@ -2304,7 +2574,7 @@ async function saveWorkout() {
     const runSec = sections[0];
     const timeVal = runSec?.exercises?.[0]?.sets?.[0]?.time;
     if (timeVal) {
-      const fiveKEl = document.getElementById('inp-fivek');
+      const fiveKEl = document.getElementById('inp-5k');
       if (fiveKEl && !fiveKEl.value) fiveKEl.value = timeVal;
       notify('⏱ Run time copied to Engine tab', 'var(--blue)');
     }
@@ -2499,6 +2769,13 @@ function updateTrStats() {
     });
   }
   set('trStatSetsToday', setsToday);
+  // Tab hero stat chips
+  const thSets = document.getElementById('trStatSetsToday');
+  if (thSets) thSets.textContent = setsToday + ' sets today';
+  const thStreak = document.getElementById('th-streak');
+  if (thStreak) { const s = state.streaks?.train; thStreak.textContent = '🔥 ' + ((s && typeof s === 'object') ? (s.current||0) : 0) + ' day streak'; }
+  const thWk = document.getElementById('th-weekdays');
+  if (thWk) thWk.textContent = '📅 ' + weekDays + ' / 4 this week';
 }
 
 function renderTodayWorkout() { updateTrStats(); }
@@ -2554,7 +2831,7 @@ function refreshSections(...sections) {
   }
   if (has('strength')) {
     safe(renderStrengthPBs);
-    safe(renderEngineHistoryFeed);
+    safe(renderStrengthHistoryFeed);
   }
   if (has('engine')) {
     safe(renderEnginePBs);
@@ -2666,7 +2943,7 @@ function renderDashboard() {
       dot.className = 'day-dot';
       dot.title = key;
 
-      const campaignStart = '2026-03-16';
+      const campaignStart = '2026-03-23';
       const isPreCampaign = key < campaignStart;
 
       if (isFuture || isPreCampaign) {
@@ -2875,6 +3152,75 @@ function renderStrengthPBs() {
     tEl.textContent = diff > 0 ? '▲ +' + diff : diff < 0 ? '▼ ' + diff : '— same';
     tEl.style.color = diff > 0 ? 'var(--green)' : diff < 0 ? 'var(--red)' : 'var(--muted)';
   });
+  renderStrengthHistoryFeed();
+}
+
+function renderStrengthHistoryFeed() {
+  const feed = document.getElementById('strengthHistoryFeed');
+  if (!feed) return;
+  const recent = [...strengthHistory].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 15);
+  if (!recent.length) { feed.innerHTML = '<div class="feed-empty">No strength sessions logged yet</div>'; return; }
+  const UNITS = { squat:'kg', deadlift:'kg', wpullup:'+kg', pushup:'reps', bench:'kg', row:'kg' };
+  const ICONS = { squat:'🦵', deadlift:'⚡', wpullup:'🔺', pushup:'💥', bench:'🏋️', row:'🔄' };
+  feed.innerHTML = recent.map(e => {
+    const lifts = ['squat','deadlift','wpullup','pushup','bench','row']
+      .filter(k => e[k] != null && e[k] > 0)
+      .map(k => `<span class="feed-pill fp-orange">${ICONS[k]} ${e[k]}${UNITS[k]}</span>`);
+    const notePill = e.notes ? `<span class="feed-pill fp-muted" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.notes}</span>` : '';
+    return `<div class="feed-item">
+      <div class="feed-date">${fmtDate(e.date)}</div>
+      <div class="feed-content"><div class="feed-pills">${lifts.join('') + notePill || '<span class="feed-pill fp-muted">No lifts logged</span>'}</div></div>
+      ${isKeith() ? `<div class="feed-actions"><button class="feed-edit-btn" onclick="editStrengthEntry('${e._id || e.date}','${e.date}')">EDIT</button><button class="feed-del-btn" onclick="deleteStrengthEntry('${e._id || e.date}','${e.date}')">DEL</button></div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function editStrengthEntry(rowId, date) {
+  if (!isKeith()) return;
+  const entry = strengthHistory.find(e => (e._id == rowId) || e.date === date);
+  if (!entry) return;
+  openEditModal('EDIT STRENGTH SESSION', date, [
+    { key:'squat',    label:'Squat (kg)',       type:'number', value:entry.squat    ||'', placeholder:'80',  step:'2.5' },
+    { key:'deadlift', label:'Deadlift (kg)',     type:'number', value:entry.deadlift ||'', placeholder:'100', step:'2.5' },
+    { key:'wpullup',  label:'W. Pull-up (+kg)', type:'number', value:entry.wpullup  ||'', placeholder:'15',  step:'2.5' },
+    { key:'pushup',   label:'Push-ups (max)',    type:'number', value:entry.pushup   ||'', placeholder:'35',  step:'1' },
+    { key:'bench',    label:'Bench (kg)',         type:'number', value:entry.bench   ||'', placeholder:'60',  step:'2.5' },
+    { key:'row',      label:'Row (kg)',           type:'number', value:entry.row     ||'', placeholder:'70',  step:'2.5' },
+    { key:'notes',    label:'Notes', full:true,  type:'text',   value:entry.notes   ||'', placeholder:'Session notes…' },
+  ], async () => {
+    if (emVal('squat'))    entry.squat    = emFloat('squat');
+    if (emVal('deadlift')) entry.deadlift = emFloat('deadlift');
+    if (emVal('wpullup'))  entry.wpullup  = emFloat('wpullup');
+    if (emVal('pushup'))   entry.pushup   = emInt('pushup');
+    if (emVal('bench'))    entry.bench    = emFloat('bench');
+    if (emVal('row'))      entry.row      = emFloat('row');
+    entry.notes = emVal('notes');
+    // Use _id for precise row targeting if available, fallback to date
+    const filter = entry._id
+      ? `rebuilder_logs?id=eq.${entry._id}`
+      : `rebuilder_logs?type=eq.strength_logs&logged_at=eq.${date}`;
+    await supaFetch('PATCH', filter, _buildPatch(entry));
+    notify('✏ Strength session updated', 'var(--accent2)');
+    closeEditModal();
+    refreshSections('strength');
+    buildStrengthChart(_strengthChartFilter);
+  });
+}
+
+async function deleteStrengthEntry(rowId, date) {
+  if (!isKeith()) return;
+  if (!confirm('Delete this strength session for ' + date + '?')) return;
+  const idx = strengthHistory.findIndex(e => (e._id == rowId) || e.date === date);
+  if (idx < 0) return;
+  const entry = strengthHistory[idx];
+  const filter = entry._id
+    ? `rebuilder_logs?id=eq.${entry._id}`
+    : `rebuilder_logs?type=eq.strength_logs&logged_at=eq.${date}`;
+  strengthHistory.splice(idx, 1);
+  await supaFetch('DELETE', filter);
+  notify('🗑 Strength session deleted', 'var(--red)');
+  refreshSections('strength');
+  buildStrengthChart(_strengthChartFilter);
 }
 
 // ── ENGINE PBs ──
@@ -2901,29 +3247,21 @@ function renderEnginePBs() {
 function renderMLStats() {
   const ml  = state.mlCurrent || {};
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  const setW= (id, pct) => { const e = document.getElementById(id); if (e) e.style.width = Math.min(100, pct) + '%'; };
 
-  const lecPct  = Math.round(((ml.lectures      || 0) / (ml.lecturesPlanned      || 21)) * 100);
-  const n231Pct = Math.round(((ml.lectures231n  || 0) / (ml.lectures231nPlanned  || 18)) * 100);
-
-  set('ml-lec-pct',   lecPct  + '%');
-  set('ml-231n-pct',  n231Pct + '%');
-  set('ml-lec-done',  ml.lectures      || 0);
-  set('ml-lec-plan',  ml.lecturesPlanned || 21);
-  set('ml-231n-done', ml.lectures231n  || 0);
-  set('ml-231n-plan', ml.lectures231nPlanned || 18);
   set('ml-proj-show', ml.projects || 0);
   set('ml-com-show',  ml.commits  || 0);
   set('dashProjects', ml.projects || 0);
-  set('dashCurrPct',  lecPct + '%');
 
-  setW('lecturesBar',     lecPct);
-  setW('lectures231nBar', n231Pct);
+  // Restore inputs
+  const inpProj = document.getElementById('inp-projects');
+  const inpCom  = document.getElementById('inp-commits');
+  const inpWk   = document.getElementById('inp-current-week');
+  if (inpProj) inpProj.value = ml.projects || 0;
+  if (inpCom)  inpCom.value  = ml.commits  || 0;
+  if (inpWk)   inpWk.value   = ml.week     || 1;
 
-  const inpLec = document.getElementById('inp-lectures');
-  if (inpLec) inpLec.value = ml.lectures || 0;
-  const inp231 = document.getElementById('inp-231n');
-  if (inp231)  inp231.value  = ml.lectures231n || 0;
+  // Trigger bar updates
+  updateCurriculumBars();
 }
 
 // ── GERMAN STATS ──
@@ -2944,6 +3282,11 @@ function renderGermanStats() {
   set('german-weekly-show', wg.toFixed(1));
   set('dashGermanHours',    tg.toFixed(1));
   set('dashGermanWeek',     wg.toFixed(1));
+  // Tab hero chips
+  const ghTh = document.getElementById('german-total-hours-th');
+  const gwTh = document.getElementById('german-weekly-show-th');
+  if (ghTh) ghTh.textContent = tg.toFixed(1);
+  if (gwTh) gwTh.textContent = wg.toFixed(1);
   set('total-words',        state.germanTotalWords       || 0);
   set('total-speaking-min', state.germanTotalSpeakingMin || 0);
 
@@ -3831,30 +4174,32 @@ function buildMLChart() {
   destroyChart('ml');
   const ctx = document.getElementById('chartML');
   if (!ctx) return;
-  const trackIds = {
-    'CS229':  ['cs-1','cs-2','cs-3','cs-4','cs-5','cs-6','cs-7','cs-8','cs-9','cs-10','cs-11','cs-12','cs-13','cs-14','cs-15','cs-16','cs-17','cs-18','cs-19','cs-20','cs-21'],
-    'DL':     ['dl-1','dl-2','dl-3','dl-4','dl-5','dl-6','dl-7','dl-8','dl-9','dl-10'],
-    'NLP':    ['nlp-1','nlp-2','nlp-3','nlp-4','nlp-5','nlp-6','nlp-7','nlp-8','nlp-9','nlp-10'],
-    'CS231N': ['n231-1','n231-2','n231-3','n231-4','n231-5','n231-6','n231-7','n231-8','n231-9','n231-10','n231-11','n231-12','n231-13','n231-14','n231-15','n231-16','n231-17','n231-18'],
+
+  const MONTHS = {
+    'M1 Python': ['m1w1','m1w2','m1w3','m1w4'],
+    'M2 LLMs':   ['m2w1','m2w2','m2w3','m2w4'],
+    'M3 RAG':    ['m3w1','m3w2','m3w3','m3w4'],
+    'M4 Apps':   ['m4w1','m4w2','m4w3','m4w4'],
+    'M5 Prod':   ['m5w1','m5w2','m5w3','m5w4'],
+    'M6 Port':   ['m6w1','m6w2','m6w3','m6w4'],
   };
-  const doneCounts = {}, totalCounts = {};
-  Object.entries(trackIds).forEach(([label, ids]) => {
-    doneCounts[label]  = ids.filter(id => state.curriculum && state.curriculum[id]).length;
-    totalCounts[label] = ids.length;
-  });
-  const labels = Object.keys(trackIds);
-  const doneData = labels.map(l => doneCounts[l]);
-  const remData  = labels.map(l => totalCounts[l] - doneCounts[l]);
+  const labels   = Object.keys(MONTHS);
+  const doneData = labels.map(l => MONTHS[l].filter(id => state.curriculum && state.curriculum[id]).length);
+  const remData  = labels.map((_, i) => 4 - doneData[i]);
+
+  const COLORS_DONE = [
+    'rgba(0,229,255,.85)','rgba(56,189,248,.85)','rgba(167,139,250,.85)',
+    'rgba(251,191,36,.8)','rgba(45,212,191,.8)','rgba(255,71,87,.8)',
+  ];
+  const COLORS_REM = COLORS_DONE.map(c => c.replace(/[\d.]+\)$/, '.1)'));
+
   charts['ml'] = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: [...labels.map(l => l + ' done'), ...labels.map(l => l + ' rem')],
+      labels: [...labels.map(l => l + ' ✓'), ...labels.map(l => l + ' …')],
       datasets: [{
         data: [...doneData, ...remData],
-        backgroundColor: [
-          'rgba(0,229,255,.85)', 'rgba(167,139,250,.85)', 'rgba(251,191,36,.8)', 'rgba(244,63,94,.8)',
-          'rgba(0,229,255,.1)', 'rgba(167,139,250,.1)', 'rgba(251,191,36,.08)', 'rgba(244,63,94,.08)',
-        ],
+        backgroundColor: [...COLORS_DONE, ...COLORS_REM],
         borderWidth: 1,
         borderColor: '#080808',
       }]
